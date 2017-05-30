@@ -22,12 +22,18 @@ if (process.argv[2] === 'debug') {
 function createWindow () {
     global.dofusInstances = settings.has('dofusInstances') ? settings.get('dofusInstances') : [];
 
-    mainWindow = new BrowserWindow({
+    let mainWindowOptions = {
         icon: path.join(__dirname, '64x64.png'),
         height: settings.has('size.height') ? settings.get('size.height') : 650,
         width: settings.has('size.width') ? settings.get('size.width') : 225,
         alwaysOnTop: true
-    });
+    };
+    if (settings.has('position')) {
+        mainWindowOptions.x = settings.get('position.x');
+        mainWindowOptions.y = settings.get('position.y');
+    }
+
+    mainWindow = new BrowserWindow(mainWindowOptions);
 
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'windows/index.html'),
@@ -39,6 +45,16 @@ function createWindow () {
 
     mainWindow.on('closed', function () {
         mainWindow = null
+    });
+
+    mainWindow.on('move', () => {
+        const position = mainWindow.getPosition();
+        settings.set('position', { x: position[0], y: position[1] });
+    });
+
+    mainWindow.on('resize', () => {
+        const size = mainWindow.getSize();
+        settings.set('size', { width: size[0], height: size[1] });
     });
 
     setBindings();
@@ -65,10 +81,6 @@ app.on('activate', function () {
 });
 
 ipcMain.on('instanceSelect', (event, dofusInstance) => select(dofusInstance));
-
-ipcMain.on('windowResize', (event, size) => {
-    settings.set('size', size);
-});
 
 ipcMain.on('openConfig', () => {
     configWindow = new BrowserWindow({

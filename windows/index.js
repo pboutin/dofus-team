@@ -25,17 +25,6 @@ ipcRenderer.on('instanceChange', (event, dofusInstance) => {
     document.getElementById(dofusInstance).classList.add('active');
 });
 
-let resizeEventTask;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeEventTask);
-    resizeEventTask = setTimeout(() => {
-        ipcRenderer.send('windowResize', {
-            width: document.documentElement.clientWidth,
-            height: document.documentElement.clientHeight
-        });
-    }, 1000);
-});
-
 document.getElementById('configure').onclick = () => {
     ipcRenderer.send('openConfig');
 };
