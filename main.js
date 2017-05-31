@@ -23,7 +23,6 @@ function createWindow () {
     global.dofusInstances = settings.has('dofusInstances') ? settings.get('dofusInstances') : [];
 
     let mainWindowOptions = {
-        icon: path.join(__dirname, '64x64.png'),
         height: settings.has('size.height') ? settings.get('size.height') : 650,
         width: settings.has('size.width') ? settings.get('size.width') : 225,
         alwaysOnTop: true
@@ -84,7 +83,6 @@ ipcMain.on('instanceSelect', (event, dofusInstance) => select(dofusInstance));
 
 ipcMain.on('openConfig', () => {
     configWindow = new BrowserWindow({
-        icon: path.join(__dirname, '64x64.png'),
         height: 350,
         width: 300,
         parent: mainWindow,
