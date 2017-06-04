@@ -1,6 +1,6 @@
 {
   "name": "dofus-team",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A conveniant window manager for Dofus team playing.",
   "main": "main.js",
   "scripts": {

@@ -6,7 +6,7 @@ const container = document.getElementById('container');
 remote.getGlobal('dofusInstances').forEach((dofusInstance, index) => {
     let button = document.createElement('button');
     button.textContent = dofusInstance;
-    button.id = dofusInstance;
+    button.id = dofusInstance[0] === '-' ? dofusInstance.substring(1) : dofusInstance;
     if (index === 0) {
         button.classList.add('active');
     }

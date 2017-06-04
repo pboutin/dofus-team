@@ -130,6 +130,10 @@ function select(dofusInstance) {
     if (! dofusInstance) { return; }
     console.log('Switching to : ', dofusInstance);
 
+    if (dofusInstance[0] === '-') {
+        dofusInstance = dofusInstance.substring(1);
+    }
+
     if (process.platform === 'linux') {
         _linuxSelect(dofusInstance);
     } else if (process.platform === 'win32') {
@@ -149,11 +153,22 @@ function _windowsSelect(windowName) {
     exec(`setforegroundwindow-x64.exe "${windowName}"`);
 }
 
+function _activeInstances() {
+    return global.dofusInstances.filter(dofusInstance => dofusInstance[0] !== '-');
+}
 function _nextInstance() {
-    const nextIndex = global.dofusInstances.indexOf(activeInstance) + 1;
-    return global.dofusInstances[nextIndex === global.dofusInstances.length ? 0 : nextIndex];
+    const activeInstances = _activeInstances();
+    if (activeInstances.length === 0) {
+        return null;
+    }
+    const nextIndex = activeInstances.indexOf(activeInstance) + 1;
+    return activeInstances[nextIndex === activeInstances.length ? 0 : nextIndex];
 }
 function _previousInstance() {
-    const previousIndex = global.dofusInstances.indexOf(activeInstance) - 1;
-    return global.dofusInstances[previousIndex === -1 ? global.dofusInstances.length - 1 : previousIndex];
+    const activeInstances = _activeInstances();
+    if (activeInstances.length === 0) {
+        return null;
+    }
+    const previousIndex = activeInstances.indexOf(activeInstance) - 1;
+    return activeInstances[previousIndex === -1 ? activeInstances.length - 1 : previousIndex];
 }
