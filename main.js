@@ -113,9 +113,10 @@ ipcMain.on('dofusInstancesUpdate', (event, dofusInstances) => {
 function setBindings() {
     globalShortcut.unregisterAll();
     globalShortcut.register('Tab', () => {
-        const nextIndex = global.dofusInstances.indexOf(activeInstance) + 1;
-        const nextInstance = global.dofusInstances[nextIndex === global.dofusInstances.length ? 0 : nextIndex];
-        select(nextInstance);
+        select(_nextInstance());
+    });
+    globalShortcut.register('Shift+Tab', () => {
+        select(_previousInstance());
     });
 
     global.dofusInstances.forEach((dofusInstance, index) => {
@@ -148,3 +149,11 @@ function _windowsSelect(windowName) {
     exec(`setforegroundwindow-x64.exe "${windowName}"`);
 }
 
+function _nextInstance() {
+    const nextIndex = global.dofusInstances.indexOf(activeInstance) + 1;
+    return global.dofusInstances[nextIndex === global.dofusInstances.length ? 0 : nextIndex];
+}
+function _previousInstance() {
+    const previousIndex = global.dofusInstances.indexOf(activeInstance) - 1;
+    return global.dofusInstances[previousIndex === -1 ? global.dofusInstances.length - 1 : previousIndex];
+}
