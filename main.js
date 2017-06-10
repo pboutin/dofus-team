@@ -80,6 +80,17 @@ app.on('activate', function () {
 });
 
 ipcMain.on('instanceSelect', (event, dofusInstance) => select(dofusInstance));
+ipcMain.on('instanceToggle', (event, dofusInstanceToToggle) => {
+    applyInstances(global.dofusInstances.map(dofusInstance => {
+        console.log('toggle', dofusInstance, dofusInstanceToToggle);
+        if (dofusInstance === dofusInstanceToToggle) {
+            return `-${dofusInstanceToToggle}`;
+        } else if (dofusInstance === `-${dofusInstanceToToggle}`) {
+            return dofusInstanceToToggle;
+        }
+        return dofusInstance;
+    }));
+});
 
 ipcMain.on('openConfig', () => {
     configWindow = new BrowserWindow({
@@ -103,12 +114,16 @@ ipcMain.on('openConfig', () => {
 });
 
 ipcMain.on('dofusInstancesUpdate', (event, dofusInstances) => {
-    global.dofusInstances = dofusInstances;
-    settings.set('dofusInstances', dofusInstances)
-    setBindings()
-    mainWindow.reload();
+    applyInstances(dofusInstances);
     configWindow.close();
 });
+
+function applyInstances(dofusInstances) {
+    global.dofusInstances = dofusInstances;
+    settings.set('dofusInstances', dofusInstances);
+    setBindings();
+    mainWindow.reload();
+}
 
 function setBindings() {
     globalShortcut.unregisterAll();
@@ -121,7 +136,7 @@ function setBindings() {
 
     global.dofusInstances.forEach((dofusInstance, index) => {
         globalShortcut.register(`F${index + 1}`, () => {
-            select(dofusInstance);
+            select(dofusInstance[0] === '-' ? dofusInstance.substring(1) : dofusInstance);
         });
     });
 }
@@ -129,10 +144,6 @@ function setBindings() {
 function select(dofusInstance) {
     if (! dofusInstance) { return; }
     console.log('Switching to : ', dofusInstance);
-
-    if (dofusInstance[0] === '-') {
-        dofusInstance = dofusInstance.substring(1);
-    }
 
     if (process.platform === 'linux') {
         _linuxSelect(dofusInstance);

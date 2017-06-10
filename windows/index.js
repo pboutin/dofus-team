@@ -5,13 +5,18 @@ const container = document.getElementById('container');
 
 remote.getGlobal('dofusInstances').forEach((dofusInstance, index) => {
     let button = document.createElement('button');
+    const escapedDofusInstance = dofusInstance[0] === '-' ? dofusInstance.substring(1) : dofusInstance;
     button.textContent = dofusInstance;
-    button.id = dofusInstance[0] === '-' ? dofusInstance.substring(1) : dofusInstance;
+
+    button.id = escapedDofusInstance;
     if (index === 0) {
         button.classList.add('active');
     }
     button.onclick = () => {
-        ipcRenderer.send('instanceSelect', dofusInstance);
+        ipcRenderer.send('instanceSelect', escapedDofusInstance);
+    };
+    button.oncontextmenu = () => {
+        ipcRenderer.send('instanceToggle', escapedDofusInstance);
     };
     container.appendChild(button);
 });
