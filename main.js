@@ -173,7 +173,7 @@ function _linuxSelect(windowName) {
     exec("window_id=`xdotool search --name '" + windowName + "'` && xdotool windowactivate $window_id");
 }
 function _windowsSelect(windowName) {
-    exec(`setforegroundwindow-x64.exe "${windowName}"`);
+    exec(`windows_activate.vbs ${windowName}`);
 }
 
 function _activeInstances() {

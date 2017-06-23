@@ -15,7 +15,7 @@
           "from": "./build/",
           "to": "./../",
           "filter": [
-            "*.exe"
+            "*.vbs"
           ]
         }
       ]
