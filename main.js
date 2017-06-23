@@ -21,6 +21,16 @@ if (process.argv[2] === 'debug') {
 
 function createWindow () {
     global.dofusInstances = settings.has('dofusInstances') ? settings.get('dofusInstances') : [];
+    global.dofusInstances = global.dofusInstances.map(dofusInstance => {
+        if (typeof dofusInstance === 'string') {
+            return {
+                name: dofusInstance,
+                isEnabled: true
+            };
+        }
+        return dofusInstance;
+    });
+
 
     let mainWindowOptions = {
         height: settings.has('size.height') ? settings.get('size.height') : 650,
@@ -56,8 +66,7 @@ function createWindow () {
         settings.set('size', { width: size[0], height: size[1] });
     });
 
-    setBindings();
-
+    applyInstances(global.dofusInstances);
     select(global.dofusInstances[0]);
 
     if (debug) {
@@ -81,12 +90,10 @@ app.on('activate', function () {
 
 ipcMain.on('instanceSelect', (event, dofusInstance) => select(dofusInstance));
 ipcMain.on('instanceToggle', (event, dofusInstanceToToggle) => {
+    console.log('Toggling : ', dofusInstanceToToggle.name);
     applyInstances(global.dofusInstances.map(dofusInstance => {
-        console.log('toggle', dofusInstance, dofusInstanceToToggle);
-        if (dofusInstance === dofusInstanceToToggle) {
-            return `-${dofusInstanceToToggle}`;
-        } else if (dofusInstance === `-${dofusInstanceToToggle}`) {
-            return dofusInstanceToToggle;
+        if (dofusInstanceToToggle.name === dofusInstance.name) {
+            dofusInstance.isEnabled = ! dofusInstance.isEnabled;
         }
         return dofusInstance;
     }));
@@ -113,8 +120,13 @@ ipcMain.on('openConfig', () => {
     }
 });
 
-ipcMain.on('dofusInstancesUpdate', (event, dofusInstances) => {
-    applyInstances(dofusInstances);
+ipcMain.on('dofusInstancesUpdate', (event, dofusInstanceNames) => {
+    applyInstances(dofusInstanceNames.map(dofusInstanceName => {
+        return {
+            name: dofusInstanceName,
+            isEnabled: true
+        };
+    }));
     configWindow.close();
 });
 
@@ -122,7 +134,7 @@ function applyInstances(dofusInstances) {
     global.dofusInstances = dofusInstances;
     settings.set('dofusInstances', dofusInstances);
     setBindings();
-    mainWindow.reload();
+    mainWindow.send('renderInstances', dofusInstances);
 }
 
 function setBindings() {
@@ -136,25 +148,25 @@ function setBindings() {
 
     global.dofusInstances.forEach((dofusInstance, index) => {
         globalShortcut.register(`F${index + 1}`, () => {
-            select(dofusInstance[0] === '-' ? dofusInstance.substring(1) : dofusInstance);
+            select(dofusInstance);
         });
     });
 }
 
 function select(dofusInstance) {
     if (! dofusInstance) { return; }
-    console.log('Switching to : ', dofusInstance);
+    console.log('Switching to : ', dofusInstance.name);
 
     if (process.platform === 'linux') {
-        _linuxSelect(dofusInstance);
+        _linuxSelect(dofusInstance.name);
     } else if (process.platform === 'win32') {
-        _windowsSelect(dofusInstance);
+        _windowsSelect(dofusInstance.name);
     } else {
         throw "This OS is not supported yet.";
     }
 
     activeInstance = dofusInstance;
-    mainWindow.send('instanceChange', dofusInstance);
+    mainWindow.send('activeInstanceChange', dofusInstance);
 }
 
 function _linuxSelect(windowName) {
@@ -165,7 +177,7 @@ function _windowsSelect(windowName) {
 }
 
 function _activeInstances() {
-    return global.dofusInstances.filter(dofusInstance => dofusInstance[0] !== '-');
+    return global.dofusInstances.filter(dofusInstance => dofusInstance.isEnabled);
 }
 function _nextInstance() {
     const activeInstances = _activeInstances();

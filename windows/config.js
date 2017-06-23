@@ -8,4 +8,4 @@ instancesButton.onclick = () => {
     ipcRenderer.send('dofusInstancesUpdate', instancesInput.value.split('\n').filter(line => !! line));
 };
 
-instancesInput.value = remote.getGlobal('dofusInstances').join('\n');
+instancesInput.value = remote.getGlobal('dofusInstances').map(dofusInstance => dofusInstance.name).join('\n');

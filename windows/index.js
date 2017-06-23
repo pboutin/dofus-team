@@ -1,37 +1,47 @@
 const electron = require('electron');
 const {ipcRenderer, remote} = electron;
 
-const container = document.getElementById('container');
-
-remote.getGlobal('dofusInstances').forEach((dofusInstance, index) => {
-    let button = document.createElement('button');
-    const escapedDofusInstance = dofusInstance[0] === '-' ? dofusInstance.substring(1) : dofusInstance;
-    button.textContent = dofusInstance;
-
-    button.id = escapedDofusInstance;
-    if (index === 0) {
-        button.classList.add('active');
+const render = dofusInstances => {
+    let buttons = document.getElementsByTagName('button');
+    while (buttons.length) {
+        buttons[0].parentElement.removeChild(buttons[0]);
     }
-    button.onclick = () => {
-        ipcRenderer.send('instanceSelect', escapedDofusInstance);
-    };
-    button.oncontextmenu = () => {
-        ipcRenderer.send('instanceToggle', escapedDofusInstance);
-    };
-    container.appendChild(button);
-});
 
-ipcRenderer.on('instanceChange', (event, dofusInstance) => {
+    const container = document.getElementById('container');
+    dofusInstances.forEach(dofusInstance => {
+        let button = document.createElement('button');
+
+        button.textContent = dofusInstance.name;
+        button.id = dofusInstance.name;
+
+        if (! dofusInstance.isEnabled) {
+            button.classList.add('disabled');
+        }
+
+        button.onclick = () => {
+            ipcRenderer.send('instanceSelect', dofusInstance);
+        };
+        button.oncontextmenu = () => {
+            ipcRenderer.send('instanceToggle', dofusInstance);
+        };
+        container.appendChild(button);
+    });
+};
+
+ipcRenderer.on('renderInstances', (event, dofusInstances) => render(dofusInstances));
+
+ipcRenderer.on('activeInstanceChange', (event, dofusInstance) => {
     var elements = document.getElementsByClassName('active');
 
     while (elements.length) {
         elements[0].classList.remove('active');
     }
-    document.getElementById(dofusInstance).classList.add('active');
+    document.getElementById(dofusInstance.name).classList.add('active');
 });
 
 document.getElementById('configure').onclick = () => {
     ipcRenderer.send('openConfig');
 };
 
+render(remote.getGlobal('dofusInstances'));
 
