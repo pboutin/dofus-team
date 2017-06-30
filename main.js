@@ -184,7 +184,11 @@ function _nextInstance() {
     if (activeInstances.length === 0) {
         return null;
     }
-    const nextIndex = activeInstances.indexOf(activeInstance) + 1;
+    const currentIndex = _getInstancesIndexOf(activeInstance, activeInstances);
+    let nextIndex = 0;
+    if (currentIndex > -1) {
+        nextIndex = currentIndex + 1;
+    }
     return activeInstances[nextIndex === activeInstances.length ? 0 : nextIndex];
 }
 function _previousInstance() {
@@ -192,6 +196,18 @@ function _previousInstance() {
     if (activeInstances.length === 0) {
         return null;
     }
-    const previousIndex = activeInstances.indexOf(activeInstance) - 1;
-    return activeInstances[previousIndex === -1 ? activeInstances.length - 1 : previousIndex];
+    const currentIndex = _getInstancesIndexOf(activeInstance, activeInstances);
+    let previousIndex = 0;
+    if (currentIndex > -1) {
+        previousIndex = currentIndex - 1;
+    }
+    return activeInstances[previousIndex < 0 ? activeInstances.length - 1 : previousIndex];
+}
+function _getInstancesIndexOf(dofusInstance, dofusInstances) {
+    for (let idx = 0; idx < dofusInstances.length; idx++) {
+        if (dofusInstance.name === dofusInstances[idx].name) {
+            return idx;
+        }
+    }
+    return -1;
 }
