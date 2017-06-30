@@ -10,8 +10,8 @@ const exec = require('child_process').exec;
 let mainWindow;
 let configWindow;
 let config;
-let activeInstance = null;
 let debug = false;
+global.activeInstance = null;
 global.dofusInstances = null;
 
 if (process.argv[2] === 'debug') {
@@ -121,7 +121,7 @@ ipcMain.on('openConfig', () => {
 });
 
 ipcMain.on('dofusInstancesUpdate', (event, dofusInstanceNames) => {
-    applyInstances(dofusInstanceNames.map(dofusInstanceName => {
+    applyInstancesAndRerender(dofusInstanceNames.map(dofusInstanceName => {
         return {
             name: dofusInstanceName,
             isEnabled: true
@@ -133,6 +133,9 @@ ipcMain.on('dofusInstancesUpdate', (event, dofusInstanceNames) => {
 function applyInstances(dofusInstances) {
     global.dofusInstances = dofusInstances;
     settings.set('dofusInstances', dofusInstances);
+}
+function applyInstancesAndRerender(dofusInstances) {
+    applyInstances(dofusInstances);
     setBindings();
     mainWindow.send('renderInstances', dofusInstances);
 }
@@ -165,7 +168,7 @@ function select(dofusInstance) {
         throw "This OS is not supported yet.";
     }
 
-    activeInstance = dofusInstance;
+    global.activeInstance = dofusInstance;
     mainWindow.send('activeInstanceChange', dofusInstance);
 }
 

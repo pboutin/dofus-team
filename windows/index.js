@@ -1,7 +1,7 @@
 const electron = require('electron');
 const {ipcRenderer, remote} = electron;
 
-const render = dofusInstances => {
+const render = (dofusInstances, activeInstance) => {
     let buttons = document.getElementsByTagName('button');
     while (buttons.length) {
         buttons[0].parentElement.removeChild(buttons[0]);
@@ -17,12 +17,16 @@ const render = dofusInstances => {
         if (! dofusInstance.isEnabled) {
             button.classList.add('disabled');
         }
+        if (dofusInstance.name === activeInstance.name) {
+            button.classList.add('active');
+        }
 
         button.onclick = () => {
             ipcRenderer.send('instanceSelect', dofusInstance);
         };
-        button.oncontextmenu = () => {
+        button.oncontextmenu = event => {
             ipcRenderer.send('instanceToggle', dofusInstance);
+            event.target.classList.toggle('disabled');
         };
         container.appendChild(button);
     });
@@ -43,5 +47,5 @@ document.getElementById('configure').onclick = () => {
     ipcRenderer.send('openConfig');
 };
 
-render(remote.getGlobal('dofusInstances'));
+render(remote.getGlobal('dofusInstances'), remote.getGlobal('activeInstance'));
 
