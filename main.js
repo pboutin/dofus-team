@@ -67,6 +67,7 @@ function createWindow () {
     });
 
     applyInstances(global.dofusInstances);
+    setBindings();
     select(global.dofusInstances[0]);
 
     if (debug) {
