@@ -1,7 +1,10 @@
 const electron = require('electron');
 const {ipcRenderer, remote} = electron;
 
-const render = (dofusInstances, activeInstance) => {
+const render = () => {
+    const dofusInstances = remote.getGlobal('dofusInstances');
+    const activeInstance = remote.getGlobal('activeInstance');
+
     let buttons = document.getElementsByTagName('button');
     while (buttons.length) {
         buttons[0].parentElement.removeChild(buttons[0]);
@@ -32,7 +35,7 @@ const render = (dofusInstances, activeInstance) => {
     });
 };
 
-ipcRenderer.on('renderInstances', (event, dofusInstances) => render(dofusInstances));
+ipcRenderer.on('renderInstances', render);
 
 ipcRenderer.on('activeInstanceChange', (event, dofusInstance) => {
     var elements = document.getElementsByClassName('active');
@@ -47,5 +50,5 @@ document.getElementById('configure').onclick = () => {
     ipcRenderer.send('openConfig');
 };
 
-render(remote.getGlobal('dofusInstances'), remote.getGlobal('activeInstance'));
+render();
 
