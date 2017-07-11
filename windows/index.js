@@ -24,13 +24,15 @@ const render = () => {
             button.classList.add('active');
         }
 
-        button.onclick = () => {
-            ipcRenderer.send('instanceSelect', dofusInstance);
-        };
-        button.oncontextmenu = event => {
-            ipcRenderer.send('instanceToggle', dofusInstance);
-            event.target.classList.toggle('disabled');
-        };
+        button.addEventListener('mouseup', event => {
+            if (event.button === 0) { // Left click
+                ipcRenderer.send('instanceSelect', dofusInstance);
+            } else {
+                ipcRenderer.send('instanceToggle', dofusInstance);
+                event.target.classList.toggle('disabled');
+            }
+        });
+
         container.appendChild(button);
     });
 };
