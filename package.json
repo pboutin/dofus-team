@@ -1,0 +1,31 @@
+{
+  "name": "dofus-team",
+  "version": "1.0.0",
+  "description": "Multi-window switcher for Dofus built with Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "debug": "electron . debug",
+    "build": "rm -rf dist/ && electron-builder --x64 --windows portable",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pboutin/dofus-team.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pboutin/dofus-team/issues"
+  },
+  "homepage": "https://github.com/pboutin/dofus-team#readme",
+  "devDependencies": {
+    "electron": "^23.0.0",
+    "electron-builder": "^23.6.0"
+  },
+  "dependencies": {
+    "electron-settings": "^4.0.2",
+    "ffi-napi": "^4.0.3",
+    "yaml": "^2.2.1"
+  }
+}

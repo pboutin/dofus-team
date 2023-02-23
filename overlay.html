@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DofusTeam - Overlay</title>
+
+  <script src="./overlay.js"></script>
+
+  <style type="text/css">
+    html, body {
+      overflow: hidden;
+    }
+
+    #main {
+      display: flex;
+      gap: 10px;
+    }
+
+    #main img {
+      height: 80px;
+      width: 80px;
+      transition: ease 300ms;
+      transition-property: transform opacity filter;
+      outline: none;
+    }
+
+    #main img:not(.active) {
+      transform: scale(0.8);
+      opacity: 0.9;
+    }
+
+    #main img.disabled {
+      filter: grayscale(80%);
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+<main id="main"></main>
+</body>
+</html>
