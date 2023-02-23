@@ -9,7 +9,10 @@ function updateState(characters) {
   });
 }
 
-ipcRenderer.on('initialize', (_, characters) => {
+
+ipcRenderer.on('initialize', (_, {teamState: characters, positionLocked}) => {
+  document.getElementById('drag').classList.toggle('locked', positionLocked);
+
   const mainElement = document.getElementById('main');
 
   characters.forEach((character) => {
@@ -33,10 +36,6 @@ ipcRenderer.on('initialize', (_, characters) => {
 
 ipcRenderer.on('refresh', (_, characters) => updateState(characters));
 
-
-
-
-// const OpenOptionsButtonElement = document.getElementById('open-options-button');
-// OpenOptionsButtonElement.onclick = () => {
-//   ipcRenderer.send('open-options');
-// }
+ipcRenderer.on('position-locked-update', (_, positionLocked) => {
+  document.getElementById('drag').classList.toggle('locked', positionLocked);
+});

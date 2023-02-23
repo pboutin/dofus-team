@@ -1,7 +1,8 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu} = require('electron');
 const settings = require('electron-settings');
 const { parse } = require('yaml');
 const fs = require('fs');
+const path = require('path');
 
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
 console.log('Loaded config:', config);
@@ -42,9 +43,9 @@ function createOverlayWindow() {
     }
   };
 
-  if (settings.has('position')) {
-    windowOptions.x = settings.get('position.x');
-    windowOptions.y = settings.get('position.y');
+  if (settings.hasSync('position')) {
+    windowOptions.x = settings.getSync('position.x');
+    windowOptions.y = settings.getSync('position.y');
   }
 
   overlayWindow = new BrowserWindow(windowOptions);
@@ -57,20 +58,62 @@ function createOverlayWindow() {
 
   overlayWindow.on('move', () => {
     const [x, y] = overlayWindow.getPosition();
-    settings.set('position', {x, y});
+    settings.setSync('position', {x, y});
   });
 
   if (debug) overlayWindow.webContents.openDevTools(DEVTOOL_OPTIONS);
 
   teamState = instanciateTeam(config.teams[0].name);
 
-
   overlayWindow.webContents.once('dom-ready', () => {
-    overlayWindow.send('initialize', teamState);
+    overlayWindow.send('initialize', {
+      teamState,
+      positionLocked: !!settings.getSync('position-locked')
+    });
   });
+
+  Object.entries(config.shortcuts).forEach(([action, keybind]) => {
+    globalShortcut.register(keybind, () => {
+      if (action === 'main') {
+        const mainCharacter = teamState.find(({main}) => main);
+        if (!mainCharacter) return;
+        switchActiveCharacter(mainCharacter.name);
+      } else if (action === 'next') {
+        const currentIndex = teamState.findIndex(({active}) => active);
+        const nextIndex = (currentIndex + 1) >= teamState.length ? 0 : currentIndex + 1;
+        switchActiveCharacter(teamState[nextIndex].name);
+      } else if (action === 'previous') {
+        const currentIndex = teamState.findIndex(({active}) => active);
+        const nextIndex = (currentIndex - 1) < 0 ? teamState.length - 1 : currentIndex - 1;
+        switchActiveCharacter(teamState[nextIndex].name);
+      } else if (action.startsWith('team')) {
+        const targetIndex = parseInt(action.replace('team', ''), 10) - 1;
+        if (targetIndex >= teamState.length) return;
+        switchActiveCharacter(teamState[targetIndex].name);
+      }
+    });
+  });
+
+  const tray = new Tray(path.join(__dirname, '/build/icons/icon24x24.png'));
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Position locked',
+      type: 'checkbox',
+      checked: !!settings.getSync('position-locked'),
+      click: ({checked}) => {
+        overlayWindow.send('position-locked-update', checked);
+        settings.setSync('position-locked', checked);
+      }
+    },
+    {
+      type: 'separator'
+    },
+  ]);
+  tray.setToolTip('DofusTeam');
+  tray.setContextMenu(contextMenu);
 }
 
-ipcMain.on('switch', (_, characterName) => {
+function switchActiveCharacter(characterName) {
   teamState = teamState.map(character => {
     const isCurrentCharacter = character.name === characterName;
 
@@ -85,7 +128,9 @@ ipcMain.on('switch', (_, characterName) => {
   });
 
   overlayWindow.send('refresh', teamState);
-});
+}
+
+ipcMain.on('switch', (_, characterName) => switchActiveCharacter(characterName));
 
 ipcMain.on('disable-toggle', (_, characterName) => {
   teamState = teamState.map(character => {

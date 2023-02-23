@@ -9,6 +9,21 @@
   <style type="text/css">
     html, body {
       overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      outline: none;
+    }
+
+    #drag {
+      background-color: hotpink;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      -webkit-app-region: drag;
+    }
+
+    #drag.locked {
+      display: none;
     }
 
     #main {
@@ -21,7 +36,6 @@
       width: 80px;
       transition: ease 300ms;
       transition-property: transform opacity filter;
-      outline: none;
     }
 
     #main img:not(.active) {
@@ -36,6 +50,7 @@
   </style>
 </head>
 <body>
+<div id="drag">DRAG ME</div>
 <main id="main"></main>
 </body>
 </html>
