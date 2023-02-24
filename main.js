@@ -4,6 +4,8 @@ const { parse } = require('yaml');
 const fs = require('fs');
 const path = require('path');
 
+let windowsSwitch = (windowName) => console.log('Debug windows switch', windowName);
+
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
 console.log('Loaded config:', config);
 
@@ -11,6 +13,10 @@ const DEVTOOL_OPTIONS = {mode: 'detach'};
 
 let overlayWindow;
 let debug = process.argv[2] === 'debug';
+
+if (!debug) {
+  windowsSwitch = require('./windows-switch');
+}
 
 let teamState;
 
@@ -129,6 +135,7 @@ function switchActiveCharacter(characterName) {
     const isCurrentCharacter = character.name === characterName;
 
     if (isCurrentCharacter) {
+      windowsSwitch(characterName + config.dofus_window_suffix);
       console.log('Switching to window: ', characterName);
     }
 
