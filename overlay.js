@@ -14,6 +14,7 @@ ipcRenderer.on('initialize', (_, {teamState: characters, positionLocked}) => {
   document.getElementById('drag').classList.toggle('locked', positionLocked);
 
   const mainElement = document.getElementById('main');
+  mainElement.innerHTML = '';
 
   characters.forEach((character) => {
     const memberElement = document.createElement('img');

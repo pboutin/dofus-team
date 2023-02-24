@@ -17,7 +17,7 @@ let teamState;
 function instanciateTeam(teamName) {
   const team = config.teams.find(({name}) => name === teamName);
 
-  return team.members.map((characterName, index) => {
+  teamState = team.members.map((characterName, index) => {
     const characterConfig = config.characters.find(({name}) => name === characterName);
     if (!characterConfig) throw new Error(`Character ${characterName} not found in config.yml`);
 
@@ -27,6 +27,13 @@ function instanciateTeam(teamName) {
       disabled: false
     };
   });
+
+  overlayWindow.send('initialize', {
+    teamState,
+    positionLocked: !!settings.getSync('position-locked')
+  });
+
+  switchActiveCharacter(team.members[0]);
 }
 
 function createOverlayWindow() {
@@ -63,14 +70,7 @@ function createOverlayWindow() {
 
   if (debug) overlayWindow.webContents.openDevTools(DEVTOOL_OPTIONS);
 
-  teamState = instanciateTeam(config.teams[0].name);
-
-  overlayWindow.webContents.once('dom-ready', () => {
-    overlayWindow.send('initialize', {
-      teamState,
-      positionLocked: !!settings.getSync('position-locked')
-    });
-  });
+  overlayWindow.webContents.once('dom-ready', () => instanciateTeam(config.teams[0].name));
 
   Object.entries(config.shortcuts).forEach(([action, keybind]) => {
     globalShortcut.register(keybind, () => {
@@ -95,6 +95,17 @@ function createOverlayWindow() {
   });
 
   const tray = new Tray(path.join(__dirname, '/build/icons/icon24x24.png'));
+  const teamRadios = config.teams.map((team, index) => ({
+    label: team.name,
+    type: 'radio',
+    checked: index === 0,
+    click: (currentRadio) => {
+      teamRadios.forEach(teamRadio => teamRadio.checked = false);
+      currentRadio = true;
+
+      instanciateTeam(team.name);
+    }
+  }));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Position locked',
@@ -108,7 +119,7 @@ function createOverlayWindow() {
     {
       type: 'separator'
     },
-  ]);
+  ].concat(teamRadios));
   tray.setToolTip('DofusTeam');
   tray.setContextMenu(contextMenu);
 }
