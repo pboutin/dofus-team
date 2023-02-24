@@ -42,6 +42,24 @@ function instanciateTeam(teamName) {
   switchActiveCharacter(team.members[0]);
 }
 
+function goToNext(fromCharacterName) {
+  const currentIndex = teamState.findIndex(({name, active}) => fromCharacterName ? fromCharacterName === name : active);
+  const nextIndex = (currentIndex + 1) >= teamState.length ? 0 : currentIndex + 1;
+  
+  if (teamState[nextIndex].disabled) return goToNext(teamState[nextIndex].name);
+
+  switchActiveCharacter(teamState[nextIndex].name);
+}
+
+function goToPrevious(fromCharacterName) {
+  const currentIndex = teamState.findIndex(({name, active}) => fromCharacterName ? fromCharacterName === name : active);
+  const nextIndex = (currentIndex - 1) < 0 ? teamState.length - 1 : currentIndex - 1;
+  
+  if (teamState[nextIndex].disabled) return goToPrevious(teamState[nextIndex].name);
+
+  switchActiveCharacter(teamState[nextIndex].name);
+}
+
 function createOverlayWindow() {
   const windowOptions = {
     height: 120,
@@ -85,13 +103,11 @@ function createOverlayWindow() {
         if (!mainCharacter) return;
         switchActiveCharacter(mainCharacter.name);
       } else if (action === 'next') {
-        const currentIndex = teamState.findIndex(({active}) => active);
-        const nextIndex = (currentIndex + 1) >= teamState.length ? 0 : currentIndex + 1;
-        switchActiveCharacter(teamState[nextIndex].name);
+        if (teamState.every(({disabled}) => disabled)) return;
+        goToNext();
       } else if (action === 'previous') {
-        const currentIndex = teamState.findIndex(({active}) => active);
-        const nextIndex = (currentIndex - 1) < 0 ? teamState.length - 1 : currentIndex - 1;
-        switchActiveCharacter(teamState[nextIndex].name);
+        if (teamState.every(({disabled}) => disabled)) return;
+        goToPrevious();
       } else if (action.startsWith('team')) {
         const targetIndex = parseInt(action.replace('team', ''), 10) - 1;
         if (targetIndex >= teamState.length) return;
