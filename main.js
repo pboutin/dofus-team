@@ -130,6 +130,10 @@ function createContextMenu(activeTeamName) {
     {
       type: 'separator'
     },
+    {
+      label: 'Enable all',
+      click: () => enableAllCharacters()
+    },
     ...activeTeamCharacters.map(({disabled, name}) => ({
       label: name,
       type: 'checkbox',
@@ -170,6 +174,15 @@ function switchActiveCharacter(characterName) {
       active: isCurrentCharacter
     };
   });
+
+  overlayWindow.send('refresh', activeTeamCharacters);
+}
+
+function enableAllCharacters() {
+  activeTeamCharacters = activeTeamCharacters.map(character => ({
+    ...character,
+    disabled: false
+  }));
 
   overlayWindow.send('refresh', activeTeamCharacters);
 }
