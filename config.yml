@@ -1,6 +1,5 @@
-dofus_window_suffix: " - Dofus 2.66.3.16"
 shortcuts:
-  main: CommandOrControl+X
+  main: CommandOrControl+F9
   team1: CommandOrControl+F1
   team2: CommandOrControl+F2
   team3: CommandOrControl+F3
