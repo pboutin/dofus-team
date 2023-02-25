@@ -63,6 +63,8 @@ function createOverlayWindow() {
     frame: false,
     transparent: true,
     resizable: false,
+    autoHideMenuBar: true,
+    skipTaskbar: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -142,7 +144,14 @@ function createContextMenu(activeTeamName) {
       type: 'radio',
       checked: team.name === activeTeamName,
       click: () => instanciateTeam(team.name)
-    }))
+    })),
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Close',
+      click: () => app.quit()
+    }
   ]);
 }
 
