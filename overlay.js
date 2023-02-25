@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron');
 
-function updateState(characters) {
-  characters.forEach((character) => {
+function updateState(activeTeamCharacters) {
+  activeTeamCharacters.forEach((character) => {
     const memberElement = document.getElementById(character.name);
     memberElement.classList.toggle('active', character.active);
     memberElement.classList.toggle('main', character.main);
@@ -9,34 +9,29 @@ function updateState(characters) {
   });
 }
 
-
-ipcRenderer.on('initialize', (_, {teamState: characters, positionLocked}) => {
+ipcRenderer.on('initialize', (_, {activeTeamCharacters, positionLocked}) => {
   document.getElementById('drag').classList.toggle('locked', positionLocked);
 
   const mainElement = document.getElementById('main');
   mainElement.innerHTML = '';
 
-  characters.forEach((character) => {
+  activeTeamCharacters.forEach((character) => {
     const memberElement = document.createElement('img');
     memberElement.src = character.avatar;
     memberElement.id = character.name;
-    
-    memberElement.onmouseup = (event) => {
-      if (event.button === 0) {
-        ipcRenderer.send('switch', character.name);
-      } else if (event.button === 2) {
-        ipcRenderer.send('disable-toggle', character.name);
-      }
-    };
   
     mainElement.append(memberElement);
   });
 
-  updateState(characters);
+  updateState(activeTeamCharacters);
 });
 
-ipcRenderer.on('refresh', (_, characters) => updateState(characters));
+ipcRenderer.on('refresh', (_, activeTeamCharacters) => updateState(activeTeamCharacters));
 
-ipcRenderer.on('position-locked-update', (_, positionLocked) => {
-  document.getElementById('drag').classList.toggle('locked', positionLocked);
+ipcRenderer.on('overlay-lock', () => {
+  document.getElementById('drag').classList.toggle('locked', true);
+});
+
+ipcRenderer.on('overlay-unlock', () => {
+  document.getElementById('drag').classList.toggle('locked', false);
 });
