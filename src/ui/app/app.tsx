@@ -6,6 +6,7 @@ import Characters from 'ui/app/sections/characters/characters';
 import General from 'ui/app/sections/general/general';
 import Shortcuts from 'ui/app/sections/shortcuts/shortcuts';
 import Teams from 'ui/app/sections/teams/teams';
+import Icon from 'ui/components/icon';
 import useTranslate from 'ui/hooks/use-translate';
 
 const App = () => {
@@ -16,15 +17,19 @@ const App = () => {
       <div className="bg-neutral min-h-screen flex flex-col">
         <div className="tabs pt-3">
           <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/'>
+            <Icon icon="house" className="mr-2" />
             {translate('general.title')}
           </NavLink>
           <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/characters'>
+            <Icon icon="user" className="mr-2" />
             {translate('characters.title')}
           </NavLink>
           <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/teams'>
+            <Icon icon="users" className="mr-2" />
             {translate('teams.title')}
           </NavLink>
           <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/shortcuts'>
+            <Icon icon="keyboard" className="mr-2" />
             {translate('shortcuts.title')}
           </NavLink>
         </div>
