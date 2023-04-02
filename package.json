@@ -4,7 +4,7 @@
   "description": "Multi-window switcher for Dofus built with Electron",
   "main": "./src/electron/main.js",
   "scripts": {
-    "dev:ui": "parcel ./src/ui/app/app.tsx",
+    "dev:ui": "parcel ./src/ui/styles.css ./src/ui/app/app.tsx",
     "start": "electron .",
     "debug": "electron . debug",
     "build": "rm -rf dist/ && electron-builder --x64 --windows portable"
@@ -20,19 +20,23 @@
   },
   "homepage": "https://github.com/pboutin/dofus-team#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.0",
     "@types/react": "^18.0.32",
     "@types/react-dom": "^18.0.11",
     "assert": "^2.0.0",
+    "daisyui": "^2.51.5",
     "electron": "^23.0.0",
     "electron-builder": "^23.6.0",
     "electron-settings": "^4.0.2",
     "events": "^3.3.0",
     "ffi-napi": "^4.0.3",
-    "path-browserify": "^1.0.1",
     "parcel": "nightly",
+    "path-browserify": "^1.0.1",
+    "postcss": "^8.4.21",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.1",
     "typescript": "^5.0.3",
     "util": "^0.12.5",
     "yaml": "^2.2.1"
