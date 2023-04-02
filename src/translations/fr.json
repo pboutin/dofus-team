@@ -1,0 +1,18 @@
+{
+  "ui": {
+    "app": {
+      "general": {
+        "title": "Général"
+      },
+      "characters": {
+        "title": "Personnages"
+      },
+      "teams": {
+        "title": "Équipes"
+      },
+      "shortcuts": {
+        "title": "Raccourcis"
+      }
+    }
+  }
+}
