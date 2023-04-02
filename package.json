@@ -2,12 +2,12 @@
   "name": "dofus-team",
   "version": "1.0.0",
   "description": "Multi-window switcher for Dofus built with Electron",
-  "main": "main.js",
+  "main": "./src/electron/main.js",
   "scripts": {
+    "dev:ui": "parcel ./src/ui/app/app.tsx",
     "start": "electron .",
     "debug": "electron . debug",
-    "build": "rm -rf dist/ && electron-builder --x64 --windows portable",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist/ && electron-builder --x64 --windows portable"
   },
   "repository": {
     "type": "git",
@@ -19,13 +19,22 @@
     "url": "https://github.com/pboutin/dofus-team/issues"
   },
   "homepage": "https://github.com/pboutin/dofus-team#readme",
-  "devDependencies": {
-    "electron": "^23.0.0",
-    "electron-builder": "^23.6.0"
-  },
   "dependencies": {
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11",
+    "assert": "^2.0.0",
+    "electron": "^23.0.0",
+    "electron-builder": "^23.6.0",
     "electron-settings": "^4.0.2",
+    "events": "^3.3.0",
     "ffi-napi": "^4.0.3",
+    "path-browserify": "^1.0.1",
+    "parcel": "nightly",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.0.3",
+    "util": "^0.12.5",
     "yaml": "^2.2.1"
   }
 }

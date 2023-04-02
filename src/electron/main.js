@@ -6,8 +6,8 @@ const path = require('path');
 const exec = require('child_process').exec;
 
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
-console.log('Loaded config:', config);
 
+let appWindow;
 let overlayWindow;
 let debug = process.argv[2] === 'debug';
 let tray;
@@ -54,6 +54,27 @@ function goToPrevious(fromCharacterName) {
 
   switchActiveCharacter(activeTeamCharacters[nextIndex].name);
 }
+
+function createAppWindow() {
+  const windowOptions = {
+    height: 600,
+    width: 800,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    }
+  };
+
+
+  appWindow = new BrowserWindow(windowOptions);
+  appWindow.loadFile('./app.html');
+  appWindow.setMenu(null);
+  appWindow.on('closed', () => appWindow = null);
+
+  if (debug) appWindow.webContents.openDevTools({mode: 'detach'});
+}
+
 
 function createOverlayWindow() {
   const windowOptions = {
@@ -201,7 +222,8 @@ function toggleCharacter(characterName) {
 }
 
 app.on('ready', () => {
-  createOverlayWindow();
+  // createOverlayWindow();
+  createAppWindow();
 });
 
 app.on('window-all-closed', () => app.quit());
