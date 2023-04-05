@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "jsx": "react",
-    "baseUrl": "./src/",
-    "resolveJsonModule": true
-  }
-}

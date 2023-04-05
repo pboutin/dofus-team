@@ -1,11 +1,23 @@
-const {app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu} = require('electron');
-const settings = require('electron-settings');
-const { parse } = require('yaml');
-const fs = require('fs');
-const path = require('path');
-const exec = require('child_process').exec;
+import {app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu, BrowserWindowConstructorOptions} from 'electron';
+import settings from 'electron-settings';
+import { parse } from 'yaml';
+import fs from 'fs';
+import path from 'path';
+import { exec } from 'child_process';
+import Store from 'electron-store';
+import crypto from 'crypto';
+import { Character, Created } from 'common/types';
 
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
+
+const store = new Store({
+  schema: {
+    characters: {
+      type: 'array',
+      default: []
+    }
+  }
+});
 
 let appWindow;
 let overlayWindow;
@@ -37,7 +49,7 @@ function instanciateTeam(teamName) {
   switchActiveCharacter(team.members[0]);
 }
 
-function goToNext(fromCharacterName) {
+function goToNext(fromCharacterName?: string) {
   const currentIndex = activeTeamCharacters.findIndex(({name, active}) => fromCharacterName ? fromCharacterName === name : active);
   const nextIndex = (currentIndex + 1) >= activeTeamCharacters.length ? 0 : currentIndex + 1;
   
@@ -46,7 +58,7 @@ function goToNext(fromCharacterName) {
   switchActiveCharacter(activeTeamCharacters[nextIndex].name);
 }
 
-function goToPrevious(fromCharacterName) {
+function goToPrevious(fromCharacterName?: string) {
   const currentIndex = activeTeamCharacters.findIndex(({name, active}) => fromCharacterName ? fromCharacterName === name : active);
   const nextIndex = (currentIndex - 1) < 0 ? activeTeamCharacters.length - 1 : currentIndex - 1;
   
@@ -66,7 +78,6 @@ function createAppWindow() {
     }
   };
 
-
   appWindow = new BrowserWindow(windowOptions);
   appWindow.loadFile('./app.html');
   appWindow.setMenu(null);
@@ -75,9 +86,8 @@ function createAppWindow() {
   if (debug) appWindow.webContents.openDevTools({mode: 'detach'});
 }
 
-
 function createOverlayWindow() {
-  const windowOptions = {
+  const windowOptions: BrowserWindowConstructorOptions = {
     height: 120,
     width: 800,
     alwaysOnTop: true,
@@ -93,8 +103,8 @@ function createOverlayWindow() {
   };
 
   if (settings.hasSync('position')) {
-    windowOptions.x = settings.getSync('position.x');
-    windowOptions.y = settings.getSync('position.y');
+    windowOptions.x = settings.getSync('position.x') as number;
+    windowOptions.y = settings.getSync('position.y') as number;
   }
 
   overlayWindow = new BrowserWindow(windowOptions);
@@ -112,7 +122,7 @@ function createOverlayWindow() {
 
   overlayWindow.webContents.once('dom-ready', () => instanciateTeam(config.teams[0].name));
 
-  Object.entries(config.shortcuts).forEach(([action, keybind]) => {
+  Object.entries<string>(config.shortcuts).forEach(([action, keybind]) => {
     globalShortcut.register(keybind, () => {
       if (action === 'main') {
         const mainCharacter = activeTeamCharacters.find(({main}) => main);
@@ -227,3 +237,41 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => app.quit());
+
+store.onDidChange('characters', (characters) => {
+  appWindow.webContents.send('charactersChanged', characters);
+});
+
+ipcMain.handle('getCharacters', () => {
+  return store.get('characters');
+});
+
+ipcMain.handle('upsertCharacter', (event, character: Character | Created<Character>) => {
+  const characters = store.get('characters', []) as Character[];
+
+  if (character.id) {
+    store.set('characters', characters.map(existingCharacter => existingCharacter.id === character.id ? character : existingCharacter));
+    return;
+  }
+
+  store.set('characters', [...characters, {
+    ...character,
+    id: crypto.randomUUID()
+  }]);
+});
+
+ipcMain.handle('removeCharacter', (event, characterId: string) => {
+  const characters = store.get('characters', []) as Character[];
+  store.set('characters', characters.filter(({id}) => id !== characterId));
+});
+
+ipcMain.handle('duplicateCharacter', (event, characterId: string) => {
+  const characters = store.get('characters', []) as Character[];
+  const character = characters.find(({id}) => id === characterId);
+  store.set('characters', [...characters, {...character, id: crypto.randomUUID()}]);
+});
+
+ipcMain.handle('reorderCharacters', (event, characterIds: string[]) => {
+  const characters = store.get('characters', []) as Character[];
+  store.set('characters', characterIds.map(id => characters.find(character => character.id === id)));
+});

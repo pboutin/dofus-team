@@ -1,5 +1,5 @@
 import { I18n } from "i18n-js";
-import frTranslations from "translations/fr.json";
+import translations from "common/translations.json";
 
 interface TranslationParams {
   [key: string]: string;
@@ -7,7 +7,7 @@ interface TranslationParams {
 
 export default function useTranslate(translationContext: string) {
   const i18n = new I18n({
-    fr: frTranslations,
+    fr: translations,
   });
 
   i18n.defaultLocale = "fr";
