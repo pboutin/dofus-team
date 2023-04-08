@@ -34,6 +34,7 @@
     "events": "^3.3.0",
     "ffi-napi": "^4.0.3",
     "i18n-js": "^4.2.3",
+    "lodash": "^4.17.21",
     "parcel": "nightly",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.21",

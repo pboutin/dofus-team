@@ -6,6 +6,7 @@ import path from 'path';
 import { exec } from 'child_process';
 import Store from 'electron-store';
 import crypto from 'crypto';
+import { chain, flatten, map } from 'lodash';
 import { Character, Created } from 'common/types';
 
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
@@ -267,8 +268,11 @@ ipcMain.handle('removeCharacter', (event, characterId: string) => {
 
 ipcMain.handle('duplicateCharacter', (event, characterId: string) => {
   const characters = store.get('characters', []) as Character[];
-  const character = characters.find(({id}) => id === characterId);
-  store.set('characters', [...characters, {...character, id: crypto.randomUUID()}]);
+  store.set('characters', chain(characters)
+    .map((character) => character.id === characterId ? [character, {...character, name: `${character.name}*`, id: crypto.randomUUID()}] : character)
+    .flatten()
+    .value()
+  );
 });
 
 ipcMain.handle('reorderCharacters', (event, characterIds: string[]) => {
