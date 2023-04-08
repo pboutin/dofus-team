@@ -5,7 +5,15 @@
         "title": "Général"
       },
       "characters": {
-        "title": "Personnages"
+        "title": "Personnages",
+        "character": "Personnage",
+        "new": "Nouveau personnage",
+        "form": {
+          "name": "Nom",
+          "name-help": "Doit corespondre au nom de la fenêtre Dofus",
+          "save": "Sauvegarder",
+          "cancel": "Annuler"
+        }
       },
       "teams": {
         "title": "Équipes"

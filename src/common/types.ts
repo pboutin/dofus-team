@@ -33,11 +33,13 @@ export enum Avatar {
   Bad4 = '8',
 }
 
+export type Gender = 'male' | 'female';
+
 export interface Character {
   id: string;
   name: string;
   label: string;
   class: Class;
-  gender: 'male' | 'female';
+  gender: Gender;
   avatar: Avatar;
 }

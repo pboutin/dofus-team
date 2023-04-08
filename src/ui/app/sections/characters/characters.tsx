@@ -5,6 +5,8 @@ import useCharacters from 'hooks/use-characters';
 import { Avatar, Character, Class, Created } from 'common/types';
 import CharacterForm from 'app/sections/characters/character-form';
 import Drawer from 'components/drawer';
+import useTranslate from 'hooks/use-translate';
+import CharacterLabel from 'components/character-label';
 
 const Characters = () => {
   const [characters, {
@@ -14,22 +16,34 @@ const Characters = () => {
     reorderCharacters
   }] = useCharacters();
   const [stagedCharacter, setStagedCharacter] = useState<Character | Created<Character> | null>(null);
-  
+  const translate = useTranslate('app.characters');
+
   return (
     <>
-      <table className="table w-full">
-        <colgroup>
-          <col width="20%" />
-          <col width="*" />
-          <col width="20%" />
-          <col width="20%" />
-        </colgroup>
+      <table className="table table-compact w-full">
         <thead>
           <tr>
             <th></th>
-            <th>Name</th>
-            <th>Class</th>
-            <th></th>
+            <th>{translate('character')}</th>
+            <td className="text-right" colSpan={2}>
+              <button
+                type='button'
+                className='btn btn-sm btn-primary'
+                onClick={() => {
+                  setStagedCharacter({
+                    id: undefined,
+                    name: '',
+                    class: Class.Osamodas,
+                    label: '',
+                    gender: 'male',
+                    avatar: Avatar.Good1
+                  });
+                }}
+              >
+                <Icon icon="user-plus" className="mr-2" />
+                {translate('new')}
+              </button>
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -40,8 +54,10 @@ const Characters = () => {
               items={characters}
               onOrderChange={reorderCharacters}
             >
-              <td>{character.name}</td>
-              <td>{character.class}</td>
+              <td>
+                <CharacterLabel character={character} />
+              </td>
+              <td>{character.label}</td>
               <td className="flex justify-end gap-2">
                 <button
                   type='button'
@@ -71,23 +87,6 @@ const Characters = () => {
           ))}
         </tbody>
       </table>
-
-      <button
-        type='button'
-        className='btn btn-primary'
-        onClick={() => {
-          setStagedCharacter({
-            id: undefined,
-            name: '',
-            class: Class.Osamodas,
-            label: '',
-            gender: 'male',
-            avatar: Avatar.Good1
-          });
-        }}
-      >
-        Add Character
-      </button>
 
       {stagedCharacter && (
         <Drawer onClose={() => setStagedCharacter(null)}>
