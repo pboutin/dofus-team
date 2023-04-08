@@ -4,4 +4,9 @@ module.exports = {
     extend: {}
   },
   plugins: [require('daisyui')],
+  variants: {
+    extend: {
+        display: ["group-hover"],
+    },
+  },
 };

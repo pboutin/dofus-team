@@ -29,7 +29,7 @@ const OrderableRow = ({ children, item, items, onOrderChange }: Props) => {
   };
 
   return (
-    <tr>
+    <tr className="group hover">
       <td width={90}>
         <div className="btn-group">
           <button className="btn btn-secondary btn-sm btn-square" onClick={handleMoveUp} disabled={index === 0}>

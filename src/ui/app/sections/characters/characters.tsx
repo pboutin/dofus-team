@@ -58,30 +58,32 @@ const Characters = () => {
                 <CharacterLabel character={character} />
               </td>
               <td>{character.label}</td>
-              <td className="flex justify-end gap-2">
-                <button
-                  type='button'
-                  className='btn btn-secondary btn-sm btn-circle'
-                  onClick={() => {
-                    setStagedCharacter(character);
-                  }}
-                >
-                  <Icon icon="pencil" />
-                </button>
-                <button
-                  type='button'
-                  className='btn btn-secondary btn-sm btn-circle'
-                  onClick={() => duplicateCharacter(character.id) }
-                >
-                  <Icon icon="copy" />
-                </button>
-                <button
-                  type='button'
-                  className='btn btn-secondary btn-sm btn-circle'
-                  onClick={() => removeCharacter(character.id)}
-                >
-                  <Icon icon="trash" />
-                </button>
+              <td>
+                <div className="flex justify-end gap-2 transition-all opacity-0 group-hover:opacity-100">
+                  <button
+                    type='button'
+                    className='btn btn-secondary btn-sm btn-circle'
+                    onClick={() => {
+                      setStagedCharacter(character);
+                    }}
+                  >
+                    <Icon icon="pencil" />
+                  </button>
+                  <button
+                    type='button'
+                    className='btn btn-secondary btn-sm btn-circle'
+                    onClick={() => duplicateCharacter(character.id) }
+                  >
+                    <Icon icon="copy" />
+                  </button>
+                  <button
+                    type='button'
+                    className='btn btn-secondary btn-sm btn-circle'
+                    onClick={() => removeCharacter(character.id)}
+                  >
+                    <Icon icon="trash" />
+                  </button>
+                </div>
               </td>
             </OrderableRow>
           ))}
