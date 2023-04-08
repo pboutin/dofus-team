@@ -43,3 +43,9 @@ export interface Character {
   gender: Gender;
   avatar: Avatar;
 }
+
+export interface Team {
+  id: string;
+  name: string;
+  characters: Character[];
+}

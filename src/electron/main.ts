@@ -7,13 +7,17 @@ import { exec } from 'child_process';
 import Store from 'electron-store';
 import crypto from 'crypto';
 import { chain, flatten, map } from 'lodash';
-import { Character, Created } from 'common/types';
+import { Character, Created, Team } from 'common/types';
 
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
 
 const store = new Store({
   schema: {
     characters: {
+      type: 'array',
+      default: []
+    },
+    teams: {
       type: 'array',
       default: []
     }
@@ -243,6 +247,10 @@ store.onDidChange('characters', (characters) => {
   appWindow.webContents.send('charactersChanged', characters);
 });
 
+store.onDidChange('teams', (teams) => {
+  appWindow.webContents.send('teamsChanged', teams);
+});
+
 ipcMain.handle('getCharacters', () => {
   return store.get('characters');
 });
@@ -278,4 +286,41 @@ ipcMain.handle('duplicateCharacter', (event, characterId: string) => {
 ipcMain.handle('reorderCharacters', (event, characterIds: string[]) => {
   const characters = store.get('characters', []) as Character[];
   store.set('characters', characterIds.map(id => characters.find(character => character.id === id)));
+});
+
+ipcMain.handle('getTeams', () => {
+  return store.get('teams');
+});
+
+ipcMain.handle('upsertTeam', (event, team: Team | Created<Team>) => {
+  const teams = store.get('teams', []) as Team[];
+
+  if (team.id) {
+    store.set('teams', teams.map(existingTeam => existingTeam.id === team.id ? team : existingTeam));
+    return;
+  }
+
+  store.set('teams', [...teams, {
+    ...team,
+    id: crypto.randomUUID()
+  }]);
+});
+
+ipcMain.handle('removeTeam', (event, teamId: string) => {
+  const teams = store.get('teams', []) as Team[];
+  store.set('teams', teams.filter(({id}) => id !== teamId));
+});
+
+ipcMain.handle('duplicateTeam', (event, teamId: string) => {
+  const teams = store.get('teams', []) as Team[];
+  store.set('teams', chain(teams)
+    .map((team) => team.id === teamId ? [team, {...team, name: `${team.name}*`, id: crypto.randomUUID()}] : team)
+    .flatten()
+    .value()
+  );
+});
+
+ipcMain.handle('reorderTeams', (event, teamIds: string[]) => {
+  const teams = store.get('teams', []) as Team[];
+  store.set('teams', teamIds.map(id => teams.find(team => team.id === id)));
 });

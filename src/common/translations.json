@@ -16,7 +16,14 @@
         }
       },
       "teams": {
-        "title": "Équipes"
+        "title": "Équipes",
+        "team": "Équipe",
+        "new": "Nouvelle équipe",
+        "form": {
+          "name": "Nom",
+          "save": "Sauvegarder",
+          "cancel": "Annuler"
+        }
       },
       "shortcuts": {
         "title": "Raccourcis"

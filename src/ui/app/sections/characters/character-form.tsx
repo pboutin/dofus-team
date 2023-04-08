@@ -1,8 +1,5 @@
 import React from 'react';
-import { Avatar, Character, Class } from 'common/types';
-import classImages from 'common/images/classes.json';
-import avatarImages from 'common/images/avatars.json';
-import classNames from 'classnames';
+import { Character } from 'common/types';
 import Icon from 'components/icon';
 import AvatarPicker from 'components/avatar-picker';
 import ClassGenderPicker from 'components/class-gender-picker';
