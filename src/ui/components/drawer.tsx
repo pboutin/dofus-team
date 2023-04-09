@@ -1,4 +1,5 @@
-import React, {useRef} from 'react';
+import React from 'react';
+import { useKey } from 'react-use';
 
 interface Props {
   children: React.ReactNode;
@@ -6,12 +7,12 @@ interface Props {
 }
 
 const Drawer = ({ children, onClose }: Props) => {
-  const ref = useRef(null);
+  useKey('Escape', onClose);
 
   return (
     <>
-      <div onClick={onClose} className="fixed left-0 top-0 w-screen h-screen bg-black opacity-50 z-40"></div>
-      <div ref={ref} className="flex fixed p-3 top-0 right-0 h-screen w-1/2 z-50 bg-base-100">
+      <div className="fixed left-0 top-0 w-screen h-screen bg-black opacity-50 z-40"></div>
+      <div className="flex fixed p-3 top-0 right-0 h-screen w-2/3 z-50 bg-base-100">
         <div className="relative flex-grow">
           {children}
         </div>

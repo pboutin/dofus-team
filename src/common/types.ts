@@ -44,8 +44,14 @@ export interface Character {
   avatar: Avatar;
 }
 
+export interface PersistedCharacter extends Character { }
+
 export interface Team {
   id: string;
   name: string;
   characters: Character[];
+}
+
+export interface PersistedTeam extends Omit<Team, 'characters'> {
+  characterIds: string[];
 }

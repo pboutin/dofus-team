@@ -32,10 +32,10 @@ const OrderableRow = ({ children, item, items, onOrderChange }: Props) => {
     <tr className="group hover">
       <td width={90}>
         <div className="btn-group">
-          <button className="btn btn-secondary btn-sm btn-square" onClick={handleMoveUp} disabled={index === 0}>
+          <button type="button" className="btn btn-secondary btn-sm btn-square" onClick={handleMoveUp} disabled={index === 0}>
             <i className="fa-solid fa-arrow-up" />
           </button>
-          <button className="btn btn-secondary btn-sm btn-square" onClick={handleMoveDown} disabled={index === items.length - 1}>
+          <button type="button" className="btn btn-secondary btn-sm btn-square" onClick={handleMoveDown} disabled={index === items.length - 1}>
             <i className="fa-solid fa-arrow-down" />
           </button>
         </div>

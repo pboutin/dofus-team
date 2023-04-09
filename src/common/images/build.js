@@ -35,7 +35,7 @@ const AVATAR_MAPPING = {
   '16': 'eliotrope',
   '17': 'huppermage',
   '18': 'ouginak',
-  '19': 'forgelance'
+  '20': 'forgelance'
 };
 fs.writeFileSync(`${__dirname}/avatars.json`, JSON.stringify(
   fs.readdirSync(`${__dirname}/avatars`).reduce((acc, fileName) => {

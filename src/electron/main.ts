@@ -6,8 +6,8 @@ import path from 'path';
 import { exec } from 'child_process';
 import Store from 'electron-store';
 import crypto from 'crypto';
-import { chain, flatten, map } from 'lodash';
-import { Character, Created, Team } from 'common/types';
+import { chain } from 'lodash';
+import { Character, Created, PersistedCharacter, PersistedTeam, Team } from 'common/types';
 
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
 
@@ -243,6 +243,33 @@ app.on('ready', () => {
 
 app.on('window-all-closed', () => app.quit());
 
+function getCharacters(): Character[] {
+  return store.get('characters', []) as PersistedCharacter[];
+}
+
+function persistCharacters(characters: Character[]) {
+  store.set('characters', characters);
+}
+
+function getTeams(): Team[] {
+  const charactersMap = getCharacters().reduce((acc, character) => {
+    acc[character.id] = character;
+    return acc;
+  }, {} as Record<string, Character>);
+
+  return (store.get('teams', []) as PersistedTeam[]).map(team => ({
+    ...team,
+    characters: team.characterIds.map(characterId => charactersMap[characterId])
+  }));
+}
+
+function persistTeams(teams: Team[]) {
+  store.set('teams', teams.map(team => ({
+    ...team,
+    characterIds: team.characters.map(character => character.id)
+  })));
+}
+
 store.onDidChange('characters', (characters) => {
   appWindow.webContents.send('charactersChanged', characters);
 });
@@ -256,27 +283,27 @@ ipcMain.handle('getCharacters', () => {
 });
 
 ipcMain.handle('upsertCharacter', (event, character: Character | Created<Character>) => {
-  const characters = store.get('characters', []) as Character[];
+  const characters = getCharacters();
 
   if (character.id) {
-    store.set('characters', characters.map(existingCharacter => existingCharacter.id === character.id ? character : existingCharacter));
+    persistCharacters(characters.map(existingCharacter => existingCharacter.id === character.id ? character : existingCharacter));
     return;
   }
 
-  store.set('characters', [...characters, {
+  persistCharacters([...characters, {
     ...character,
     id: crypto.randomUUID()
   }]);
 });
 
 ipcMain.handle('removeCharacter', (event, characterId: string) => {
-  const characters = store.get('characters', []) as Character[];
-  store.set('characters', characters.filter(({id}) => id !== characterId));
+  const characters = getCharacters();
+  persistCharacters(characters.filter(({id}) => id !== characterId));
 });
 
 ipcMain.handle('duplicateCharacter', (event, characterId: string) => {
-  const characters = store.get('characters', []) as Character[];
-  store.set('characters', chain(characters)
+  const characters = getCharacters();
+  persistCharacters(chain(characters)
     .map((character) => character.id === characterId ? [character, {...character, name: `${character.name}*`, id: crypto.randomUUID()}] : character)
     .flatten()
     .value()
@@ -284,8 +311,8 @@ ipcMain.handle('duplicateCharacter', (event, characterId: string) => {
 });
 
 ipcMain.handle('reorderCharacters', (event, characterIds: string[]) => {
-  const characters = store.get('characters', []) as Character[];
-  store.set('characters', characterIds.map(id => characters.find(character => character.id === id)));
+  const characters = getCharacters();
+  persistCharacters(characterIds.map(id => characters.find(character => character.id === id)));
 });
 
 ipcMain.handle('getTeams', () => {
@@ -293,27 +320,27 @@ ipcMain.handle('getTeams', () => {
 });
 
 ipcMain.handle('upsertTeam', (event, team: Team | Created<Team>) => {
-  const teams = store.get('teams', []) as Team[];
+  const teams = getTeams();
 
   if (team.id) {
-    store.set('teams', teams.map(existingTeam => existingTeam.id === team.id ? team : existingTeam));
+    persistTeams(teams.map(existingTeam => existingTeam.id === team.id ? team : existingTeam));
     return;
   }
 
-  store.set('teams', [...teams, {
+  persistTeams([...teams, {
     ...team,
     id: crypto.randomUUID()
   }]);
 });
 
 ipcMain.handle('removeTeam', (event, teamId: string) => {
-  const teams = store.get('teams', []) as Team[];
-  store.set('teams', teams.filter(({id}) => id !== teamId));
+  const teams = getTeams();
+  persistTeams(teams.filter(({id}) => id !== teamId));
 });
 
 ipcMain.handle('duplicateTeam', (event, teamId: string) => {
-  const teams = store.get('teams', []) as Team[];
-  store.set('teams', chain(teams)
+  const teams = getTeams();
+  persistTeams(chain(teams)
     .map((team) => team.id === teamId ? [team, {...team, name: `${team.name}*`, id: crypto.randomUUID()}] : team)
     .flatten()
     .value()
@@ -321,6 +348,6 @@ ipcMain.handle('duplicateTeam', (event, teamId: string) => {
 });
 
 ipcMain.handle('reorderTeams', (event, teamIds: string[]) => {
-  const teams = store.get('teams', []) as Team[];
-  store.set('teams', teamIds.map(id => teams.find(team => team.id === id)));
+  const teams = getTeams();
+  persistTeams(teamIds.map(id => teams.find(team => team.id === id)));
 });

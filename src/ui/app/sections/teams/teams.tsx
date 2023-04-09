@@ -6,6 +6,7 @@ import Icon from "components/icon";
 import OrderableRow from "components/orderable-row";
 import TeamForm from "app/sections/teams/team-form";
 import Drawer from "components/drawer";
+import CharacterAvatar from "components/character-avatar";
 
 const Teams = () => {
   const [teams, {
@@ -53,7 +54,15 @@ const Teams = () => {
               <td>
                 {team.name}
               </td>
-              <td>{team.characters.length}</td>
+              <td>
+                <ul className="flex gap-3">
+                  {team.characters.map((character) => (
+                    <li key={character.id}>
+                      <CharacterAvatar character={character} compact />
+                    </li>
+                  ))}
+                </ul>
+              </td>
               <td>
                 <div className="flex justify-end gap-2 transition-all opacity-0 group-hover:opacity-100">
                     <button

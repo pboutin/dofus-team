@@ -6,7 +6,7 @@ import { Avatar, Character, Class, Created } from 'common/types';
 import CharacterForm from 'app/sections/characters/character-form';
 import Drawer from 'components/drawer';
 import useTranslate from 'hooks/use-translate';
-import CharacterLabel from 'components/character-label';
+import CharacterAvatar from 'components/character-avatar';
 
 const Characters = () => {
   const [characters, {
@@ -55,7 +55,10 @@ const Characters = () => {
               onOrderChange={reorderCharacters}
             >
               <td>
-                <CharacterLabel character={character} />
+                <div className="flex items-center gap-3">
+                  <CharacterAvatar character={character} />
+                  {character.name}
+                </div>
               </td>
               <td>{character.label}</td>
               <td>

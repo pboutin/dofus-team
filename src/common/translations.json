@@ -21,6 +21,7 @@
         "new": "Nouvelle équipe",
         "form": {
           "name": "Nom",
+          "add-character": "Ajouter un personnage",
           "save": "Sauvegarder",
           "cancel": "Annuler"
         }
