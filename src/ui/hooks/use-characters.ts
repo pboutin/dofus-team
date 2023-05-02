@@ -16,19 +16,18 @@ type Hook = [
 export default function useCharacters(): Hook {
   const [characters, setCharacters] = useState<Character[]>([]);
 
-  ipcRenderer.invoke('getCharacters').then(setCharacters);
-
   const handleCharctersChange = (event, characters: Character[]) => {
     setCharacters(characters);
   };
 
   useEffect(() => {
+    ipcRenderer.invoke('getCharacters').then(setCharacters);
     ipcRenderer.on('charactersChanged', handleCharctersChange);
 
     return () => {
       ipcRenderer.removeListener('charactersChanged', handleCharctersChange);
     };
-  });
+  }, []);
 
   return [
     characters,

@@ -16,19 +16,18 @@ type Hook = [
 export default function useTeams(): Hook {
   const [teams, setTeams] = useState<Team[]>([]);
 
-  ipcRenderer.invoke('getTeams').then(setTeams);
-
   const handleTeamsChange = (event, teams: Team[]) => {
     setTeams(teams);
   };
 
   useEffect(() => {
+    ipcRenderer.invoke('getTeams').then(setTeams);
     ipcRenderer.on('teamsChanged', handleTeamsChange);
 
     return () => {
       ipcRenderer.removeListener('teamsChanged', handleTeamsChange);
     };
-  });
+  }, []);
 
   return [
     teams,

@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter, NavLink, Route, Router, Routes } from 'react-router-dom';
 import Characters from 'app/sections/characters/characters';
 import General from 'app/sections/general/general';
-import Shortcuts from 'app/sections/shortcuts/shortcuts';
+import KeyboardShortcuts from 'app/sections/keyboard-shortcuts/keyboard-shortcuts';
 import Teams from 'app/sections/teams/teams';
 import Icon from 'components/icon';
 import useTranslate from 'hooks/use-translate';
@@ -28,7 +28,7 @@ const App = () => {
             <Icon icon="users" className="mr-2" />
             {translate('teams.title')}
           </NavLink>
-          <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/shortcuts'>
+          <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/keyboard-shortcuts'>
             <Icon icon="keyboard" className="mr-2" />
             {translate('shortcuts.title')}
           </NavLink>
@@ -49,8 +49,8 @@ const App = () => {
               element={<Teams />}
             />
             <Route
-              path='/shortcuts'
-              element={<Shortcuts />}
+              path='/keyboard-shortcuts'
+              element={<KeyboardShortcuts />}
             />
           </Routes>
         </div>

@@ -55,3 +55,26 @@ export interface Team {
 export interface PersistedTeam extends Omit<Team, 'characters'> {
   characterIds: string[];
 }
+
+export enum Action {
+  GOTO_NEXT = 'GOTO_NEXT',
+  GOTO_PREVIOUS = 'GOTO_PREVIOUS',
+  GOTO_1 = 'GOTO_1',
+  GOTO_2 = 'GOTO_2',
+  GOTO_3 = 'GOTO_3',
+  GOTO_4 = 'GOTO_4',
+  GOTO_5 = 'GOTO_5',
+  GOTO_6 = 'GOTO_6',
+  GOTO_7 = 'GOTO_7',
+  GOTO_8 = 'GOTO_8',
+  SWITCH_TEAM = 'SWITCH_TEAM',
+  SWITCH_CHARACTER = 'SWITCH_CHARACTER',
+}
+
+export interface KeyboardShortcut {
+  action: Action;
+  keybind: string;
+  argument?: string;
+}
+
+export interface PersistedKeyboardShortcut extends KeyboardShortcut { }

@@ -7,7 +7,7 @@ import { exec } from 'child_process';
 import Store from 'electron-store';
 import crypto from 'crypto';
 import { chain } from 'lodash';
-import { Character, Created, PersistedCharacter, PersistedTeam, Team } from 'common/types';
+import { Character, Created, KeyboardShortcut, PersistedCharacter, PersistedKeyboardShortcut, PersistedTeam, Team } from 'common/types';
 
 const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
 
@@ -20,7 +20,11 @@ const store = new Store({
     teams: {
       type: 'array',
       default: []
-    }
+    },
+    keyboardShortcuts: {
+      type: 'array',
+      default: []
+    },
   }
 });
 
@@ -270,6 +274,14 @@ function persistTeams(teams: Team[]) {
   })));
 }
 
+function getKeyboardShortcuts(): KeyboardShortcut[] {
+  return store.get('keyboardShortcuts', []) as PersistedKeyboardShortcut[];
+}
+
+function persistKeyboardShortcuts(keyboardShortcuts: KeyboardShortcut[]) {
+  store.set('keyboardShortcuts', keyboardShortcuts);
+}
+
 store.onDidChange('characters', (characters) => {
   appWindow.webContents.send('charactersChanged', characters);
 });
@@ -278,8 +290,12 @@ store.onDidChange('teams', (teams) => {
   appWindow.webContents.send('teamsChanged', teams);
 });
 
-ipcMain.handle('getCharacters', () => {
-  return store.get('characters');
+store.onDidChange('keyboardShortcuts', (keyboardShortcuts) => {
+  appWindow.webContents.send('keyboardShortcutsChanged', keyboardShortcuts);
+});
+
+ipcMain.handle('getCharacters', async () => {
+  return Promise.resolve(getCharacters());
 });
 
 ipcMain.handle('upsertCharacter', (event, character: Character | Created<Character>) => {
@@ -316,7 +332,7 @@ ipcMain.handle('reorderCharacters', (event, characterIds: string[]) => {
 });
 
 ipcMain.handle('getTeams', () => {
-  return store.get('teams');
+  return getTeams();
 });
 
 ipcMain.handle('upsertTeam', (event, team: Team | Created<Team>) => {
@@ -350,4 +366,23 @@ ipcMain.handle('duplicateTeam', (event, teamId: string) => {
 ipcMain.handle('reorderTeams', (event, teamIds: string[]) => {
   const teams = getTeams();
   persistTeams(teamIds.map(id => teams.find(team => team.id === id)));
+});
+
+ipcMain.handle('getKeyboardShortcuts', () => {
+  return getKeyboardShortcuts();
+});
+
+ipcMain.handle('deleteKeyboardShortcut', (event, keyboardShortcut: Omit<KeyboardShortcut, 'keybind'>) => {
+  const keyboardShortcuts = getKeyboardShortcuts();
+  persistKeyboardShortcuts(keyboardShortcuts.filter(currentShortcut => currentShortcut.action !== keyboardShortcut.action));
+});
+
+ipcMain.handle('updateKeyboardShortcut', (event, keyboardShortcut: KeyboardShortcut) => {
+  const keyboardShortcuts = getKeyboardShortcuts();
+  console.log(keyboardShortcuts);
+  console.log(keyboardShortcut);
+  persistKeyboardShortcuts([
+    ...keyboardShortcuts.filter(currentShortcut => currentShortcut.action !== keyboardShortcut.action),
+    keyboardShortcut
+  ]);
 });
