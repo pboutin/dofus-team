@@ -85,7 +85,7 @@ const Teams = () => {
                     </button>
                     <button
                       type="button"
-                      className='btn btn-secondary btn-sm btn-circle'
+                      className='btn btn-error btn-sm btn-circle'
                       onClick={() => {
                         removeTeam(team.id);
                       }}

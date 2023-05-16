@@ -1,7 +1,7 @@
 {
   "ui": {
     "components": {
-      "keyboard-shortcuts": {
+      "keyboard-shortcut": {
         "GOTO_NEXT": "Aller au prochain personnage",
         "GOTO_PREVIOUS": "Aller au personnage précédent",
         "GOTO_1": "Aller au personnage 1",
@@ -11,7 +11,8 @@
         "GOTO_5": "Aller au personnage 5",
         "GOTO_6": "Aller au personnage 6",
         "GOTO_7": "Aller au personnage 7",
-        "GOTO_8": "Aller au personnage 8"
+        "GOTO_8": "Aller au personnage 8",
+        "not-set": "Aucun raccourci"
       }
     },
     "app": {

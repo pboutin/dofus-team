@@ -68,7 +68,7 @@ export enum Action {
   GOTO_7 = 'GOTO_7',
   GOTO_8 = 'GOTO_8',
   SWITCH_TEAM = 'SWITCH_TEAM',
-  SWITCH_CHARACTER = 'SWITCH_CHARACTER',
+  GOTO_CHARACTER = 'GOTO_CHARACTER',
 }
 
 export interface KeyboardShortcut {

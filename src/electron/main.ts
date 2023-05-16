@@ -372,9 +372,17 @@ ipcMain.handle('getKeyboardShortcuts', () => {
   return getKeyboardShortcuts();
 });
 
+function removeMatchingKeyboardShortcut(keyboardShortcuts: KeyboardShortcut[], keyboardShortcut: Omit<KeyboardShortcut, 'keybind'>) {
+  return keyboardShortcuts.filter(currentShortcut => {
+    if (currentShortcut.action !== keyboardShortcut.action) return true;
+    if (keyboardShortcut.argument && currentShortcut.argument !== keyboardShortcut.argument) return true;
+    return false;
+  });
+}
+
 ipcMain.handle('deleteKeyboardShortcut', (event, keyboardShortcut: Omit<KeyboardShortcut, 'keybind'>) => {
   const keyboardShortcuts = getKeyboardShortcuts();
-  persistKeyboardShortcuts(keyboardShortcuts.filter(currentShortcut => currentShortcut.action !== keyboardShortcut.action));
+  persistKeyboardShortcuts(removeMatchingKeyboardShortcut(keyboardShortcuts, keyboardShortcut));
 });
 
 ipcMain.handle('updateKeyboardShortcut', (event, keyboardShortcut: KeyboardShortcut) => {
@@ -382,7 +390,7 @@ ipcMain.handle('updateKeyboardShortcut', (event, keyboardShortcut: KeyboardShort
   console.log(keyboardShortcuts);
   console.log(keyboardShortcut);
   persistKeyboardShortcuts([
-    ...keyboardShortcuts.filter(currentShortcut => currentShortcut.action !== keyboardShortcut.action),
+    ...removeMatchingKeyboardShortcut(keyboardShortcuts, keyboardShortcut),
     keyboardShortcut
   ]);
 });

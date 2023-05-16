@@ -9,6 +9,10 @@ body, #root {
   min-height: 100vh;
 }
 
+.prose {
+  max-width: unset;
+}
+
 .tabs::after {
   --tab-border-color: hsla(var(--b3) / var(--tw-bg-opacity, 1));
   content: '';
