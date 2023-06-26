@@ -1,5 +1,5 @@
 import { Action } from 'common/types';
-import KeyboardShortcut from 'components/keyboard-shortcut';
+import KeyboardShortcutRow from 'app/sections/keyboard-shortcuts/keyboard-shortcut-row';
 import React from 'react';
 import useTranslate from 'hooks/use-translate';
 import useKeyboardShortcuts from 'hooks/use-keyboard-shortcuts';
@@ -13,68 +13,77 @@ const KeyboardShortcuts = () => {
   const [teams] = useTeams();
 
   return (
-    <div className='prose'>
-      <h2>{translate('current-team')}</h2>
-
-        {[
-          Action.GOTO_PREVIOUS,
-          Action.GOTO_NEXT,
-          Action.GOTO_1,
-          Action.GOTO_2,
-          Action.GOTO_3,
-          Action.GOTO_4,
-          Action.GOTO_5,
-          Action.GOTO_6,
-          Action.GOTO_7,
-          Action.GOTO_8,
-        ].map((action, index) => (
-          <>
-            {index > 0 && <hr className='my-2 opacity-50'/>}
-
-            <KeyboardShortcut
+    <>
+      <table className="table table-compact w-full">
+        <thead>
+          <tr>
+            <th colSpan={3}>{translate('current-team')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            Action.GOTO_PREVIOUS,
+            Action.GOTO_NEXT,
+            Action.GOTO_1,
+            Action.GOTO_2,
+            Action.GOTO_3,
+            Action.GOTO_4,
+            Action.GOTO_5,
+            Action.GOTO_6,
+            Action.GOTO_7,
+            Action.GOTO_8,
+          ].map((action) => (
+            <KeyboardShortcutRow
               key={action}
               action={action}
               keybind={keyboardShortcuts.find(keyboardShortcut => keyboardShortcut.action === action)?.keybind || ''}
               onKeybindChange={(newKeybind) => updateKeyboardShortcut({action, keybind: newKeybind})}
               onKeybindDelete={() => deleteKeyboardShortcut({action})}
             />
-          </>
-        ))}
+          ))}
+        </tbody>
+      </table>
 
-      <h2>{translate('characters')}</h2>
+      <table className="table table-compact w-full mt-2">
+        <thead>
+          <tr>
+            <th colSpan={3}>{translate('characters')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {characters.map((character, index) => (
+            <KeyboardShortcutRow
+              key={character.id}
+              action={Action.GOTO_CHARACTER}
+              label={character.name}
+              keybind={keyboardShortcuts.find(keyboardShortcut => keyboardShortcut.action === Action.GOTO_CHARACTER && keyboardShortcut.argument === character.id)?.keybind || ''}
+              onKeybindChange={(newKeybind) => updateKeyboardShortcut({action: Action.GOTO_CHARACTER, keybind: newKeybind, argument: character.id})}
+              onKeybindDelete={() => deleteKeyboardShortcut({action: Action.GOTO_CHARACTER, argument: character.id})}
+            />
+          ))}
+        </tbody>
+      </table>
 
-      {characters.map((character, index) => (
-        <>
-          {index > 0 && <hr className='my-2 opacity-50'/>}
-
-          <KeyboardShortcut
-            key={character.id}
-            action={Action.GOTO_CHARACTER}
-            label={character.name}
-            keybind={keyboardShortcuts.find(keyboardShortcut => keyboardShortcut.action === Action.GOTO_CHARACTER && keyboardShortcut.argument === character.id)?.keybind || ''}
-            onKeybindChange={(newKeybind) => updateKeyboardShortcut({action: Action.GOTO_CHARACTER, keybind: newKeybind, argument: character.id})}
-            onKeybindDelete={() => deleteKeyboardShortcut({action: Action.GOTO_CHARACTER, argument: character.id})}
-          />
-        </>
-      ))}
-
-      <h2>{translate('teams')}</h2>
-
-      {teams.map((team, index) => (
-        <>
-          {index > 0 && <hr className='my-2 opacity-50'/>}
-          
-          <KeyboardShortcut
-            key={team.id}
-            action={Action.SWITCH_TEAM}
-            label={team.name}
-            keybind={keyboardShortcuts.find(keyboardShortcut => keyboardShortcut.action === Action.SWITCH_TEAM && keyboardShortcut.argument === team.id)?.keybind || ''}
-            onKeybindChange={(newKeybind) => updateKeyboardShortcut({action: Action.SWITCH_TEAM, keybind: newKeybind, argument: team.id})}
-            onKeybindDelete={() => deleteKeyboardShortcut({action: Action.SWITCH_TEAM, argument: team.id})}
-          />
-        </>
-      ))}
-    </div>
+      <table className="table table-compact w-full mt-2">
+        <thead>
+          <tr>
+            <th colSpan={3}>{translate('teams')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {teams.map((team, index) => (
+            <KeyboardShortcutRow
+              key={team.id}
+              action={Action.SWITCH_TEAM}
+              label={team.name}
+              keybind={keyboardShortcuts.find(keyboardShortcut => keyboardShortcut.action === Action.SWITCH_TEAM && keyboardShortcut.argument === team.id)?.keybind || ''}
+              onKeybindChange={(newKeybind) => updateKeyboardShortcut({action: Action.SWITCH_TEAM, keybind: newKeybind, argument: team.id})}
+              onKeybindDelete={() => deleteKeyboardShortcut({action: Action.SWITCH_TEAM, argument: team.id})}
+            />
+          ))}
+        </tbody>
+      </table>
+    </>
   )
 };
 
