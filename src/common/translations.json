@@ -16,9 +16,6 @@
       }
     },
     "settings": {
-      "general": {
-        "title": "Général"
-      },
       "characters": {
         "title": "Personnages",
         "character": "Personnage",
