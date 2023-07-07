@@ -3,7 +3,7 @@ import Icon from 'components/icon';
 import OrderableRow from 'components/orderable-row';
 import useCharacters from 'hooks/use-characters';
 import { Avatar, Character, Class, Created } from 'common/types';
-import CharacterForm from 'app/sections/characters/character-form';
+import CharacterForm from 'settings/sections/characters/character-form';
 import Drawer from 'components/drawer';
 import useTranslate from 'hooks/use-translate';
 import CharacterAvatar from 'components/character-avatar';
@@ -16,7 +16,7 @@ const Characters = () => {
     reorderCharacters
   }] = useCharacters();
   const [stagedCharacter, setStagedCharacter] = useState<Character | Created<Character> | null>(null);
-  const translate = useTranslate('app.characters');
+  const translate = useTranslate('settings.characters');
 
   return (
     <>

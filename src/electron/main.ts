@@ -76,7 +76,7 @@ function goToPrevious(fromCharacterName?: string) {
   switchActiveCharacter(activeTeamCharacters[nextIndex].name);
 }
 
-function createAppWindow() {
+function createSettingsWindow() {
   const windowOptions = {
     height: 600,
     width: 800,
@@ -88,7 +88,7 @@ function createAppWindow() {
   };
 
   appWindow = new BrowserWindow(windowOptions);
-  appWindow.loadFile('./app.html');
+  appWindow.loadFile('./settings.html');
   appWindow.setMenu(null);
   appWindow.on('closed', () => appWindow = null);
 
@@ -242,7 +242,7 @@ function toggleCharacter(characterName) {
 
 app.on('ready', () => {
   // createOverlayWindow();
-  createAppWindow();
+  createSettingsWindow();
 });
 
 app.on('window-all-closed', () => app.quit());

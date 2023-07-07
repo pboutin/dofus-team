@@ -5,7 +5,7 @@
   "main": "./dist/main.js",
   "scripts": {
     "dev:electron": "tsc -w -p ./src/electron/tsconfig.json",
-    "dev:ui": "parcel ./src/ui/styles.css ./src/ui/app/app.tsx",
+    "dev:ui": "parcel ./src/ui/styles.css ./src/ui/settings/settings.tsx",
     "start": "electron .",
     "debug": "electron . debug",
     "build": "rm -rf dist/ && electron-builder --x64 --windows portable"

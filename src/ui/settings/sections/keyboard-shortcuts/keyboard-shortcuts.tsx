@@ -1,5 +1,5 @@
 import { Action } from 'common/types';
-import KeyboardShortcutRow from 'app/sections/keyboard-shortcuts/keyboard-shortcut-row';
+import KeyboardShortcutRow from 'settings/sections/keyboard-shortcuts/keyboard-shortcut-row';
 import React from 'react';
 import useTranslate from 'hooks/use-translate';
 import useKeyboardShortcuts from 'hooks/use-keyboard-shortcuts';
@@ -7,7 +7,7 @@ import useCharacters from 'hooks/use-characters';
 import useTeams from 'hooks/use-teams';
 
 const KeyboardShortcuts = () => {
-  const translate = useTranslate('app.shortcuts');
+  const translate = useTranslate('settings.shortcuts');
   const [keyboardShortcuts, {deleteKeyboardShortcut, updateKeyboardShortcut}] = useKeyboardShortcuts();
   const [characters] = useCharacters();
   const [teams] = useTeams();

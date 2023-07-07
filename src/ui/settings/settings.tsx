@@ -2,15 +2,15 @@ import classNames from 'classnames';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, NavLink, Route, Router, Routes } from 'react-router-dom';
-import Characters from 'app/sections/characters/characters';
-import General from 'app/sections/general/general';
-import KeyboardShortcuts from 'app/sections/keyboard-shortcuts/keyboard-shortcuts';
-import Teams from 'app/sections/teams/teams';
+import Characters from 'settings/sections/characters/characters';
+import General from 'settings/sections/general/general';
+import KeyboardShortcuts from 'settings/sections/keyboard-shortcuts/keyboard-shortcuts';
+import Teams from 'settings/sections/teams/teams';
 import Icon from 'components/icon';
 import useTranslate from 'hooks/use-translate';
 
-const App = () => {
-  const translate = useTranslate('app');
+const Settings = () => {
+  const translate = useTranslate('settings');
 
   return (
     <HashRouter>
@@ -60,4 +60,4 @@ const App = () => {
 };
 
 const rootElement = document.getElementById('root')!;
-createRoot(rootElement).render(<App />);
+createRoot(rootElement).render(<Settings />);

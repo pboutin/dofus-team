@@ -4,7 +4,7 @@ import { Team, Created } from "common/types";
 import useTranslate from "hooks/use-translate";
 import Icon from "components/icon";
 import OrderableRow from "components/orderable-row";
-import TeamForm from "app/sections/teams/team-form";
+import TeamForm from "settings/sections/teams/team-form";
 import Drawer from "components/drawer";
 import CharacterAvatar from "components/character-avatar";
 
@@ -16,7 +16,7 @@ const Teams = () => {
     reorderTeams
   }] = useTeams();
   const [stagedTeam, setStagedTeam] = useState<Team | Created<Team> | null>(null);
-  const translate = useTranslate('app.teams');
+  const translate = useTranslate('settings.teams');
 
   return (
     <>

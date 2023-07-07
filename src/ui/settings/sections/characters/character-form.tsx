@@ -14,7 +14,7 @@ interface Props {
 }
 
 const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
-  const translate = useTranslate('app.characters.form');
+  const translate = useTranslate('settings.characters.form');
   
   return (
     <form className="flex flex-col gap-6" onSubmit={(event) => {

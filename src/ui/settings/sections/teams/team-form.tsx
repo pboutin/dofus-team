@@ -18,7 +18,7 @@ interface Props {
 const TEAM_SLOTS = 8;
 
 const TeamForm = ({ team, onChange, onSubmit, onCancel }: Props) => {
-  const translate = useTranslate('app.teams.form');
+  const translate = useTranslate('settings.teams.form');
 
 
 
