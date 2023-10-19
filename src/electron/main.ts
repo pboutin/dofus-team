@@ -1,15 +1,11 @@
-import {app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu, BrowserWindowConstructorOptions} from 'electron';
+import {app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu, BrowserWindowConstructorOptions, MenuItemConstructorOptions, nativeImage} from 'electron';
 import settings from 'electron-settings';
-import { parse } from 'yaml';
-import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
 import Store from 'electron-store';
 import crypto from 'crypto';
 import { chain } from 'lodash';
-import { Character, Created, KeyboardShortcut, PersistedCharacter, PersistedKeyboardShortcut, PersistedTeam, Team } from 'common/types';
-
-const config = parse(fs.readFileSync('./config.yml', {encoding: 'utf8'}));
+import type { Character, Created, InstanciatedTeam, KeyboardShortcut, PersistedCharacter, PersistedKeyboardShortcut, PersistedTeam, Team } from 'common/types';
 
 const store = new Store({
   schema: {
@@ -28,52 +24,48 @@ const store = new Store({
   }
 });
 
-let appWindow;
+const debug = process.argv[2] === 'debug';
+
+let tray: Tray;
+let settingsWindow;
 let overlayWindow;
-let debug = process.argv[2] === 'debug';
-let tray;
-let activeTeamCharacters;
+let currentTeam: InstanciatedTeam | null = null;
 
-function instanciateTeam(teamName) {
-  const team = config.teams.find(({name}) => name === teamName);
+function instanciateTeam(team: Team): void {
+  console.log('Instanciating team... ', team.name, team.id);
 
-  activeTeamCharacters = team.members.map((characterName, index) => {
-    const characterConfig = config.characters.find(({name}) => name === characterName);
-    if (!characterConfig) throw new Error(`Character ${characterName} not found in config.yml`);
-
-    return {
-      ...characterConfig,
+  currentTeam = {
+    ...team,
+    characters: team.characters.map((character, index) => ({
+      ...character,
       active: index === 0,
       disabled: false
-    };
-  });
+    }))
+  };
 
-  overlayWindow.send('initialize', {
-    activeTeamCharacters,
-    positionLocked: !!settings.getSync('overlay-locked')
-  });
+  refreshTrayMenu();
 
-  tray.setContextMenu(createContextMenu(teamName));
-
-  switchActiveCharacter(team.members[0]);
+  if (currentTeam.characters.length > 0) {
+    switchActiveCharacter(currentTeam.characters[0].name);
+  }
 }
 
-function goToNext(fromCharacterName?: string) {
-  const currentIndex = activeTeamCharacters.findIndex(({name, active}) => fromCharacterName ? fromCharacterName === name : active);
-  const nextIndex = (currentIndex + 1) >= activeTeamCharacters.length ? 0 : currentIndex + 1;
+function switchToNext(fromCharacterId?: string) {
+  const currentIndex = currentTeam.characters.findIndex(({id, active}) => fromCharacterId ? fromCharacterId === id : active);
+  const nextIndex = (currentIndex + 1) >= currentTeam.characters.length ? 0 : currentIndex + 1;
   
-  if (activeTeamCharacters[nextIndex].disabled) return goToNext(activeTeamCharacters[nextIndex].name);
+  if (currentTeam.characters[nextIndex].disabled) return switchToNext(currentTeam.characters[nextIndex].id);
 
-  switchActiveCharacter(activeTeamCharacters[nextIndex].name);
+  switchActiveCharacter(currentTeam.characters[nextIndex].id);
 }
 
-function goToPrevious(fromCharacterName?: string) {
-  const currentIndex = activeTeamCharacters.findIndex(({name, active}) => fromCharacterName ? fromCharacterName === name : active);
-  const nextIndex = (currentIndex - 1) < 0 ? activeTeamCharacters.length - 1 : currentIndex - 1;
+function switchToPrevious(fromCharacterId?: string) {
+  const currentIndex = currentTeam.characters.findIndex(({id, active}) => fromCharacterId ? fromCharacterId === id : active);
+  const nextIndex = (currentIndex - 1) < 0 ? currentTeam.characters.length - 1 : currentIndex - 1;
   
-  if (activeTeamCharacters[nextIndex].disabled) return goToPrevious(activeTeamCharacters[nextIndex].name);
+  if (currentTeam.characters[nextIndex].disabled) return switchToPrevious(currentTeam.characters[nextIndex].id);
 
-  switchActiveCharacter(activeTeamCharacters[nextIndex].name);
+  switchActiveCharacter(currentTeam.characters[nextIndex].id);
 }
 
 function createSettingsWindow() {
@@ -87,12 +79,12 @@ function createSettingsWindow() {
     }
   };
 
-  appWindow = new BrowserWindow(windowOptions);
-  appWindow.loadFile('./settings.html');
-  appWindow.setMenu(null);
-  appWindow.on('closed', () => appWindow = null);
+  settingsWindow = new BrowserWindow(windowOptions);
+  settingsWindow.loadFile('./settings.html');
+  settingsWindow.setMenu(null);
+  settingsWindow.on('closed', () => settingsWindow = null);
 
-  if (debug) appWindow.webContents.openDevTools({mode: 'detach'});
+  if (debug) settingsWindow.webContents.openDevTools({mode: 'detach'});
 }
 
 function createOverlayWindow() {
@@ -129,34 +121,44 @@ function createOverlayWindow() {
 
   if (debug) overlayWindow.webContents.openDevTools({mode: 'detach'});
 
-  overlayWindow.webContents.once('dom-ready', () => instanciateTeam(config.teams[0].name));
-
-  Object.entries<string>(config.shortcuts).forEach(([action, keybind]) => {
-    globalShortcut.register(keybind, () => {
-      if (action === 'main') {
-        const mainCharacter = activeTeamCharacters.find(({main}) => main);
-        if (!mainCharacter) return;
-        switchActiveCharacter(mainCharacter.name);
-      } else if (action === 'next') {
-        if (activeTeamCharacters.every(({disabled}) => disabled)) return;
-        goToNext();
-      } else if (action === 'previous') {
-        if (activeTeamCharacters.every(({disabled}) => disabled)) return;
-        goToPrevious();
-      } else if (action.startsWith('team')) {
-        const targetIndex = parseInt(action.replace('team', ''), 10) - 1;
-        if (targetIndex >= activeTeamCharacters.length) return;
-        switchActiveCharacter(activeTeamCharacters[targetIndex].name);
-      }
-    });
-  });
-
-  tray = new Tray(path.join(__dirname, '/build/icons/icon24x24.png'));
-  tray.setToolTip('DofusTeam');
+  // overlayWindow.webContents.once('dom-ready', () => instanciateTeam(config.teams[0].name));
 }
 
-function createContextMenu(activeTeamName) {
-  return Menu.buildFromTemplate([
+function refreshTrayMenu() {
+  console.log('Refreshing tray menu...');
+
+  const characterItems: MenuItemConstructorOptions[] = (currentTeam?.characters ?? []).map(({id, name, disabled}) => ({
+    label: name,
+    type: 'checkbox',
+    checked: !disabled,
+    click: () => disableToggleCharacter(id)
+  }));
+
+  if (characterItems.length > 0) {
+    characterItems.unshift({
+      label: 'Enable all',
+      click: enableAllCharacters
+    })
+    characterItems.push({
+      type: 'separator'
+    });
+  }
+
+  const teamItems: MenuItemConstructorOptions[] = getTeams().map((team) => ({
+    label: team.name,
+    type: 'radio',
+    checked: currentTeam?.id === team.id,
+    click: () => instanciateTeam(team)
+  }));
+
+  if (teamItems.length > 0) {
+    teamItems.push({
+      label: 'Foo',
+      type: 'separator'
+    });
+  }
+
+  const overalayItems: MenuItemConstructorOptions[] = [
     {
       label: 'Position locked',
       type: 'checkbox',
@@ -170,41 +172,73 @@ function createContextMenu(activeTeamName) {
     {
       type: 'separator'
     },
+  ];
+
+  const generalItems = [
     {
-      label: 'Enable all',
-      click: () => enableAllCharacters()
-    },
-    ...activeTeamCharacters.map(({disabled, name}) => ({
-      label: name,
-      type: 'checkbox',
-      checked: !disabled,
-      click: () => toggleCharacter(name)
-    })),
-    {
-      type: 'separator'
-    },
-    ...config.teams.map((team) => ({
-      label: team.name,
-      type: 'radio',
-      checked: team.name === activeTeamName,
-      click: () => instanciateTeam(team.name)
-    })),
-    {
-      type: 'separator'
+      label: 'Settings',
+      click: createSettingsWindow
     },
     {
       label: 'Close',
-      click: () => app.quit()
+      click: app.quit
     }
-  ]);
+  ];
+  
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      ...characterItems,
+      ...teamItems,
+      ...overalayItems,
+      ...generalItems
+    ])
+  );
 }
 
-function switchActiveCharacter(characterName) {
-  activeTeamCharacters = activeTeamCharacters.map(character => {
-    const isCurrentCharacter = character.name === characterName;
+function registerShortcuts() {
+  globalShortcut.unregisterAll();
+  getKeyboardShortcuts().forEach((shortcut: KeyboardShortcut) => {
+    globalShortcut.register(shortcut.keybind, () => {
+      switch(shortcut.action) {
+        case 'GOTO_NEXT':
+          switchToNext();
+          break;
+        case 'GOTO_PREVIOUS':
+          switchToPrevious();
+          break;
+        case 'GOTO_1':
+        case 'GOTO_2':
+        case 'GOTO_3':
+        case 'GOTO_4':
+        case 'GOTO_5':
+        case 'GOTO_6':
+        case 'GOTO_7':
+        case 'GOTO_8':
+          const targetIndex = parseInt(shortcut.action.replace('GOTO_', ''), 10) - 1;
+          if (!currentTeam || targetIndex >= currentTeam.characters.length) return;
+          switchActiveCharacter(currentTeam.characters[targetIndex].name);
+          break;
+        case 'GOTO_CHARACTER':
+          const targetCharacter = getCharacters().find(({id}) => id === shortcut.argument);
+          if (!targetCharacter) return;
+          switchActiveCharacter(targetCharacter.name);
+          break;
+        case 'SWITCH_TEAM':
+          const targetTeam = getTeams().find(({id}) => id === shortcut.argument);
+          if (!targetTeam) return;
+          instanciateTeam(targetTeam);
+          break;
+      }
+    });
+  });
+}
+
+function switchActiveCharacter(characterId) {
+  currentTeam.characters = currentTeam.characters.map(character => {
+    const isCurrentCharacter = character.id === characterId;
 
     if (isCurrentCharacter) {
-      const windowName = `"${characterName} - Dofus"`;
+      const windowName = `"${character.name} - Dofus"`;
       console.log('Switching to window: ', windowName);
       if (!debug) exec(`windows_activate.vbs ${windowName}`);
     }
@@ -214,35 +248,36 @@ function switchActiveCharacter(characterName) {
       active: isCurrentCharacter
     };
   });
-
-  overlayWindow.send('refresh', activeTeamCharacters);
 }
 
 function enableAllCharacters() {
-  activeTeamCharacters = activeTeamCharacters.map(character => ({
+  currentTeam.characters = currentTeam.characters.map(character => ({
     ...character,
     disabled: false
   }));
-
-  overlayWindow.send('refresh', activeTeamCharacters);
 }
 
-function toggleCharacter(characterName) {
-  activeTeamCharacters = activeTeamCharacters.map(character => {
-    const isCurrentCharacter = character.name === characterName;
-
-    return {
-      ...character,
-      disabled: isCurrentCharacter ? !character.disabled : character.disabled
-    };
-  });
-
-  overlayWindow.send('refresh', activeTeamCharacters);
+function disableToggleCharacter(characterId) {
+  currentTeam.characters = currentTeam.characters.map(character => ({
+    ...character,
+    disabled: character.id === characterId ? !character.disabled : character.disabled
+  }));
 }
 
-app.on('ready', () => {
-  // createOverlayWindow();
+app.on('ready', async () => {
+  console.log('App ready, initializing...');
+  tray = new Tray(path.join(__dirname, '../build/icons/icon24x24.png'), 'dofus-team');
+  tray.setToolTip('DofusTeam');
+
+  const teams = getTeams();
+  if (teams.length > 0) {
+    instanciateTeam(teams[0]);
+  } else {
+    refreshTrayMenu();
+  }
+
   createSettingsWindow();
+  registerShortcuts();
 });
 
 app.on('window-all-closed', () => app.quit());
@@ -283,15 +318,15 @@ function persistKeyboardShortcuts(keyboardShortcuts: KeyboardShortcut[]) {
 }
 
 store.onDidChange('characters', (characters) => {
-  appWindow.webContents.send('charactersChanged', characters);
+  settingsWindow.webContents.send('charactersChanged', characters);
 });
 
 store.onDidChange('teams', (teams) => {
-  appWindow.webContents.send('teamsChanged', teams);
+  settingsWindow.webContents.send('teamsChanged', teams);
 });
 
 store.onDidChange('keyboardShortcuts', (keyboardShortcuts) => {
-  appWindow.webContents.send('keyboardShortcutsChanged', keyboardShortcuts);
+  settingsWindow.webContents.send('keyboardShortcutsChanged', keyboardShortcuts);
 });
 
 ipcMain.handle('getCharacters', async () => {

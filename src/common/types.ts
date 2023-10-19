@@ -44,12 +44,21 @@ export interface Character {
   avatar: Avatar;
 }
 
+export interface InstanciatedCharacter extends Character {
+  disabled: boolean;
+  active: boolean;
+}
+
 export interface PersistedCharacter extends Character { }
 
 export interface Team {
   id: string;
   name: string;
   characters: Character[];
+}
+
+export interface InstanciatedTeam extends Omit<Team, 'characters'> {
+  characters: InstanciatedCharacter[];
 }
 
 export interface PersistedTeam extends Omit<Team, 'characters'> {
