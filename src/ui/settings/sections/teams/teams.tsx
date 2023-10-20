@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import useTeams from "hooks/use-teams";
-import { Team, Created } from "common/types";
+import { useCharacters, useTeams } from "hooks/use-api";
+import { Team, Upserted } from "common/types";
 import useTranslate from "hooks/use-translate";
 import Icon from "components/icon";
 import OrderableRow from "components/orderable-row";
@@ -9,14 +9,14 @@ import Drawer from "components/drawer";
 import CharacterAvatar from "components/character-avatar";
 
 const Teams = () => {
-  const [teams, {
-    upsertTeam,
-    removeTeam,
-    duplicateTeam,
-    reorderTeams
-  }] = useTeams();
-  const [stagedTeam, setStagedTeam] = useState<Team | Created<Team> | null>(null);
-  const translate = useTranslate('settings.teams');
+  const { items: teams, upsert, duplicate, destroy, reorder } = useTeams();
+  const { itemsMap: charactersMap } = useCharacters();
+
+  const [stagedTeam, setStagedTeam] = useState<Team | Upserted<Team> | null>(
+    null
+  );
+
+  const translate = useTranslate("settings.teams");
 
   return (
     <>
@@ -24,21 +24,21 @@ const Teams = () => {
         <thead>
           <tr>
             <th></th>
-            <th>{translate('team')}</th>
+            <th>{translate("team")}</th>
             <td className="text-right" colSpan={2}>
               <button
-                type='button'
-                className='btn btn-sm btn-primary'
+                type="button"
+                className="btn btn-sm btn-primary"
                 onClick={() => {
                   setStagedTeam({
                     id: undefined,
-                    name: '',
-                    characters: []
+                    name: "",
+                    characterIds: [],
                   });
                 }}
               >
                 <Icon icon="user-plus" className="mr-2" />
-                {translate('new')}
+                {translate("new")}
               </button>
             </td>
           </tr>
@@ -49,49 +49,50 @@ const Teams = () => {
               key={team.id}
               item={team}
               items={teams}
-              onOrderChange={reorderTeams}
+              onOrderChange={reorder}
             >
-              <td>
-                {team.name}
-              </td>
+              <td>{team.name}</td>
               <td>
                 <ul className="flex gap-3">
-                  {team.characters.map((character) => (
-                    <li key={character.id}>
-                      <CharacterAvatar character={character} compact />
+                  {team.characterIds.map((characterId) => (
+                    <li key={characterId}>
+                      <CharacterAvatar
+                        character={charactersMap.get(characterId)}
+                        compact
+                      />
                     </li>
                   ))}
                 </ul>
               </td>
               <td>
                 <div className="flex justify-end gap-2 transition-all opacity-0 group-hover:opacity-100">
-                    <button
-                      type="button"
-                      className='btn btn-secondary btn-sm btn-circle'
-                      onClick={() => {
-                        setStagedTeam(team);
-                      }}
-                    >
-                      <Icon icon="pencil" />
-                    </button>
-                    <button
-                      type="button"
-                      className='btn btn-secondary btn-sm btn-circle'
-                      onClick={() => {
-                        duplicateTeam(team.id);
-                      }}
-                    >
-                      <Icon icon="copy" />
-                    </button>
-                    <button
-                      type="button"
-                      className='btn btn-error btn-sm btn-circle'
-                      onClick={() => {
-                        removeTeam(team.id);
-                      }}
-                    >
-                      <Icon icon="trash" />
-                    </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm btn-circle"
+                    onClick={() => {
+                      setStagedTeam(team);
+                    }}
+                  >
+                    <Icon icon="pencil" />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm btn-circle"
+                    onClick={() => {
+                      duplicate(team.id);
+                    }}
+                  >
+                    <Icon icon="copy" />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-error btn-sm btn-circle"
+                    onClick={() => {
+                      destroy(team.id);
+                    }}
+                  >
+                    <Icon icon="trash" />
+                  </button>
                 </div>
               </td>
             </OrderableRow>
@@ -105,7 +106,7 @@ const Teams = () => {
             team={stagedTeam}
             onChange={(team) => setStagedTeam(team)}
             onSubmit={() => {
-              upsertTeam(stagedTeam);
+              upsert(stagedTeam);
               setStagedTeam(null);
             }}
             onCancel={() => setStagedTeam(null)}
