@@ -49,14 +49,16 @@ const Teams = () => {
               <td>{team.name}</td>
               <td>
                 <ul className="flex gap-3">
-                  {team.characterIds.map((characterId) => (
-                    <li key={characterId}>
-                      <CharacterAvatar
-                        character={charactersMap.get(characterId)}
-                        compact
-                      />
-                    </li>
-                  ))}
+                  {team.characterIds.map((characterId) => {
+                    const character = charactersMap.get(characterId);
+                    if (!character) return null;
+
+                    return (
+                      <li key={characterId}>
+                        <CharacterAvatar character={character} compact />
+                      </li>
+                    );
+                  })}
                 </ul>
               </td>
               <td>

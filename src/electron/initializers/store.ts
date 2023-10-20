@@ -49,7 +49,7 @@ export const initializeStore = ({ debug }: Context) => {
 
   if (debug) {
     console.log("Store initialized with:");
-    console.log(store.store);
+    console.log(JSON.stringify(store.store, null, 2));
   }
 
   Object.values(repositories).forEach((repository) => {

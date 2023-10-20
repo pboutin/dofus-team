@@ -9,9 +9,11 @@ import {
 
 const ipcRenderer = window.require("electron").ipcRenderer;
 
+type id = string;
+
 interface Hook<T extends GenericModel> {
   items: T[];
-  itemsMap: Map<string, T>;
+  itemsMap: Map<id, T>;
   upsert: (data: T) => void;
   destroy: (id: string) => void;
   duplicate: (id: string) => void;
@@ -20,9 +22,7 @@ interface Hook<T extends GenericModel> {
 
 function useApi<T extends GenericModel>(modelName: string): Hook<T> {
   const [items, setItems] = useState<T[]>([]);
-  const [itemsMap, setItemsMap] = useState<Map<string, T>>(
-    new Map<string, T>()
-  );
+  const [itemsMap, setItemsMap] = useState<Map<id, T>>(new Map<id, T>());
 
   const handleItemsChange = (_event, items: T[]) => {
     setItems(items);
