@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Reorder, useDragControls } from "framer-motion";
 import Icon from "components/icon";
+import classNames from "classnames";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -30,7 +31,7 @@ const Row = ({ children, id }: RowProps) => {
       as="tr"
       dragListener={false}
       dragControls={dragControls}
-      className="group hover"
+      className="hover"
     >
       <td
         width={60}
@@ -38,9 +39,9 @@ const Row = ({ children, id }: RowProps) => {
           dragControls.start(event);
           event.preventDefault();
         }}
-        className="text-center text-lg"
+        className="text-center text-lg cursor-move"
       >
-        <Icon icon="grip" className="cursor-move" />
+        <Icon icon="grip" />
       </td>
       {children}
     </Reorder.Item>

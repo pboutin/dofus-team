@@ -60,7 +60,7 @@ const Teams = () => {
                 </ul>
               </td>
               <td>
-                <div className="flex justify-end gap-2 transition-all opacity-0 group-hover:opacity-100">
+                <div className="flex justify-end gap-2">
                   <button
                     type="button"
                     className="btn btn-secondary btn-sm btn-circle"
