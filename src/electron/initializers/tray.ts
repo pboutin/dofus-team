@@ -10,7 +10,7 @@ let tray: Tray | null = null;
 
 export const initializeTray = ({ onOpenSettings, onClose }: Context) => {
   tray = new Tray(
-    path.join(__dirname, "../build/icons/icon24x24.png"),
+    path.join(__dirname, "../../build/icons/icon24x24.png"),
     "dofus-team"
   );
 

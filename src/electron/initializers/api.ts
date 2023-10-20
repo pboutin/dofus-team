@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
 
-import { Repositories } from "initializers/store";
+import { Repositories } from "./store";
 
 interface Context {
   repositories: Repositories;

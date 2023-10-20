@@ -1,7 +1,7 @@
 import { globalShortcut } from "electron";
-import { KeyboardShortcut } from "common/types";
 
-import { Repositories, RepositoriesService } from "initializers/store";
+import { KeyboardShortcut } from "../common/types";
+import { Repositories, RepositoriesService } from "./store";
 
 interface Context {
   repositories: Repositories;

@@ -1,6 +1,6 @@
 import { exec } from "child_process";
 
-import { Repositories } from "initializers/store";
+import { Repositories } from "./store";
 
 interface Context {
   debug: boolean;
