@@ -75,6 +75,7 @@ export default class BaseRepository<T extends GenericModel> {
 
     this.upsert({
       ...item,
+      ...(item.name && { name: `${item.name} *` }),
       id: crypto.randomUUID(),
     });
   }

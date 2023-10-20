@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Icon from "components/icon";
-import OrderableRow from "components/orderable-row";
+import RichTable from "components/rich-table";
 import { useCharacters } from "hooks/use-api";
 import { Avatar, Character, Class, Upserted } from "common/types";
 import CharacterForm from "settings/sections/characters/character-form";
@@ -50,14 +50,12 @@ const Characters = () => {
             </td>
           </tr>
         </thead>
-        <tbody>
+        <RichTable.Body
+          onReorder={reorder}
+          ids={characters.map(({ id }) => id)}
+        >
           {characters.map((character) => (
-            <OrderableRow
-              key={character.id}
-              item={character}
-              items={characters}
-              onOrderChange={reorder}
-            >
+            <RichTable.Row id={character.id} key={character.id}>
               <td>
                 <div className="flex items-center gap-3">
                   <CharacterAvatar character={character} />
@@ -92,9 +90,9 @@ const Characters = () => {
                   </button>
                 </div>
               </td>
-            </OrderableRow>
+            </RichTable.Row>
           ))}
-        </tbody>
+        </RichTable.Body>
       </table>
 
       {stagedCharacter && (

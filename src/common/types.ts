@@ -2,6 +2,7 @@ export type Upserted<T> = T & { id: undefined | string };
 
 export interface GenericModel {
   id: string;
+  name?: string;
 }
 
 export enum Class {

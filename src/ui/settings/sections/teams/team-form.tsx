@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { Character, Team } from "common/types";
+import { Team } from "common/types";
+import RichTable from "components/rich-table";
 import Input from "components/input";
 import useTranslate from "hooks/use-translate";
 import Icon from "components/icon";
 import CharacterSelector from "components/character-selector";
 import CharacterAvatar from "components/character-avatar";
-import OrderableRow from "components/orderable-row";
 import { useCharacters } from "hooks/use-api";
 
 interface Props {
@@ -57,19 +57,17 @@ const TeamForm = ({ team, onChange, onSubmit, onCancel }: Props) => {
       )}
 
       <table className="table table-compact w-full">
-        <tbody>
+        <RichTable.Body
+          onReorder={(characterIds) => {
+            onChange({
+              ...team,
+              characterIds,
+            });
+          }}
+          ids={team.characterIds}
+        >
           {teamCharacters.map((character) => (
-            <OrderableRow
-              key={character.id}
-              item={character}
-              items={teamCharacters}
-              onOrderChange={(characterIds) => {
-                onChange({
-                  ...team,
-                  characterIds,
-                });
-              }}
-            >
+            <RichTable.Row id={character.id} key={character.id}>
               <td>
                 <div className="flex items-center gap-2">
                   <CharacterAvatar character={character} compact />
@@ -92,9 +90,9 @@ const TeamForm = ({ team, onChange, onSubmit, onCancel }: Props) => {
                   <Icon icon="times" />
                 </button>
               </td>
-            </OrderableRow>
+            </RichTable.Row>
           ))}
-        </tbody>
+        </RichTable.Body>
       </table>
 
       <div className="flex gap-3 absolute bottom-0 w-full">

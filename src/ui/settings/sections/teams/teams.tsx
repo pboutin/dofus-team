@@ -3,7 +3,7 @@ import { useCharacters, useTeams } from "hooks/use-api";
 import { Team, Upserted } from "common/types";
 import useTranslate from "hooks/use-translate";
 import Icon from "components/icon";
-import OrderableRow from "components/orderable-row";
+import RichTable from "components/rich-table";
 import TeamForm from "settings/sections/teams/team-form";
 import Drawer from "components/drawer";
 import CharacterAvatar from "components/character-avatar";
@@ -43,14 +43,9 @@ const Teams = () => {
             </td>
           </tr>
         </thead>
-        <tbody>
+        <RichTable.Body onReorder={reorder} ids={teams.map(({ id }) => id)}>
           {teams.map((team) => (
-            <OrderableRow
-              key={team.id}
-              item={team}
-              items={teams}
-              onOrderChange={reorder}
-            >
+            <RichTable.Row id={team.id} key={team.id}>
               <td>{team.name}</td>
               <td>
                 <ul className="flex gap-3">
@@ -95,9 +90,9 @@ const Teams = () => {
                   </button>
                 </div>
               </td>
-            </OrderableRow>
+            </RichTable.Row>
           ))}
-        </tbody>
+        </RichTable.Body>
       </table>
 
       {stagedTeam && (
