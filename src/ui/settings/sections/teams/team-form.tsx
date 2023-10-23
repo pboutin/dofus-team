@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Team } from "common/types";
+import { Character, Team, Upserted } from "common/types";
 import RichTable from "components/rich-table";
 import Input from "components/input";
 import useTranslate from "hooks/use-translate";
@@ -9,8 +9,8 @@ import CharacterAvatar from "components/character-avatar";
 import { useCharacters } from "hooks/use-api";
 
 interface Props {
-  team: Team;
-  onChange: (team: Team) => void;
+  team: Upserted<Team>;
+  onChange: (team: Upserted<Team>) => void;
   onSubmit: () => void;
   onCancel: () => void;
 }
@@ -26,7 +26,7 @@ const TeamForm = ({ team, onChange, onSubmit, onCancel }: Props) => {
       .map((characterId) => {
         return characters.find(({ id }) => id === characterId);
       })
-      .filter(Boolean);
+      .filter(Boolean) as Character[];
   }, [team, characters]);
 
   return (

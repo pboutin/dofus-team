@@ -1,52 +1,53 @@
-export type Upserted<T> = T & { id: undefined | string };
-
+export type Upserted<T> = Omit<T, "id">;
 export interface GenericModel {
   id: string;
   name?: string;
 }
 
 export enum Class {
-  Osamodas = "osamodas",
-  Eniripsa = "eniripsa",
-  Iop = "iop",
-  Sacrieur = "sacrieur",
-  Feca = "feca",
-  Xelor = "xelor",
-  Enutrof = "enutrof",
-  Sram = "sram",
-  Ecaflip = "ecaflip",
-  Pandawa = "pandawa",
-  Sadida = "sadida",
-  Cra = "cra",
-  Steamer = "steamer",
-  Zobal = "zobal",
-  Eliotrope = "eliotrope",
-  Huppermage = "huppermage",
-  Forgelance = "forgelance",
-  Ouginak = "ouginak",
-  Roublard = "roublard",
+  Osamodas = "Osamodas",
+  Eniripsa = "Eniripsa",
+  Iop = "Iop",
+  Sacrieur = "Sacrieur",
+  Feca = "Feca",
+  Xelor = "Xelor",
+  Enutrof = "Enutrof",
+  Sram = "Sram",
+  Ecaflip = "Ecaflip",
+  Pandawa = "Pandawa",
+  Sadida = "Sadida",
+  Cra = "Cra",
+  Steamer = "Steamer",
+  Zobal = "Zobal",
+  Eliotrope = "Eliotrope",
+  Huppermage = "Huppermage",
+  Forgelance = "Forgelance",
+  Ouginak = "Ouginak",
+  Roublard = "Roublard",
 }
 
-export enum Avatar {
-  Good1 = "1",
-  Good2 = "2",
-  Good3 = "3",
-  Good4 = "4",
-  Bad1 = "5",
-  Bad2 = "6",
-  Bad3 = "7",
-  Bad4 = "8",
+export enum Server {
+  Imagiro = "291",
+  Ombre = "50",
+  TalKasha = "290",
+  Orukam = "292",
+  Tilezia = "293",
+  HellMina = "294",
+  Draconiros = "295",
 }
 
 export type Gender = "male" | "female";
 
-export interface Character {
+export interface Character extends DirectoryCharacter {
   id: string;
+}
+
+export interface DirectoryCharacter {
   name: string;
-  label: string;
+  server: Server;
   class: Class;
   gender: Gender;
-  avatar: Avatar;
+  avatarUrl: string;
 }
 
 export interface InstanciatedCharacter extends Character {

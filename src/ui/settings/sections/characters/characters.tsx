@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Icon from "components/icon";
 import RichTable from "components/rich-table";
 import { useCharacters } from "hooks/use-api";
-import { Avatar, Character, Class, Upserted } from "common/types";
+import { Character, Class, Upserted } from "common/types";
 import CharacterForm from "settings/sections/characters/character-form";
 import Drawer from "components/drawer";
 import useTranslate from "hooks/use-translate";
@@ -17,9 +17,8 @@ const Characters = () => {
     reorder,
   } = useCharacters();
 
-  const [stagedCharacter, setStagedCharacter] = useState<
-    Character | Upserted<Character> | null
-  >(null);
+  const [stagedId, setStagedId] = useState<string>();
+  const [formIsOpen, setFormIsOpen] = useState(false);
   const translate = useTranslate("settings.characters");
 
   return (
@@ -34,14 +33,7 @@ const Characters = () => {
                 type="button"
                 className="btn btn-sm btn-primary"
                 onClick={() => {
-                  setStagedCharacter({
-                    id: undefined,
-                    name: "",
-                    class: Class.Osamodas,
-                    label: "",
-                    gender: "male",
-                    avatar: Avatar.Good1,
-                  });
+                  setFormIsOpen(true);
                 }}
               >
                 <Icon icon="user-plus" className="mr-2" />
@@ -62,14 +54,14 @@ const Characters = () => {
                   {character.name}
                 </div>
               </td>
-              <td>{character.label}</td>
               <td>
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
                     className="btn btn-secondary btn-sm btn-circle"
                     onClick={() => {
-                      setStagedCharacter(character);
+                      setStagedId(character.id);
+                      setFormIsOpen(true);
                     }}
                   >
                     <Icon icon="pencil" />
@@ -95,16 +87,22 @@ const Characters = () => {
         </RichTable.Body>
       </table>
 
-      {stagedCharacter && (
-        <Drawer onClose={() => setStagedCharacter(null)}>
+      {formIsOpen && (
+        <Drawer onClose={() => setStagedId(undefined)}>
           <CharacterForm
-            character={stagedCharacter}
-            onChange={(character) => setStagedCharacter(character)}
-            onSubmit={() => {
-              upsert(stagedCharacter);
-              setStagedCharacter(null);
+            defaultServer={characters[characters.length - 1]?.server}
+            onSubmit={(character) => {
+              upsert({
+                ...(stagedId && { id: stagedId }),
+                ...character,
+              });
+              setStagedId(undefined);
+              setFormIsOpen(false);
             }}
-            onCancel={() => setStagedCharacter(null)}
+            onCancel={() => {
+              setStagedId(undefined);
+              setFormIsOpen(false);
+            }}
           />
         </Drawer>
       )}

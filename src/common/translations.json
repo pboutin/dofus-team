@@ -1,6 +1,9 @@
 {
   "ui": {
     "components": {
+      "server-picker": {
+        "label": "Serveur"
+      },
       "keyboard-shortcut": {
         "GOTO_NEXT": "Aller au prochain personnage",
         "GOTO_PREVIOUS": "Aller au personnage précédent",

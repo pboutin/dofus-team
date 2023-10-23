@@ -6,7 +6,7 @@ import { GenericModel, Upserted } from "../common/types";
 export default class BaseRepository<T extends GenericModel> {
   private class;
 
-  protected store: Store | undefined = undefined;
+  protected store: Store;
 
   constructor() {
     this.class = BaseRepository<T>;
@@ -36,7 +36,7 @@ export default class BaseRepository<T extends GenericModel> {
     const items = this.fetchAll();
     return ids
       .map((id) => items.find((item) => item.id === id))
-      .filter(Boolean);
+      .filter(Boolean) as T[];
   }
 
   upsert(item: Upserted<T>): void {

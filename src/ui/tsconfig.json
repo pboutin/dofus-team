@@ -6,6 +6,8 @@
     "jsx": "react",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true
   }
 }

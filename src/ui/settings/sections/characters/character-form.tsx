@@ -1,54 +1,60 @@
-import React from 'react';
-import { Character } from 'common/types';
-import Icon from 'components/icon';
-import AvatarPicker from 'components/avatar-picker';
-import ClassGenderPicker from 'components/class-gender-picker';
-import Input from 'components/input';
-import useTranslate from 'hooks/use-translate';
+import React, { useEffect, useState } from "react";
+import { DirectoryCharacter, Server } from "common/types";
+import Icon from "components/icon";
+import Input from "components/input";
+import useTranslate from "hooks/use-translate";
+import ServerPicker from "components/server-picker";
+import useCharacterDirectory from "hooks/use-character-directory";
 
 interface Props {
-  character: Character;
-  onChange: (character: Character) => void;
-  onSubmit: () => void;
+  defaultServer?: Server;
+  onSubmit: (character: DirectoryCharacter) => void;
   onCancel: () => void;
 }
 
-const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
-  const translate = useTranslate('settings.characters.form');
-  
+const CharacterForm = ({ defaultServer, onSubmit, onCancel }: Props) => {
+  const translate = useTranslate("settings.characters.form");
+  const [server, setServer] = useState<Server>(defaultServer || Server.Imagiro);
+  const [name, setName] = useState<string>("");
+
+  const { directoryCharacter, isLoading, fetch } = useCharacterDirectory();
+
+  useEffect(() => {
+    if (!directoryCharacter) return;
+    if (isLoading) return;
+
+    onSubmit(directoryCharacter);
+  }, [directoryCharacter, isLoading, onSubmit]);
+
   return (
-    <form className="flex flex-col gap-6" onSubmit={(event) => {
-      event.preventDefault();
-      onSubmit();
-    }}>
+    <form
+      className="flex flex-col gap-6"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (!server) return;
+        fetch(name, server);
+      }}
+    >
       <Input
-        value={character.name}
-        label={translate('name')}
-        help={translate('name-help')}
-        onChange={(name) => onChange({ ...character, name })}
+        value={name}
+        label={translate("name")}
+        help={translate("name-help")}
+        onChange={setName}
       />
-      
-      <ClassGenderPicker
-        class={character.class}
-        gender={character.gender}
-        onChange={(classAndGender) => onChange({ ...character, ...classAndGender })}
-      />
-      
-      <AvatarPicker
-        avatar={character.avatar}
-        class={character.class}
-        gender={character.gender}
-        onChange={(avatar) => onChange({ ...character, avatar })}
-      />
+
+      <ServerPicker server={server} onChange={setServer} />
 
       <div className="flex gap-3 absolute bottom-0 w-full">
         <button
-          type="button"
+          type="submit"
           className="btn btn-sm btn-secondary w-2/3 flex-auto"
-          onClick={onSubmit}
         >
-          <Icon icon="save" className="mr-2" />
-          {translate('save')}
+          {isLoading ? (
+            <Icon icon="spinner" className="animate-spin mr-2" />
+          ) : (
+            <Icon icon="save" className="mr-2" />
+          )}
+          {translate("save")}
         </button>
 
         <button
@@ -57,7 +63,7 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
           onClick={onCancel}
         >
           <Icon icon="times" className="mr-2" />
-          {translate('cancel')}
+          {translate("cancel")}
         </button>
       </div>
     </form>

@@ -5,6 +5,7 @@ import {
   InstanciatedCharacter,
   KeyboardShortcut,
   Team,
+  Upserted,
 } from "common/types";
 
 const ipcRenderer = window.require("electron").ipcRenderer;
@@ -14,7 +15,7 @@ type id = string;
 interface Hook<T extends GenericModel> {
   items: T[];
   itemsMap: Map<id, T>;
-  upsert: (data: T) => void;
+  upsert: (data: Upserted<T>) => void;
   destroy: (id: string) => void;
   duplicate: (id: string) => void;
   reorder: (ids: string[]) => void;
@@ -24,7 +25,7 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
   const [items, setItems] = useState<T[]>([]);
   const [itemsMap, setItemsMap] = useState<Map<id, T>>(new Map<id, T>());
 
-  const handleItemsChange = (_event, items: T[]) => {
+  const handleItemsChange = (_event: null, items: T[]) => {
     setItems(items);
     setItemsMap(new Map(items.map((item) => [item.id, item])));
   };
@@ -32,7 +33,7 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
   useEffect(() => {
     ipcRenderer
       .invoke(`${modelName}:fetchAll`)
-      .then((items) => handleItemsChange(null, items));
+      .then((items: never) => handleItemsChange(null, items));
 
     ipcRenderer.on(`${modelName}:changed`, handleItemsChange);
 

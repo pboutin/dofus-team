@@ -58,11 +58,13 @@ const registerKeyboardShortcuts = (
           );
           break;
         case "GOTO_CHARACTER":
+          if (!keyboardShortcut.argument) return;
           repositories.instanciatedCharacters.activate(
             keyboardShortcut.argument
           );
           break;
         case "SWITCH_TEAM":
+          if (!keyboardShortcut.argument) return;
           repositoriesService.instanciateTeam(keyboardShortcut.argument);
           break;
       }

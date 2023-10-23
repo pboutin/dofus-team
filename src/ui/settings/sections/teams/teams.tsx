@@ -12,9 +12,7 @@ const Teams = () => {
   const { items: teams, upsert, duplicate, destroy, reorder } = useTeams();
   const { itemsMap: charactersMap } = useCharacters();
 
-  const [stagedTeam, setStagedTeam] = useState<Team | Upserted<Team> | null>(
-    null
-  );
+  const [stagedTeam, setStagedTeam] = useState<Upserted<Team> | null>(null);
 
   const translate = useTranslate("settings.teams");
 
@@ -31,7 +29,6 @@ const Teams = () => {
                 className="btn btn-sm btn-primary"
                 onClick={() => {
                   setStagedTeam({
-                    id: undefined,
                     name: "",
                     characterIds: [],
                   });

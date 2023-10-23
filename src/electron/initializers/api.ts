@@ -1,6 +1,8 @@
 import { ipcMain } from "electron";
 
 import { Repositories } from "./store";
+import { fetch as characterDirectoryFetch } from "../services/character-directory.service";
+import { Server } from "../common/types";
 
 interface Context {
   repositories: Repositories;
@@ -12,7 +14,7 @@ export const initializeApi = ({ repositories }: Context) => {
       repository.fetchAll()
     );
 
-    ipcMain.handle(`${repository.modelName}:upsert`, (_, data: any) =>
+    ipcMain.handle(`${repository.modelName}:upsert`, (_, data: never) =>
       repository.upsert(data)
     );
 
@@ -28,6 +30,14 @@ export const initializeApi = ({ repositories }: Context) => {
       repository.reorder(ids)
     );
   });
+
+  ipcMain.handle(
+    "character-directory:fetch",
+    async (_, name: string, server: Server) => {
+      const character = await characterDirectoryFetch(name, server);
+      return character;
+    }
+  );
 
   const subscribeWindow = (window: Electron.BrowserWindow) => {
     Object.values(repositories).forEach((repository) => {
