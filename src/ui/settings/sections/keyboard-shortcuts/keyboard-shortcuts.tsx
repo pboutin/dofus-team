@@ -54,79 +54,83 @@ const KeyboardShortcuts = () => {
         </tbody>
       </table>
 
-      <table className="table table-compact w-full mt-2">
-        <thead>
-          <tr>
-            <th colSpan={3}>{translate("characters")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {characters.map((character) => {
-            const existingKeyboardShortcut = keyboardShortcuts.find(
-              (keyboardShortcut) =>
-                keyboardShortcut.action === Action.GOTO_CHARACTER &&
-                keyboardShortcut.argument === character.id
-            );
+      {characters.length > 0 && (
+        <table className="table table-compact w-full mt-2">
+          <thead>
+            <tr>
+              <th colSpan={3}>{translate("characters")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {characters.map((character) => {
+              const existingKeyboardShortcut = keyboardShortcuts.find(
+                (keyboardShortcut) =>
+                  keyboardShortcut.action === Action.GOTO_CHARACTER &&
+                  keyboardShortcut.argument === character.id
+              );
 
-            return (
-              <KeyboardShortcutRow
-                key={character.id}
-                action={Action.GOTO_CHARACTER}
-                label={character.name}
-                keybind={existingKeyboardShortcut?.keybind}
-                onKeybindChange={(newKeybind) =>
-                  upsert({
-                    id: existingKeyboardShortcut?.id,
-                    action: Action.GOTO_CHARACTER,
-                    keybind: newKeybind,
-                  })
-                }
-                onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+              return (
+                <KeyboardShortcutRow
+                  key={character.id}
+                  action={Action.GOTO_CHARACTER}
+                  label={character.name}
+                  keybind={existingKeyboardShortcut?.keybind}
+                  onKeybindChange={(newKeybind) =>
+                    upsert({
+                      id: existingKeyboardShortcut?.id,
+                      action: Action.GOTO_CHARACTER,
+                      keybind: newKeybind,
+                    })
+                  }
+                  onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      )}
 
-      <table className="table table-compact w-full mt-2">
-        <thead>
-          <tr>
-            <th colSpan={3}>{translate("teams")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {teams.map((team) => {
-            const existingKeyboardShortcut = keyboardShortcuts.find(
-              (keyboardShortcut) =>
-                keyboardShortcut.action === Action.SWITCH_TEAM &&
-                keyboardShortcut.argument === team.id
-            );
+      {teams.length > 0 && (
+        <table className="table table-compact w-full mt-2">
+          <thead>
+            <tr>
+              <th colSpan={3}>{translate("teams")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teams.map((team) => {
+              const existingKeyboardShortcut = keyboardShortcuts.find(
+                (keyboardShortcut) =>
+                  keyboardShortcut.action === Action.SWITCH_TEAM &&
+                  keyboardShortcut.argument === team.id
+              );
 
-            return (
-              <KeyboardShortcutRow
-                key={team.id}
-                action={Action.SWITCH_TEAM}
-                label={team.name}
-                keybind={
-                  keyboardShortcuts.find(
-                    (keyboardShortcut) =>
-                      keyboardShortcut.action === Action.SWITCH_TEAM &&
-                      keyboardShortcut.argument === team.id
-                  )?.keybind || ""
-                }
-                onKeybindChange={(newKeybind) =>
-                  upsert({
-                    id: existingKeyboardShortcut?.id,
-                    action: Action.SWITCH_TEAM,
-                    keybind: newKeybind,
-                  })
-                }
-                onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+              return (
+                <KeyboardShortcutRow
+                  key={team.id}
+                  action={Action.SWITCH_TEAM}
+                  label={team.name}
+                  keybind={
+                    keyboardShortcuts.find(
+                      (keyboardShortcut) =>
+                        keyboardShortcut.action === Action.SWITCH_TEAM &&
+                        keyboardShortcut.argument === team.id
+                    )?.keybind || ""
+                  }
+                  onKeybindChange={(newKeybind) =>
+                    upsert({
+                      id: existingKeyboardShortcut?.id,
+                      action: Action.SWITCH_TEAM,
+                      keybind: newKeybind,
+                    })
+                  }
+                  onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
