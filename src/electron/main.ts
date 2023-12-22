@@ -12,10 +12,13 @@ const debug = process.argv[2] === "debug";
 app.on("ready", async () => {
   console.log(`Starting Dofus-Team in ${debug ? "debug" : "prod"} mode`);
 
-  const { repositories, repositoriesService } = initializeStore({ debug });
-  const { subscribeWindow } = initializeApi({ repositories });
-  // initializeKeyboard({ repositories, repositoriesService });
-  const { openSettings } = initializeWindows({
+  const { repositories, instanciateTeam } = initializeStore({ debug });
+  const { subscribeWindow } = initializeApi({
+    repositories,
+    instanciateTeam,
+  });
+  // initializeKeyboard({ repositories, instanciateTeam });
+  const { openSettings, openDashboard } = initializeWindows({
     debug,
     onOpenedCallbacks: [subscribeWindow],
   });
@@ -25,5 +28,12 @@ app.on("ready", async () => {
   });
   initializeDofusWindows({ repositories, debug });
 
-  openSettings();
+  const configuredTeams = repositories.teams.fetchAll();
+  if (configuredTeams.length === 0) {
+    openSettings();
+  } else {
+    instanciateTeam(configuredTeams[0].id);
+  }
+
+  openDashboard();
 });

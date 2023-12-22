@@ -77,11 +77,18 @@ export default class InstanciatedCharacterRepository extends BaseRepository<Inst
       return;
     }
 
-    const nextCharacterIndex = activeCharacterIndex + 1;
+    let nextCharacterIndex = activeCharacterIndex;
 
-    if (nextCharacterIndex >= characters.length) {
-      return this.activateAt(0);
-    }
+    do {
+      nextCharacterIndex++;
+
+      if (nextCharacterIndex >= characters.length) {
+        nextCharacterIndex = 0;
+      }
+    } while (
+      characters[nextCharacterIndex].disabled &&
+      nextCharacterIndex !== activeCharacterIndex
+    );
 
     this.activateAt(nextCharacterIndex);
   }
@@ -97,11 +104,18 @@ export default class InstanciatedCharacterRepository extends BaseRepository<Inst
       return;
     }
 
-    const previousCharacterIndex = activeCharacterIndex - 1;
+    let previousCharacterIndex = activeCharacterIndex;
 
-    if (previousCharacterIndex < 0) {
-      return this.activateAt(characters.length - 1);
-    }
+    do {
+      previousCharacterIndex--;
+
+      if (previousCharacterIndex < 0) {
+        previousCharacterIndex = characters.length - 1;
+      }
+    } while (
+      characters[previousCharacterIndex].disabled &&
+      previousCharacterIndex !== activeCharacterIndex
+    );
 
     this.activateAt(previousCharacterIndex);
   }

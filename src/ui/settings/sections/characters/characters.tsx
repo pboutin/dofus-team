@@ -62,7 +62,6 @@ const Characters = () => {
                   {character.name}
                 </div>
               </td>
-              <td>{character.label}</td>
               <td>
                 <div className="flex justify-end gap-2">
                   <button

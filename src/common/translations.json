@@ -15,6 +15,9 @@
         "not-set": "Aucun raccourci"
       }
     },
+    "dashboard": {
+      "change-team": "Changer d'équipe"
+    },
     "settings": {
       "characters": {
         "title": "Personnages",

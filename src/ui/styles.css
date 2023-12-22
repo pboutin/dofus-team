@@ -1,13 +1,9 @@
-@import '../../node_modules/@fortawesome/fontawesome-free/css/fontawesome.css';
-@import '../../node_modules/@fortawesome/fontawesome-free/css/solid.css';
+@import "../../node_modules/@fortawesome/fontawesome-free/css/fontawesome.css";
+@import "../../node_modules/@fortawesome/fontawesome-free/css/solid.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-body, #root {
-  min-height: 100vh;
-}
 
 .prose {
   max-width: unset;
@@ -15,7 +11,7 @@ body, #root {
 
 .tabs::after {
   --tab-border-color: hsla(var(--b3) / var(--tw-bg-opacity, 1));
-  content: '';
+  content: "";
   flex: 1 1 auto;
   border: var(--tab-border, 1px) solid transparent;
   border-width: 0 0 var(--tab-border, 1px) 0;

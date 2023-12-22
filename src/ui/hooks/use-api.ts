@@ -59,18 +59,33 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
   };
 }
 
-export function useCharacters(): Hook<Character> {
+export function useCharacters() {
   return useApi<Character>("Character");
 }
 
-export function useKeyboardShortcuts(): Hook<KeyboardShortcut> {
+export function useKeyboardShortcuts() {
   return useApi<KeyboardShortcut>("KeyboardShortcut");
 }
 
-export function useTeams(): Hook<Team> {
+export function useTeams() {
   return useApi<Team>("Team");
 }
 
-export function useInstanciatedCharacters(): Hook<InstanciatedCharacter> {
-  return useApi<InstanciatedCharacter>("InstanciatedCharacter");
+export function useInstanciatedCharacters() {
+  const modelName = "InstanciatedCharacter";
+  return {
+    ...useApi<InstanciatedCharacter>(modelName),
+    instanciateTeam: (teamId: string) => {
+      ipcRenderer.invoke(`${modelName}:instanciateTeam`, teamId);
+    },
+    activate: (characterId: string) => {
+      ipcRenderer.invoke(`${modelName}:activate`, characterId);
+    },
+    activateNext: () => {
+      ipcRenderer.invoke(`${modelName}:activateNext`);
+    },
+    activatePrevious: () => {
+      ipcRenderer.invoke(`${modelName}:activatePrevious`);
+    },
+  };
 }

@@ -12,10 +12,6 @@ export type Repositories = {
   teams: TeamRepository;
 };
 
-export interface RepositoriesService {
-  instanciateTeam: (teamId: string) => void;
-}
-
 export type Repository =
   | CharacterRepository
   | KeyboardShortcutRepository
@@ -56,15 +52,13 @@ export const initializeStore = ({ debug }: Context) => {
     repository.registerStore(store);
   });
 
-  const repositoriesService: RepositoriesService = {
-    instanciateTeam: (teamId: string) => {
-      const team = repositories.teams.fetchById(teamId);
-      if (!team) return;
+  const instanciateTeam = (teamId: string) => {
+    const team = repositories.teams.fetchById(teamId);
+    if (!team) return;
 
-      const characters = repositories.characters.fetchByIds(team.characterIds);
-      repositories.instanciatedCharacters.instanciateCharacters(characters);
-    },
+    const characters = repositories.characters.fetchByIds(team.characterIds);
+    repositories.instanciatedCharacters.instanciateCharacters(characters);
   };
 
-  return { repositories, repositoriesService };
+  return { repositories, instanciateTeam };
 };

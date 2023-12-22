@@ -1,38 +1,30 @@
 import { globalShortcut } from "electron";
 
 import { KeyboardShortcut } from "../common/types";
-import { Repositories, RepositoriesService } from "./store";
+import { Repositories } from "./store";
 
 interface Context {
   repositories: Repositories;
-  repositoriesService: RepositoriesService;
+  instanciateTeam: (teamId: string) => void;
 }
 
 export const initializeKeyboard = ({
   repositories,
-  repositoriesService,
+  instanciateTeam,
 }: Context) => {
   const keyboardShortcuts = repositories.keyboardShortcuts.fetchAll();
 
-  registerKeyboardShortcuts(
-    keyboardShortcuts,
-    repositories,
-    repositoriesService
-  );
+  registerKeyboardShortcuts(keyboardShortcuts, repositories, instanciateTeam);
 
   repositories.keyboardShortcuts.onChange((keyboardShortcuts) =>
-    registerKeyboardShortcuts(
-      keyboardShortcuts,
-      repositories,
-      repositoriesService
-    )
+    registerKeyboardShortcuts(keyboardShortcuts, repositories, instanciateTeam)
   );
 };
 
 const registerKeyboardShortcuts = (
   keyboardShortcuts: KeyboardShortcut[],
   repositories: Repositories,
-  repositoriesService: RepositoriesService
+  instanciateTeam: (teamId: string) => void
 ) => {
   globalShortcut.unregisterAll();
 
@@ -63,7 +55,7 @@ const registerKeyboardShortcuts = (
           );
           break;
         case "SWITCH_TEAM":
-          repositoriesService.instanciateTeam(keyboardShortcut.argument);
+          instanciateTeam(keyboardShortcut.argument);
           break;
       }
     });
