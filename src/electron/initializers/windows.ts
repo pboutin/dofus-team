@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import settings from "electron-settings";
+import path from "path";
 
 type PositionSetting = { x: number; y: number } | undefined;
 
@@ -33,6 +34,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       width: 800,
       resizable: false,
       webPreferences: WEB_PREFERENCES,
+      icon: path.join(__dirname, "../../build/icon.ico"),
     });
 
     browserWindow.loadFile("./settings.html");
@@ -72,6 +74,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       width: 600,
       resizable: false,
       webPreferences: WEB_PREFERENCES,
+      icon: path.join(__dirname, "../../build/icon.ico"),
     });
 
     browserWindow.loadFile("./dashboard.html");

@@ -8,7 +8,7 @@
     "dev:ui": "parcel ./src/ui/styles.css ./src/ui/settings/settings.tsx ./src/ui/dashboard/dashboard.tsx",
     "start": "electron .",
     "debug": "electron . debug",
-    "build": "rm -rf dist/ && electron-builder --x64 --windows portable"
+    "build": "rm -rf dist/ && electron-builder --x64 --windows"
   },
   "repository": {
     "type": "git",
@@ -28,8 +28,6 @@
     "assert": "^2.0.0",
     "classnames": "^2.3.2",
     "daisyui": "^2.51.5",
-    "electron": "^23.0.0",
-    "electron-builder": "^23.6.0",
     "electron-settings": "^4.0.2",
     "electron-store": "^8.1.0",
     "events": "^3.3.0",
@@ -49,5 +47,18 @@
     "typescript": "^5.0.3",
     "util": "^0.12.5",
     "yaml": "^2.2.1"
+  },
+  "devDependencies": {
+    "electron": "^23.0.0",
+    "electron-builder": "^23.6.0"
+  },
+  "build": {
+    "files": [
+      "**/*",
+      "!.parcel-cache/**/*",
+      "!.git/**/*",
+      "!.github/**/*",
+      "!node_modules/**/*"
+    ]
   }
 }
