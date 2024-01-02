@@ -6,7 +6,7 @@
     "dev:electron": "mkdir -p ./dist && tsc -w -p ./src/electron/tsconfig.json",
     "build:electron": "mkdir -p ./dist && tsc -p ./src/electron/tsconfig.json",
     "dev:ui": "mkdir -p ./dist && cp *.html ./dist/ && parcel watch ./src/ui/styles.css ./src/ui/settings/settings.tsx ./src/ui/dashboard/dashboard.tsx",
-    "build:ui": "mkdir -p ./dist && cp *.html ./dist/ && parcel build --no-cache ./src/ui/styles.css ./src/ui/settings/settings.tsx ./src/ui/dashboard/dashboard.tsx",
+    "build:ui": "mkdir -p ./dist && cp *.html ./dist/ && parcel build --no-optimize --no-source-maps --no-cache ./src/ui/styles.css ./src/ui/settings/settings.tsx ./src/ui/dashboard/dashboard.tsx",
     "start": "electron ./dist/main.js",
     "debug": "electron ./dist/main.js debug",
     "build": "rm -rf dist/ && electron-builder --x64 --windows",
