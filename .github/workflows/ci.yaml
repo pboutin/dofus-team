@@ -17,6 +17,13 @@ jobs:
           node-version: 18.10.0
           cache: 'npm'
 
+      - name: debug
+        run: |
+          (cd src; ls -lah)
+          (cd src/common; ls -lah)
+          (cd src/ui; ls -lah)
+          (cd src/ui/common; ls -lah)
+
       - name: Install
         run: npm ci
 
