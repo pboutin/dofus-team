@@ -21,8 +21,10 @@ jobs:
         run: |
           (cd src; ls -lah)
           (cd src/common; ls -lah)
+          (cd src/common/images; ls -lah)
           (cd src/ui; ls -lah)
           (cd src/ui/common; ls -lah)
+          (cd src/ui/common/images; ls -lah)
 
       - name: Install
         run: npm ci
