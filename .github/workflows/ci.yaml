@@ -23,8 +23,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Build UI
-        run: npm run build:ui
-
       - name: Build Electron
         run: npm run build:electron
+
+      - name: Build UI
+        run: npm run build:ui
