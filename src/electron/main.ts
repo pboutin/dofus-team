@@ -12,7 +12,7 @@ const debug = process.argv[2] === 'debug';
 app.on('ready', async () => {
   console.log(`Starting Dofus-Team in ${debug ? 'debug' : 'prod'} mode`);
 
-  const { repositories, instanciateTeam } = initializeStore({ debug });
+  const { repositories, instanciateTeam, hardReset } = initializeStore({ debug });
 
   const { subscribeWindow } = initializeApi({
     repositories,
@@ -27,6 +27,8 @@ app.on('ready', async () => {
   });
 
   initializeTray({
+    debug,
+    hardReset,
     onOpenSettings: openSettings,
     onClose: () => app.quit(),
   });

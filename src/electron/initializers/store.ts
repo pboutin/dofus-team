@@ -60,5 +60,9 @@ export const initializeStore = ({ debug }: Context) => {
     repositories.instanciatedCharacters.instanciateCharacters(characters);
   };
 
-  return { repositories, instanciateTeam };
+  const hardReset = () => {
+    store.clear();
+  };
+
+  return { repositories, instanciateTeam, hardReset };
 };

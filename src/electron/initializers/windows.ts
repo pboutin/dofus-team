@@ -17,6 +17,8 @@ const WEB_PREFERENCES: Electron.WebPreferences = {
 let settingsBrowserWindow: BrowserWindow | null = null;
 let dashboardBrowserWindow: BrowserWindow | null = null;
 
+const BASE_HTML_PATH = '../';
+
 export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
   const openSettings = async () => {
     if (settingsBrowserWindow) {
@@ -35,7 +37,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       icon: path.join(__dirname, '../../build/icon.ico'),
     });
 
-    browserWindow.loadFile('./settings.html');
+    browserWindow.loadFile(`${BASE_HTML_PATH}settings.html`);
     browserWindow.setMenu(null);
     browserWindow.on('closed', () => (settingsBrowserWindow = null));
 
@@ -73,7 +75,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       icon: path.join(__dirname, '../../build/icon.ico'),
     });
 
-    browserWindow.loadFile('./dashboard.html');
+    browserWindow.loadFile(`${BASE_HTML_PATH}dashboard.html`);
     browserWindow.setMenu(null);
     browserWindow.on('closed', () => app.quit());
 
