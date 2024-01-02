@@ -2,8 +2,8 @@ var fs = require('fs');
 
 // Build classes
 fs.writeFileSync(
-  `${__dirname}/classes.json`,
-  JSON.stringify(
+  `${__dirname}/classes.ts`,
+  `export default ${JSON.stringify(
     fs.readdirSync(`${__dirname}/classes`).reduce((acc, fileName) => {
       if (!/\.jpg$/.test(fileName)) return acc;
 
@@ -15,7 +15,7 @@ fs.writeFileSync(
 
       return acc;
     }, {}),
-  ),
+  )};`,
 );
 
 // Build avatars
@@ -41,8 +41,8 @@ const AVATAR_MAPPING = {
   20: 'forgelance',
 };
 fs.writeFileSync(
-  `${__dirname}/avatars.json`,
-  JSON.stringify(
+  `${__dirname}/avatars.ts`,
+  `export default ${JSON.stringify(
     fs.readdirSync(`${__dirname}/avatars`).reduce((acc, fileName) => {
       if (!/\.png/.test(fileName)) return acc;
 
@@ -54,5 +54,5 @@ fs.writeFileSync(
 
       return acc;
     }, {}),
-  ),
+  )};`,
 );
