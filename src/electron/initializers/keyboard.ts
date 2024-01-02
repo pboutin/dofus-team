@@ -1,6 +1,6 @@
 import { globalShortcut } from 'electron';
 
-import { KeyboardShortcut } from '../common/types';
+import { Action, KeyboardShortcut } from '../common/types';
 import { Repositories } from './store';
 
 interface Context {
@@ -28,30 +28,32 @@ const registerKeyboardShortcuts = (
   keyboardShortcuts.forEach((keyboardShortcut) => {
     globalShortcut.register(keyboardShortcut.keybind, () => {
       switch (keyboardShortcut.action) {
-        case 'GOTO_NEXT':
+        case Action.GOTO_NEXT:
           repositories.instanciatedCharacters.activateNext();
           break;
-        case 'GOTO_PREVIOUS':
+        case Action.GOTO_PREVIOUS:
           repositories.instanciatedCharacters.activatePrevious();
           break;
-        case 'GOTO_1':
-        case 'GOTO_2':
-        case 'GOTO_3':
-        case 'GOTO_4':
-        case 'GOTO_5':
-        case 'GOTO_6':
-        case 'GOTO_7':
-        case 'GOTO_8':
+        case Action.GOTO_1:
+        case Action.GOTO_2:
+        case Action.GOTO_3:
+        case Action.GOTO_4:
+        case Action.GOTO_5:
+        case Action.GOTO_6:
+        case Action.GOTO_7:
+        case Action.GOTO_8:
           repositories.instanciatedCharacters.activateAt(
             parseInt(keyboardShortcut.action.replace('GOTO_', ''), 10) - 1,
           );
           break;
-        case 'GOTO_CHARACTER':
+        case Action.GOTO_CHARACTER:
           repositories.instanciatedCharacters.activate(keyboardShortcut.argument);
           break;
-        case 'SWITCH_TEAM':
+        case Action.SWITCH_TEAM:
           instanciateTeam(keyboardShortcut.argument);
           break;
+        default:
+          throw new Error(`Unknown action ${keyboardShortcut.action}`);
       }
     });
   });
