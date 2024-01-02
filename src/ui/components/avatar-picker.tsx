@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { Avatar, Class, Gender } from '../common/types';
-import avatarImages from '../common/images/avatars.json';
+import avatarImages from '../common/images/avatars';
 
 interface Props {
   avatar: Avatar;
