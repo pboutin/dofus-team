@@ -1,7 +1,7 @@
-import Store from "electron-store";
-import crypto from "crypto";
+import Store from 'electron-store';
+import crypto from 'crypto';
 
-import { GenericModel, Upserted } from "../common/types";
+import { GenericModel, Upserted } from '../common/types';
 
 export default class BaseRepository<T extends GenericModel> {
   private class;
@@ -13,7 +13,7 @@ export default class BaseRepository<T extends GenericModel> {
   }
 
   get modelName(): string {
-    throw new Error("modelName not implemented");
+    throw new Error('modelName not implemented');
   }
 
   registerStore(store: Store): void {
@@ -34,9 +34,7 @@ export default class BaseRepository<T extends GenericModel> {
 
   fetchByIds(ids: string[]): T[] {
     const items = this.fetchAll();
-    return ids
-      .map((id) => items.find((item) => item.id === id))
-      .filter(Boolean);
+    return ids.map((id) => items.find((item) => item.id === id)).filter(Boolean);
   }
 
   upsert(item: Upserted<T>): void {
@@ -62,7 +60,7 @@ export default class BaseRepository<T extends GenericModel> {
 
     this.store.set(
       this.modelName,
-      items.filter((item: T) => item.id !== id)
+      items.filter((item: T) => item.id !== id),
     );
   }
 
@@ -85,7 +83,7 @@ export default class BaseRepository<T extends GenericModel> {
 
     this.store.set(
       this.modelName,
-      ids.map((id) => items.find((item) => item.id === id))
+      ids.map((id) => items.find((item) => item.id === id)),
     );
   }
 }

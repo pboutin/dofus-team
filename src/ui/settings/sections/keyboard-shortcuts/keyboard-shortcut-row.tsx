@@ -1,18 +1,18 @@
-import React, { useRef, useState } from "react";
-import { Action, KeyboardShortcut as KeyboardShortcutRow } from "common/types";
-import { useClickAway, useToggle } from "react-use";
-import Icon from "components/icon";
-import useTranslate from "hooks/use-translate";
-import classNames from "classnames";
+import React, { useRef, useState } from 'react';
+import { Action, KeyboardShortcut as KeyboardShortcutRow } from 'common/types';
+import { useClickAway, useToggle } from 'react-use';
+import Icon from 'components/icon';
+import useTranslate from 'hooks/use-translate';
+import classNames from 'classnames';
 
 const KEYBIND_MAX_LENGTH = 3;
 
 const ELECTRON_TO_DISPLAY = {
-  CommandOrControl: "Ctrl",
-  Up: "↑",
-  Down: "↓",
-  Left: "←",
-  Right: "→",
+  CommandOrControl: 'Ctrl',
+  Up: '↑',
+  Down: '↓',
+  Left: '←',
+  Right: '→',
 };
 
 interface Props {
@@ -23,14 +23,8 @@ interface Props {
   onKeybindDelete: () => void;
 }
 
-const KeyboardShortcutRow = ({
-  label,
-  action,
-  keybind,
-  onKeybindChange,
-  onKeybindDelete,
-}: Props) => {
-  const translate = useTranslate("components.keyboard-shortcut");
+const KeyboardShortcutRow = ({ label, action, keybind, onKeybindChange, onKeybindDelete }: Props) => {
+  const translate = useTranslate('components.keyboard-shortcut');
   const [isRecording, setIsRecording] = useToggle(false);
   const [recordedKeys, setRecordedKeys] = useState<string[]>([]);
   const ref = useRef(null);
@@ -42,9 +36,7 @@ const KeyboardShortcutRow = ({
 
   useClickAway(ref, teardown);
 
-  const displayedKeys = isRecording
-    ? recordedKeys
-    : (keybind ?? "").split("+").filter(Boolean);
+  const displayedKeys = isRecording ? recordedKeys : (keybind ?? '').split('+').filter(Boolean);
 
   return (
     <tr className="hover group" ref={ref}>
@@ -56,52 +48,39 @@ const KeyboardShortcutRow = ({
         {!!displayedKeys.length && (
           <div className="inline-flex gap-2 items-center">
             {displayedKeys.map((key, index) => (
-              <div
-                key={`${key}-${index}`}
-                className="inline-flex gap-2 items-center"
-              >
+              <div key={`${key}-${index}`} className="inline-flex gap-2 items-center">
                 {index > 0 && <span className="text-gray-400">+</span>}
-                <kbd className="kbd kbd-sm">
-                  {ELECTRON_TO_DISPLAY[key] || key}
-                </kbd>
+                <kbd className="kbd kbd-sm">{ELECTRON_TO_DISPLAY[key] || key}</kbd>
               </div>
             ))}
           </div>
         )}
 
-        {!isRecording && !keybind && (
-          <div className="badge">{translate("not-set")}</div>
-        )}
+        {!isRecording && !keybind && <div className="badge">{translate('not-set')}</div>}
       </td>
 
       <td>
         <div
-          className={classNames("flex justify-end gap-2 transition-all", {
-            "opacity-0 group-hover:opacity-100": !isRecording,
+          className={classNames('flex justify-end gap-2 transition-all', {
+            'opacity-0 group-hover:opacity-100': !isRecording,
           })}
         >
           <button
             type="button"
-            className={classNames("btn btn-sm btn-circle btn-secondary", {
-              "opacity-0": isRecording,
+            className={classNames('btn btn-sm btn-circle btn-secondary', {
+              'opacity-0': isRecording,
             })}
             onFocus={() => setIsRecording(true)}
             onKeyDown={(e) => {
               e.preventDefault();
-              setRecordedKeys((keys) =>
-                [...keys, e.key].slice(0, KEYBIND_MAX_LENGTH)
-              );
+              setRecordedKeys((keys) => [...keys, e.key].slice(0, KEYBIND_MAX_LENGTH));
             }}
           >
             <Icon icon="edit" />
           </button>
 
           {!isRecording && keybind && (
-            <button
-              type="button"
-              className="btn btn-sm btn-circle btn-error"
-              onClick={onKeybindDelete}
-            >
+            <button type="button" className="btn btn-sm btn-circle btn-error" onClick={onKeybindDelete}>
               <Icon icon="trash" />
             </button>
           )}
@@ -111,7 +90,7 @@ const KeyboardShortcutRow = ({
               type="button"
               className="btn btn-sm btn-circle btn-primary ml-4"
               onClick={() => {
-                onKeybindChange(recordedKeys.join("+"));
+                onKeybindChange(recordedKeys.join('+'));
                 teardown();
               }}
             >
@@ -120,11 +99,7 @@ const KeyboardShortcutRow = ({
           )}
 
           {isRecording && (
-            <button
-              type="button"
-              className="btn btn-sm btn-circle btn-ghost"
-              onClick={teardown}
-            >
+            <button type="button" className="btn btn-sm btn-circle btn-ghost" onClick={teardown}>
               <Icon icon="times" />
             </button>
           )}

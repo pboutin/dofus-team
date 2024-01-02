@@ -1,31 +1,36 @@
-import { app } from "electron";
+import { app } from 'electron';
 
-import { initializeStore } from "./initializers/store";
-import { initializeApi } from "./initializers/api";
-import { initializeKeyboard } from "./initializers/keyboard";
-import { initializeWindows } from "./initializers/windows";
-import { initializeTray } from "./initializers/tray";
-import { initializeDofusWindows } from "./initializers/dofus-windows";
+import { initializeStore } from './initializers/store';
+import { initializeApi } from './initializers/api';
+import { initializeKeyboard } from './initializers/keyboard';
+import { initializeWindows } from './initializers/windows';
+import { initializeTray } from './initializers/tray';
+import { initializeDofusWindows } from './initializers/dofus-windows';
 
-const debug = process.argv[2] === "debug";
+const debug = process.argv[2] === 'debug';
 
-app.on("ready", async () => {
-  console.log(`Starting Dofus-Team in ${debug ? "debug" : "prod"} mode`);
+app.on('ready', async () => {
+  console.log(`Starting Dofus-Team in ${debug ? 'debug' : 'prod'} mode`);
 
   const { repositories, instanciateTeam } = initializeStore({ debug });
+
   const { subscribeWindow } = initializeApi({
     repositories,
     instanciateTeam,
   });
+
   // initializeKeyboard({ repositories, instanciateTeam });
+
   const { openSettings, openDashboard } = initializeWindows({
     debug,
     onOpenedCallbacks: [subscribeWindow],
   });
+
   initializeTray({
     onOpenSettings: openSettings,
     onClose: () => app.quit(),
   });
+
   initializeDofusWindows({ repositories, debug });
 
   const configuredTeams = repositories.teams.fetchAll();

@@ -1,6 +1,6 @@
-import { app, BrowserWindow } from "electron";
-import settings from "electron-settings";
-import path from "path";
+import { app, BrowserWindow } from 'electron';
+import settings from 'electron-settings';
+import path from 'path';
 
 type PositionSetting = { x: number; y: number } | undefined;
 
@@ -24,9 +24,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       return settingsBrowserWindow;
     }
 
-    const position = (await settings.get(
-      "settings:position"
-    )) as PositionSetting;
+    const position = (await settings.get('settings:position')) as PositionSetting;
 
     const browserWindow = new BrowserWindow({
       ...(position ?? {}),
@@ -34,21 +32,21 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       width: 800,
       resizable: false,
       webPreferences: WEB_PREFERENCES,
-      icon: path.join(__dirname, "../../build/icon.ico"),
+      icon: path.join(__dirname, '../../build/icon.ico'),
     });
 
-    browserWindow.loadFile("./settings.html");
+    browserWindow.loadFile('./settings.html');
     browserWindow.setMenu(null);
-    browserWindow.on("closed", () => (settingsBrowserWindow = null));
+    browserWindow.on('closed', () => (settingsBrowserWindow = null));
 
-    browserWindow.on("move", async () => {
+    browserWindow.on('move', async () => {
       const { x, y } = browserWindow.getBounds();
-      await settings.set("settings:position", { x, y });
+      await settings.set('settings:position', { x, y });
     });
 
     if (debug) {
-      browserWindow.on("ready-to-show", () => {
-        browserWindow.webContents.openDevTools({ mode: "detach" });
+      browserWindow.on('ready-to-show', () => {
+        browserWindow.webContents.openDevTools({ mode: 'detach' });
       });
     }
 
@@ -64,9 +62,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       return dashboardBrowserWindow;
     }
 
-    const position = (await settings.get(
-      "dashboard:position"
-    )) as PositionSetting;
+    const position = (await settings.get('dashboard:position')) as PositionSetting;
 
     const browserWindow = new BrowserWindow({
       ...(position ?? {}),
@@ -74,21 +70,21 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
       width: 600,
       resizable: false,
       webPreferences: WEB_PREFERENCES,
-      icon: path.join(__dirname, "../../build/icon.ico"),
+      icon: path.join(__dirname, '../../build/icon.ico'),
     });
 
-    browserWindow.loadFile("./dashboard.html");
+    browserWindow.loadFile('./dashboard.html');
     browserWindow.setMenu(null);
-    browserWindow.on("closed", () => app.quit());
+    browserWindow.on('closed', () => app.quit());
 
-    browserWindow.on("move", async () => {
+    browserWindow.on('move', async () => {
       const { x, y } = browserWindow.getBounds();
-      await settings.set("dashboard:position", { x, y });
+      await settings.set('dashboard:position', { x, y });
     });
 
     if (debug) {
-      browserWindow.on("ready-to-show", () => {
-        browserWindow.webContents.openDevTools({ mode: "detach" });
+      browserWindow.on('ready-to-show', () => {
+        browserWindow.webContents.openDevTools({ mode: 'detach' });
       });
     }
 

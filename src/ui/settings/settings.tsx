@@ -15,35 +15,28 @@ const Settings = () => {
     <HashRouter>
       <div className="bg-neutral min-h-screen flex flex-col">
         <div className="tabs pt-3">
-          <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/'>
+          <NavLink className={({ isActive }) => classNames('tab tab-lifted', { 'tab-active': isActive })} to="/">
             <Icon icon="user" className="mr-2" />
             {translate('characters.title')}
           </NavLink>
-          <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/teams'>
+          <NavLink className={({ isActive }) => classNames('tab tab-lifted', { 'tab-active': isActive })} to="/teams">
             <Icon icon="users" className="mr-2" />
             {translate('teams.title')}
           </NavLink>
-          <NavLink className={({isActive}) => classNames("tab tab-lifted", {'tab-active': isActive})} to='/keyboard-shortcuts'>
+          <NavLink
+            className={({ isActive }) => classNames('tab tab-lifted', { 'tab-active': isActive })}
+            to="/keyboard-shortcuts"
+          >
             <Icon icon="keyboard" className="mr-2" />
             {translate('shortcuts.title')}
           </NavLink>
         </div>
-  
+
         <div className="bg-base-100 flex-1 p-3">
           <Routes>
-            <Route
-              index
-              path='/'
-              element={<Characters />}
-            />
-            <Route
-              path='/teams'
-              element={<Teams />}
-            />
-            <Route
-              path='/keyboard-shortcuts'
-              element={<KeyboardShortcuts />}
-            />
+            <Route index path="/" element={<Characters />} />
+            <Route path="/teams" element={<Teams />} />
+            <Route path="/keyboard-shortcuts" element={<KeyboardShortcuts />} />
           </Routes>
         </div>
       </div>

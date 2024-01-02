@@ -8,7 +8,9 @@
     "dev:ui": "parcel ./src/ui/styles.css ./src/ui/settings/settings.tsx ./src/ui/dashboard/dashboard.tsx",
     "start": "electron .",
     "debug": "electron . debug",
-    "build": "rm -rf dist/ && electron-builder --x64 --windows"
+    "build": "rm -rf dist/ && electron-builder --x64 --windows",
+    "format": "prettier --write .",
+    "lint": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -50,7 +52,8 @@
   },
   "devDependencies": {
     "electron": "^23.0.0",
-    "electron-builder": "^23.6.0"
+    "electron-builder": "^23.6.0",
+    "prettier": "^3.1.1"
   },
   "build": {
     "files": [

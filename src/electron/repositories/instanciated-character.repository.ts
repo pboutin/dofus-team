@@ -1,46 +1,31 @@
-import { Character, InstanciatedCharacter } from "../common/types";
-import BaseRepository from "./base.repository";
+import { Character, InstanciatedCharacter } from '../common/types';
+import BaseRepository from './base.repository';
 
 export default class InstanciatedCharacterRepository extends BaseRepository<InstanciatedCharacter> {
   get modelName() {
-    return "InstanciatedCharacter";
+    return 'InstanciatedCharacter';
   }
 
-  onActiveCharacterChange(
-    callback: (character: InstanciatedCharacter) => void
-  ) {
+  onActiveCharacterChange(callback: (character: InstanciatedCharacter) => void) {
     this.store.onDidChange(
       this.modelName,
-      (
-        characters: InstanciatedCharacter[],
-        previousCharacters?: InstanciatedCharacter[]
-      ) => {
-        const activeCharacter = characters.find(
-          (character) => character.active
-        );
-        const previousActiveCharacter = previousCharacters?.find(
-          (character) => character.active
-        );
+      (characters: InstanciatedCharacter[], previousCharacters?: InstanciatedCharacter[]) => {
+        const activeCharacter = characters.find((character) => character.active);
+        const previousActiveCharacter = previousCharacters?.find((character) => character.active);
 
-        if (
-          !activeCharacter ||
-          activeCharacter.id === previousActiveCharacter?.id
-        )
-          return;
+        if (!activeCharacter || activeCharacter.id === previousActiveCharacter?.id) return;
 
         callback(activeCharacter);
-      }
+      },
     );
   }
 
   instanciateCharacters(characters: Character[]) {
-    const instanciatedCharacters: InstanciatedCharacter[] = characters.map(
-      (character, index) => ({
-        ...character,
-        active: index === 0,
-        disabled: false,
-      })
-    );
+    const instanciatedCharacters: InstanciatedCharacter[] = characters.map((character, index) => ({
+      ...character,
+      active: index === 0,
+      disabled: false,
+    }));
 
     this.store.set(this.modelName, instanciatedCharacters);
   }
@@ -69,9 +54,7 @@ export default class InstanciatedCharacterRepository extends BaseRepository<Inst
   activateNext() {
     const characters = this.fetchAll();
 
-    const activeCharacterIndex = characters.findIndex(
-      (character) => character.active
-    );
+    const activeCharacterIndex = characters.findIndex((character) => character.active);
 
     if (activeCharacterIndex === -1) {
       return;
@@ -85,10 +68,7 @@ export default class InstanciatedCharacterRepository extends BaseRepository<Inst
       if (nextCharacterIndex >= characters.length) {
         nextCharacterIndex = 0;
       }
-    } while (
-      characters[nextCharacterIndex].disabled &&
-      nextCharacterIndex !== activeCharacterIndex
-    );
+    } while (characters[nextCharacterIndex].disabled && nextCharacterIndex !== activeCharacterIndex);
 
     this.activateAt(nextCharacterIndex);
   }
@@ -96,9 +76,7 @@ export default class InstanciatedCharacterRepository extends BaseRepository<Inst
   activatePrevious() {
     const characters = this.fetchAll();
 
-    const activeCharacterIndex = characters.findIndex(
-      (character) => character.active
-    );
+    const activeCharacterIndex = characters.findIndex((character) => character.active);
 
     if (activeCharacterIndex === -1) {
       return;
@@ -112,10 +90,7 @@ export default class InstanciatedCharacterRepository extends BaseRepository<Inst
       if (previousCharacterIndex < 0) {
         previousCharacterIndex = characters.length - 1;
       }
-    } while (
-      characters[previousCharacterIndex].disabled &&
-      previousCharacterIndex !== activeCharacterIndex
-    );
+    } while (characters[previousCharacterIndex].disabled && previousCharacterIndex !== activeCharacterIndex);
 
     this.activateAt(previousCharacterIndex);
   }

@@ -1,12 +1,12 @@
 module.exports = {
   content: ['./src/ui/**/*.tsx'],
   theme: {
-    extend: {}
+    extend: {},
   },
-  plugins: [require("@tailwindcss/typography"), require('daisyui')],
+  plugins: [require('@tailwindcss/typography'), require('daisyui')],
   variants: {
     extend: {
-        display: ["group-hover"],
+      display: ['group-hover'],
     },
   },
 };

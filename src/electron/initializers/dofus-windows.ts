@@ -1,6 +1,6 @@
-import { exec } from "child_process";
+import { exec } from 'child_process';
 
-import { Repositories } from "./store";
+import { Repositories } from './store';
 
 interface Context {
   debug: boolean;
@@ -10,7 +10,7 @@ interface Context {
 export const initializeDofusWindows = ({ repositories, debug }: Context) => {
   repositories.instanciatedCharacters.onActiveCharacterChange((character) => {
     const windowName = `"${character.name} - Dofus"`;
-    console.log("Switching to window: ", windowName);
+    console.log('Switching to window: ', windowName);
     if (!debug) exec(`windows_activate.vbs ${windowName}`);
   });
 };

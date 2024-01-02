@@ -8,6 +8,6 @@ interface Props {
 }
 
 const Icon = ({ icon, className, beat }: Props) => (
-  <i className={classNames('fa-solid', `fa-${icon}`, {'fa-beat': !!beat}, className)} />
+  <i className={classNames('fa-solid', `fa-${icon}`, { 'fa-beat': !!beat }, className)} />
 );
 export default Icon;

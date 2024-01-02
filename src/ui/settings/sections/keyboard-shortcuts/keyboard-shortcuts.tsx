@@ -1,11 +1,11 @@
-import { Action } from "common/types";
-import KeyboardShortcutRow from "settings/sections/keyboard-shortcuts/keyboard-shortcut-row";
-import React from "react";
-import useTranslate from "hooks/use-translate";
-import { useKeyboardShortcuts, useTeams, useCharacters } from "hooks/use-api";
+import { Action } from 'common/types';
+import KeyboardShortcutRow from 'settings/sections/keyboard-shortcuts/keyboard-shortcut-row';
+import React from 'react';
+import useTranslate from 'hooks/use-translate';
+import { useKeyboardShortcuts, useTeams, useCharacters } from 'hooks/use-api';
 
 const KeyboardShortcuts = () => {
-  const translate = useTranslate("settings.shortcuts");
+  const translate = useTranslate('settings.shortcuts');
   const { items: keyboardShortcuts, destroy, upsert } = useKeyboardShortcuts();
   const { items: characters } = useCharacters();
   const { items: teams } = useTeams();
@@ -15,7 +15,7 @@ const KeyboardShortcuts = () => {
       <table className="table table-compact w-full">
         <thead>
           <tr>
-            <th colSpan={3}>{translate("current-team")}</th>
+            <th colSpan={3}>{translate('current-team')}</th>
           </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@ const KeyboardShortcuts = () => {
             Action.GOTO_8,
           ].map((action) => {
             const existingKeyboardShortcut = keyboardShortcuts.find(
-              (keyboardShortcut) => keyboardShortcut.action === action
+              (keyboardShortcut) => keyboardShortcut.action === action,
             );
 
             return (
@@ -58,15 +58,14 @@ const KeyboardShortcuts = () => {
         <table className="table table-compact w-full mt-2">
           <thead>
             <tr>
-              <th colSpan={3}>{translate("characters")}</th>
+              <th colSpan={3}>{translate('characters')}</th>
             </tr>
           </thead>
           <tbody>
             {characters.map((character) => {
               const existingKeyboardShortcut = keyboardShortcuts.find(
                 (keyboardShortcut) =>
-                  keyboardShortcut.action === Action.GOTO_CHARACTER &&
-                  keyboardShortcut.argument === character.id
+                  keyboardShortcut.action === Action.GOTO_CHARACTER && keyboardShortcut.argument === character.id,
               );
 
               return (
@@ -94,15 +93,14 @@ const KeyboardShortcuts = () => {
         <table className="table table-compact w-full mt-2">
           <thead>
             <tr>
-              <th colSpan={3}>{translate("teams")}</th>
+              <th colSpan={3}>{translate('teams')}</th>
             </tr>
           </thead>
           <tbody>
             {teams.map((team) => {
               const existingKeyboardShortcut = keyboardShortcuts.find(
                 (keyboardShortcut) =>
-                  keyboardShortcut.action === Action.SWITCH_TEAM &&
-                  keyboardShortcut.argument === team.id
+                  keyboardShortcut.action === Action.SWITCH_TEAM && keyboardShortcut.argument === team.id,
               );
 
               return (
@@ -113,9 +111,8 @@ const KeyboardShortcuts = () => {
                   keybind={
                     keyboardShortcuts.find(
                       (keyboardShortcut) =>
-                        keyboardShortcut.action === Action.SWITCH_TEAM &&
-                        keyboardShortcut.argument === team.id
-                    )?.keybind || ""
+                        keyboardShortcut.action === Action.SWITCH_TEAM && keyboardShortcut.argument === team.id,
+                    )?.keybind || ''
                   }
                   onKeybindChange={(newKeybind) =>
                     upsert({

@@ -1,26 +1,18 @@
-import React, { useState } from "react";
-import Icon from "components/icon";
-import RichTable from "components/rich-table";
-import { useCharacters } from "hooks/use-api";
-import { Avatar, Character, Class, Upserted } from "common/types";
-import CharacterForm from "settings/sections/characters/character-form";
-import Drawer from "components/drawer";
-import useTranslate from "hooks/use-translate";
-import CharacterAvatar from "components/character-avatar";
+import React, { useState } from 'react';
+import Icon from 'components/icon';
+import RichTable from 'components/rich-table';
+import { useCharacters } from 'hooks/use-api';
+import { Avatar, Character, Class, Upserted } from 'common/types';
+import CharacterForm from 'settings/sections/characters/character-form';
+import Drawer from 'components/drawer';
+import useTranslate from 'hooks/use-translate';
+import CharacterAvatar from 'components/character-avatar';
 
 const Characters = () => {
-  const {
-    items: characters,
-    upsert,
-    duplicate,
-    destroy,
-    reorder,
-  } = useCharacters();
+  const { items: characters, upsert, duplicate, destroy, reorder } = useCharacters();
 
-  const [stagedCharacter, setStagedCharacter] = useState<
-    Character | Upserted<Character> | null
-  >(null);
-  const translate = useTranslate("settings.characters");
+  const [stagedCharacter, setStagedCharacter] = useState<Character | Upserted<Character> | null>(null);
+  const translate = useTranslate('settings.characters');
 
   return (
     <>
@@ -28,7 +20,7 @@ const Characters = () => {
         <thead>
           <tr>
             <th></th>
-            <th>{translate("character")}</th>
+            <th>{translate('character')}</th>
             <td className="text-right" colSpan={2}>
               <button
                 type="button"
@@ -36,24 +28,21 @@ const Characters = () => {
                 onClick={() => {
                   setStagedCharacter({
                     id: undefined,
-                    name: "",
+                    name: '',
                     class: Class.Osamodas,
-                    label: "",
-                    gender: "male",
+                    label: '',
+                    gender: 'male',
                     avatar: Avatar.Good1,
                   });
                 }}
               >
                 <Icon icon="user-plus" className="mr-2" />
-                {translate("new")}
+                {translate('new')}
               </button>
             </td>
           </tr>
         </thead>
-        <RichTable.Body
-          onReorder={reorder}
-          ids={characters.map(({ id }) => id)}
-        >
+        <RichTable.Body onReorder={reorder} ids={characters.map(({ id }) => id)}>
           {characters.map((character) => (
             <RichTable.Row id={character.id} key={character.id}>
               <td>

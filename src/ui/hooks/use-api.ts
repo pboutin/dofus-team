@@ -1,13 +1,7 @@
-import { useEffect, useState } from "react";
-import {
-  Character,
-  GenericModel,
-  InstanciatedCharacter,
-  KeyboardShortcut,
-  Team,
-} from "common/types";
+import { useEffect, useState } from 'react';
+import { Character, GenericModel, InstanciatedCharacter, KeyboardShortcut, Team } from 'common/types';
 
-const ipcRenderer = window.require("electron").ipcRenderer;
+const ipcRenderer = window.require('electron').ipcRenderer;
 
 type id = string;
 
@@ -30,9 +24,7 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
   };
 
   useEffect(() => {
-    ipcRenderer
-      .invoke(`${modelName}:fetchAll`)
-      .then((items) => handleItemsChange(null, items));
+    ipcRenderer.invoke(`${modelName}:fetchAll`).then((items) => handleItemsChange(null, items));
 
     ipcRenderer.on(`${modelName}:changed`, handleItemsChange);
 
@@ -60,19 +52,19 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
 }
 
 export function useCharacters() {
-  return useApi<Character>("Character");
+  return useApi<Character>('Character');
 }
 
 export function useKeyboardShortcuts() {
-  return useApi<KeyboardShortcut>("KeyboardShortcut");
+  return useApi<KeyboardShortcut>('KeyboardShortcut');
 }
 
 export function useTeams() {
-  return useApi<Team>("Team");
+  return useApi<Team>('Team');
 }
 
 export function useInstanciatedCharacters() {
-  const modelName = "InstanciatedCharacter";
+  const modelName = 'InstanciatedCharacter';
   return {
     ...useApi<InstanciatedCharacter>(modelName),
     instanciateTeam: (teamId: string) => {

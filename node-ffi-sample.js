@@ -19,8 +19,6 @@
 // console.log(winToSetOnTop);
 // user32.SwitchToThisWindow(winToSetOnTop, 3);
 
-
-
 // user32.SetForegroundWindow(winToSetOnTop);
 
 /*var foregroundHWnd = user32.GetForegroundWindow()

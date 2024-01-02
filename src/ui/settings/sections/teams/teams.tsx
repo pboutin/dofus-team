@@ -1,22 +1,20 @@
-import React, { useState } from "react";
-import { useCharacters, useTeams } from "hooks/use-api";
-import { Team, Upserted } from "common/types";
-import useTranslate from "hooks/use-translate";
-import Icon from "components/icon";
-import RichTable from "components/rich-table";
-import TeamForm from "settings/sections/teams/team-form";
-import Drawer from "components/drawer";
-import CharacterAvatar from "components/character-avatar";
+import React, { useState } from 'react';
+import { useCharacters, useTeams } from 'hooks/use-api';
+import { Team, Upserted } from 'common/types';
+import useTranslate from 'hooks/use-translate';
+import Icon from 'components/icon';
+import RichTable from 'components/rich-table';
+import TeamForm from 'settings/sections/teams/team-form';
+import Drawer from 'components/drawer';
+import CharacterAvatar from 'components/character-avatar';
 
 const Teams = () => {
   const { items: teams, upsert, duplicate, destroy, reorder } = useTeams();
   const { itemsMap: charactersMap } = useCharacters();
 
-  const [stagedTeam, setStagedTeam] = useState<Team | Upserted<Team> | null>(
-    null
-  );
+  const [stagedTeam, setStagedTeam] = useState<Team | Upserted<Team> | null>(null);
 
-  const translate = useTranslate("settings.teams");
+  const translate = useTranslate('settings.teams');
 
   return (
     <>
@@ -24,7 +22,7 @@ const Teams = () => {
         <thead>
           <tr>
             <th></th>
-            <th>{translate("team")}</th>
+            <th>{translate('team')}</th>
             <td className="text-right" colSpan={2}>
               <button
                 type="button"
@@ -32,13 +30,13 @@ const Teams = () => {
                 onClick={() => {
                   setStagedTeam({
                     id: undefined,
-                    name: "",
+                    name: '',
                     characterIds: [],
                   });
                 }}
               >
                 <Icon icon="user-plus" className="mr-2" />
-                {translate("new")}
+                {translate('new')}
               </button>
             </td>
           </tr>

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Reorder, useDragControls } from "framer-motion";
-import Icon from "components/icon";
-import classNames from "classnames";
+import React, { useState } from 'react';
+import { Reorder, useDragControls } from 'framer-motion';
+import Icon from 'components/icon';
+import classNames from 'classnames';
 
 interface BodyProps {
   children: React.ReactNode;
@@ -26,13 +26,7 @@ const Row = ({ children, id }: RowProps) => {
   const dragControls = useDragControls();
 
   return (
-    <Reorder.Item
-      value={id}
-      as="tr"
-      dragListener={false}
-      dragControls={dragControls}
-      className="hover"
-    >
+    <Reorder.Item value={id} as="tr" dragListener={false} dragControls={dragControls} className="hover">
       <td
         width={60}
         onPointerDown={(event) => {

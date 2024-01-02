@@ -1,12 +1,12 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import Icon from "components/icon";
-import { useInstanciatedCharacters } from "hooks/use-api";
-import RichTable from "components/rich-table";
-import CharacterAvatar from "components/character-avatar";
-import TeamSelector from "components/team-selector";
-import useTranslate from "hooks/use-translate";
-import classNames from "classnames";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import Icon from 'components/icon';
+import { useInstanciatedCharacters } from 'hooks/use-api';
+import RichTable from 'components/rich-table';
+import CharacterAvatar from 'components/character-avatar';
+import TeamSelector from 'components/team-selector';
+import useTranslate from 'hooks/use-translate';
+import classNames from 'classnames';
 
 const Dashboard = () => {
   const {
@@ -19,35 +19,23 @@ const Dashboard = () => {
     activatePrevious,
   } = useInstanciatedCharacters();
 
-  const translate = useTranslate("dashboard");
+  const translate = useTranslate('dashboard');
 
   return (
     <>
-      <TeamSelector
-        label={translate("change-team")}
-        onSelect={(team) => instanciateTeam(team.id)}
-        className="m-2"
-      />
+      <TeamSelector label={translate('change-team')} onSelect={(team) => instanciateTeam(team.id)} className="m-2" />
 
       <table className="table table-compact w-full">
-        <RichTable.Body
-          onReorder={reorder}
-          ids={instanciatedCharacters.map(({ id }) => id)}
-        >
+        <RichTable.Body onReorder={reorder} ids={instanciatedCharacters.map(({ id }) => id)}>
           {instanciatedCharacters.map((instanciatedCharacter) => (
-            <RichTable.Row
-              id={instanciatedCharacter.id}
-              key={instanciatedCharacter.id}
-            >
+            <RichTable.Row id={instanciatedCharacter.id} key={instanciatedCharacter.id}>
               <td>
                 <div
-                  className={classNames("flex items-center gap-3", {
-                    "opacity-30": instanciatedCharacter.disabled,
+                  className={classNames('flex items-center gap-3', {
+                    'opacity-30': instanciatedCharacter.disabled,
                   })}
                 >
-                  {instanciatedCharacter.active && (
-                    <Icon icon="chevron-right" />
-                  )}
+                  {instanciatedCharacter.active && <Icon icon="chevron-right" />}
                   <CharacterAvatar character={instanciatedCharacter} />
                   {instanciatedCharacter.name}
                 </div>
@@ -66,9 +54,7 @@ const Dashboard = () => {
                     <button
                       type="button"
                       className="btn btn-success btn-sm btn-circle"
-                      onClick={() =>
-                        upsert({ ...instanciatedCharacter, disabled: false })
-                      }
+                      onClick={() => upsert({ ...instanciatedCharacter, disabled: false })}
                     >
                       <Icon icon="eye" />
                     </button>
@@ -78,9 +64,7 @@ const Dashboard = () => {
                     <button
                       type="button"
                       className="btn btn-error btn-sm btn-circle"
-                      onClick={() =>
-                        upsert({ ...instanciatedCharacter, disabled: true })
-                      }
+                      onClick={() => upsert({ ...instanciatedCharacter, disabled: true })}
                     >
                       <Icon icon="eye-slash" />
                     </button>
@@ -93,18 +77,10 @@ const Dashboard = () => {
       </table>
 
       <div className="flex justify-center gap-2 mt-2">
-        <button
-          type="button"
-          className="btn btn-sm btn-primary"
-          onClick={activatePrevious}
-        >
+        <button type="button" className="btn btn-sm btn-primary" onClick={activatePrevious}>
           <Icon icon="arrow-left" />
         </button>
-        <button
-          type="button"
-          className="btn btn-sm btn-primary"
-          onClick={activateNext}
-        >
+        <button type="button" className="btn btn-sm btn-primary" onClick={activateNext}>
           <Icon icon="arrow-right" />
         </button>
       </div>
@@ -112,5 +88,5 @@ const Dashboard = () => {
   );
 };
 
-const rootElement = document.getElementById("root")!;
+const rootElement = document.getElementById('root')!;
 createRoot(rootElement).render(<Dashboard />);

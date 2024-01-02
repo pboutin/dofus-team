@@ -1,5 +1,5 @@
-import { Menu, Tray } from "electron";
-import path from "path";
+import { Menu, Tray } from 'electron';
+import path from 'path';
 
 interface Context {
   onOpenSettings: () => void;
@@ -9,23 +9,20 @@ interface Context {
 let tray: Tray | null = null;
 
 export const initializeTray = ({ onOpenSettings, onClose }: Context) => {
-  tray = new Tray(
-    path.join(__dirname, "../../build/icon24x24.png"),
-    "dofus-team"
-  );
+  tray = new Tray(path.join(__dirname, '../../build/icon24x24.png'), 'dofus-team');
 
-  tray.setToolTip("DofusTeam");
+  tray.setToolTip('DofusTeam');
 
   tray.setContextMenu(
     Menu.buildFromTemplate([
       {
-        label: "Settings",
+        label: 'Settings',
         click: onOpenSettings,
       },
       {
-        label: "Close",
+        label: 'Close',
         click: onClose,
       },
-    ])
+    ]),
   );
 };

@@ -15,25 +15,28 @@ interface Props {
 
 const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
   const translate = useTranslate('settings.characters.form');
-  
+
   return (
-    <form className="flex flex-col gap-6" onSubmit={(event) => {
-      event.preventDefault();
-      onSubmit();
-    }}>
+    <form
+      className="flex flex-col gap-6"
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit();
+      }}
+    >
       <Input
         value={character.name}
         label={translate('name')}
         help={translate('name-help')}
         onChange={(name) => onChange({ ...character, name })}
       />
-      
+
       <ClassGenderPicker
         class={character.class}
         gender={character.gender}
         onChange={(classAndGender) => onChange({ ...character, ...classAndGender })}
       />
-      
+
       <AvatarPicker
         avatar={character.avatar}
         class={character.class}
@@ -42,20 +45,12 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
       />
 
       <div className="flex gap-3 absolute bottom-0 w-full">
-        <button
-          type="button"
-          className="btn btn-sm btn-secondary w-2/3 flex-auto"
-          onClick={onSubmit}
-        >
+        <button type="button" className="btn btn-sm btn-secondary w-2/3 flex-auto" onClick={onSubmit}>
           <Icon icon="save" className="mr-2" />
           {translate('save')}
         </button>
 
-        <button
-          type="button"
-          className="btn btn-sm btn-ghost w-1/3 flex-auto"
-          onClick={onCancel}
-        >
+        <button type="button" className="btn btn-sm btn-ghost w-1/3 flex-auto" onClick={onCancel}>
           <Icon icon="times" className="mr-2" />
           {translate('cancel')}
         </button>

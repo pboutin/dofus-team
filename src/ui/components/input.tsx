@@ -22,9 +22,11 @@ const Input = ({ value, label, placeholder, className, help, onChange }: Props) 
       className="input input-sm input-bordered input-secondary w-full"
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event.target.value)}
     />
-    {help && <label className="label pb-0">
-      <span className="label-text-alt">{help}</span>
-    </label>}
+    {help && (
+      <label className="label pb-0">
+        <span className="label-text-alt">{help}</span>
+      </label>
+    )}
   </div>
 );
 
