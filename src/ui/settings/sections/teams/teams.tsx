@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { useCharacters, useTeams } from 'hooks/use-api';
-import { Team, Upserted } from 'common/types';
-import useTranslate from 'hooks/use-translate';
-import Icon from 'components/icon';
-import RichTable from 'components/rich-table';
-import TeamForm from 'settings/sections/teams/team-form';
-import Drawer from 'components/drawer';
-import CharacterAvatar from 'components/character-avatar';
+
+import { useCharacters, useTeams } from '../../../hooks/use-api';
+import useTranslate from '../../../hooks/use-translate';
+import { Team, Upserted } from '../../../common/types';
+import Icon from '../../../components/icon';
+import RichTable from '../../../components/rich-table';
+import Drawer from '../../../components/drawer';
+import CharacterAvatar from '../../../components/character-avatar';
+import TeamForm from '../../../settings/sections/teams/team-form';
 
 const Teams = () => {
   const { items: teams, upsert, duplicate, destroy, reorder } = useTeams();

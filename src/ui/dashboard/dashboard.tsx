@@ -1,12 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import Icon from 'components/icon';
-import { useInstanciatedCharacters } from 'hooks/use-api';
-import RichTable from 'components/rich-table';
-import CharacterAvatar from 'components/character-avatar';
-import TeamSelector from 'components/team-selector';
-import useTranslate from 'hooks/use-translate';
 import classNames from 'classnames';
+
+import { useInstanciatedCharacters } from '../hooks/use-api';
+import Icon from '../components/icon';
+import RichTable from '../components/rich-table';
+import CharacterAvatar from '../components/character-avatar';
+import TeamSelector from '../components/team-selector';
+import useTranslate from '../hooks/use-translate';
 
 const Dashboard = () => {
   const {

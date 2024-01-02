@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
-import { Team } from 'common/types';
-import RichTable from 'components/rich-table';
-import Input from 'components/input';
-import useTranslate from 'hooks/use-translate';
-import Icon from 'components/icon';
-import CharacterSelector from 'components/character-selector';
-import CharacterAvatar from 'components/character-avatar';
-import { useCharacters } from 'hooks/use-api';
+
+import { Team } from '../../../common/types';
+import useTranslate from '../../../hooks/use-translate';
+import RichTable from '../../../components/rich-table';
+import Input from '../../../components/input';
+import Icon from '../../../components/icon';
+import CharacterSelector from '../../../components/character-selector';
+import CharacterAvatar from '../../../components/character-avatar';
+import { useCharacters } from '../../../hooks/use-api';
 
 interface Props {
   team: Team;

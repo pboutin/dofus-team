@@ -1,5 +1,6 @@
 import { I18n } from 'i18n-js';
-import translations from 'common/translations.json';
+
+import translations from '../common/translations.json';
 
 interface TranslationParams {
   [key: string]: string;

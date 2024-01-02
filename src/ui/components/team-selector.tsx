@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
-import { Team } from 'common/types';
-import { useCharacters, useTeams } from 'hooks/use-api';
 import { useClickAway, useToggle } from 'react-use';
 import classNames from 'classnames';
-import CharacterAvatar from 'components/character-avatar';
+
+import { Team } from '../common/types';
+import { useCharacters, useTeams } from '../hooks/use-api';
+import CharacterAvatar from '../components/character-avatar';
 
 interface Props {
   label: string;

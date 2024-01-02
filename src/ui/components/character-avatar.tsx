@@ -1,7 +1,8 @@
 import React from 'react';
-import { Character } from 'common/types';
-import avatarImages from 'common/images/avatars.json';
 import classNames from 'classnames';
+
+import avatarImages from '../common/images/avatars.json';
+import { Character } from '../common/types';
 
 interface Props {
   character: Character;

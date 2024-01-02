@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { Action, KeyboardShortcut as KeyboardShortcutRow } from 'common/types';
 import { useClickAway, useToggle } from 'react-use';
-import Icon from 'components/icon';
-import useTranslate from 'hooks/use-translate';
 import classNames from 'classnames';
+
+import { Action, KeyboardShortcut as KeyboardShortcutRow } from '../../../common/types';
+import Icon from '../../../components/icon';
+import useTranslate from '../../../hooks/use-translate';
 
 const KEYBIND_MAX_LENGTH = 3;
 

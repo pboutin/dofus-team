@@ -1,10 +1,11 @@
 import React from 'react';
-import { Character } from 'common/types';
-import Icon from 'components/icon';
-import AvatarPicker from 'components/avatar-picker';
-import ClassGenderPicker from 'components/class-gender-picker';
-import Input from 'components/input';
-import useTranslate from 'hooks/use-translate';
+
+import { Character } from '../../../common/types';
+import Icon from '../../../components/icon';
+import AvatarPicker from '../../../components/avatar-picker';
+import ClassGenderPicker from '../../../components/class-gender-picker';
+import Input from '../../../components/input';
+import useTranslate from '../../../hooks/use-translate';
 
 interface Props {
   character: Character;

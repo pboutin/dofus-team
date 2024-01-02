@@ -1,8 +1,9 @@
-import { Action } from 'common/types';
-import KeyboardShortcutRow from 'settings/sections/keyboard-shortcuts/keyboard-shortcut-row';
 import React from 'react';
-import useTranslate from 'hooks/use-translate';
-import { useKeyboardShortcuts, useTeams, useCharacters } from 'hooks/use-api';
+
+import { Action } from '../../../common/types';
+import KeyboardShortcutRow from '../../../settings/sections/keyboard-shortcuts/keyboard-shortcut-row';
+import useTranslate from '../../../hooks/use-translate';
+import { useKeyboardShortcuts, useTeams, useCharacters } from '../../../hooks/use-api';
 
 const KeyboardShortcuts = () => {
   const translate = useTranslate('settings.shortcuts');

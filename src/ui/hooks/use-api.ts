@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Character, GenericModel, InstanciatedCharacter, KeyboardShortcut, Team } from 'common/types';
+
+import { Character, GenericModel, InstanciatedCharacter, KeyboardShortcut, Team } from '../common/types';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 

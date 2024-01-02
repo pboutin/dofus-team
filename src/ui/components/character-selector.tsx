@@ -1,10 +1,10 @@
 import React, { useMemo, useRef } from 'react';
-import { Character } from 'common/types';
-import { useCharacters } from 'hooks/use-api';
 import { useClickAway, useToggle } from 'react-use';
 import classNames from 'classnames';
-import CharacterAvatar from 'components/character-avatar';
-import Icon from 'components/icon';
+
+import { Character } from '../common/types';
+import { useCharacters } from '../hooks/use-api';
+import CharacterAvatar from '../components/character-avatar';
 
 interface Props {
   label: string;

@@ -6,7 +6,7 @@ on:
       - '**'
 
 jobs:
-  code-validation:
+  misc:
     runs-on: ubuntu-latest
 
     steps:

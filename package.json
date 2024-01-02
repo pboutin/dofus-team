@@ -2,14 +2,13 @@
   "name": "dofus-team",
   "version": "1.0.0",
   "description": "Multi-window switcher for Dofus built with Electron",
-  "main": "./dist/main.js",
   "scripts": {
     "dev:electron": "tsc -w -p ./src/electron/tsconfig.json",
     "build:electron": "tsc -p ./src/electron/tsconfig.json",
     "dev:ui": "parcel ./src/ui/styles.css ./src/ui/settings/settings.tsx ./src/ui/dashboard/dashboard.tsx",
     "build:ui": "parcel build ./src/ui/styles.css ./src/ui/settings/settings.tsx ./src/ui/dashboard/dashboard.tsx",
-    "start": "electron .",
-    "debug": "electron . debug",
+    "start": "electron ./dist/main.js",
+    "debug": "electron ./dist/main.js debug",
     "build": "rm -rf dist/ && electron-builder --x64 --windows",
     "format": "prettier --write .",
     "lint": "prettier --check ."

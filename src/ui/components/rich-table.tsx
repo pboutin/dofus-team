@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Reorder, useDragControls } from 'framer-motion';
-import Icon from 'components/icon';
-import classNames from 'classnames';
+
+import Icon from '../components/icon';
 
 interface BodyProps {
   children: React.ReactNode;

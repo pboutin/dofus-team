@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { HashRouter, NavLink, Route, Router, Routes } from 'react-router-dom';
-import Characters from 'settings/sections/characters/characters';
-import KeyboardShortcuts from 'settings/sections/keyboard-shortcuts/keyboard-shortcuts';
-import Teams from 'settings/sections/teams/teams';
-import Icon from 'components/icon';
-import useTranslate from 'hooks/use-translate';
+import { HashRouter, NavLink, Route, Routes } from 'react-router-dom';
+
+import Characters from '../settings/sections/characters/characters';
+import KeyboardShortcuts from '../settings/sections/keyboard-shortcuts/keyboard-shortcuts';
+import Teams from '../settings/sections/teams/teams';
+import Icon from '../components/icon';
+import useTranslate from '../hooks/use-translate';
 
 const Settings = () => {
   const translate = useTranslate('settings');
