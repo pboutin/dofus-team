@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    groups:
+      npm:
+        patterns:
+          - '*'
+    target-branch: 'main'
+    labels:
+      - 'dependabot'
+    versioning-strategy: 'increase'
