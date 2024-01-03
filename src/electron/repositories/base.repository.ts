@@ -37,7 +37,11 @@ export default class BaseRepository<T extends GenericModel> {
     return ids.map((id) => items.find((item) => item.id === id)).filter(Boolean);
   }
 
+  preUpsert(item: Upserted<T>): void {}
+
   upsert(item: Upserted<T>): void {
+    this.preUpsert(item);
+
     const items = this.fetchAll();
     const index = items.findIndex(({ id }: T) => id === item.id);
 
