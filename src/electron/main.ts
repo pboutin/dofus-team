@@ -19,7 +19,7 @@ app.on('ready', async () => {
     instanciateTeam,
   });
 
-  // initializeKeyboard({ repositories, instanciateTeam });
+  initializeKeyboard({ repositories, instanciateTeam });
 
   const { openSettings, openDashboard } = initializeWindows({
     debug,
