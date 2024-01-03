@@ -19,6 +19,14 @@ let dashboardBrowserWindow: BrowserWindow | null = null;
 
 const BASE_HTML_PATH = '../';
 
+let debounceId = null;
+const debounceSettingsSet = (key, value) => {
+  clearTimeout(debounceId);
+  debounceId = setTimeout(async () => {
+    await settings.set(key, value);
+  }, 1000);
+}
+
 export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
   const openSettings = async () => {
     if (settingsBrowserWindow) {
@@ -43,7 +51,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
 
     browserWindow.on('move', async () => {
       const { x, y } = browserWindow.getBounds();
-      await settings.set('settings:position', { x, y });
+      debounceSettingsSet('settings:position', { x, y });
     });
 
     if (debug) {
@@ -81,7 +89,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
 
     browserWindow.on('move', async () => {
       const { x, y } = browserWindow.getBounds();
-      await settings.set('dashboard:position', { x, y });
+      debounceSettingsSet('dashboard:position', { x, y });
     });
 
     if (debug) {
