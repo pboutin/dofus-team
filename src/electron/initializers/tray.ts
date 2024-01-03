@@ -11,7 +11,7 @@ interface Context {
 let tray: Tray | null = null;
 
 export const initializeTray = ({ debug, hardReset, onOpenSettings, onClose }: Context) => {
-  tray = new Tray(path.join(__dirname, '../../build/icon24x24.png'), 'dofus-team');
+  tray = new Tray(path.join(__dirname, '../../build/icon24x24.png'));
 
   tray.setToolTip('DofusTeam');
 
