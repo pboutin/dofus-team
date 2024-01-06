@@ -18,13 +18,13 @@ jobs:
           cache: 'npm'
 
       - name: Install
-        run: npm ci
+        run: make install
 
       - name: Lint
-        run: npm run lint
+        run: make lint
 
-      - name: Build UI
-        run: npm run build:ui
+      - name: Compile UI
+        run: make compile-ui
 
-      - name: Build Electron
-        run: npm run build:electron
+      - name: Compile Electron
+        run: make compile-electron
