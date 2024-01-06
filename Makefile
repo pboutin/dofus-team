@@ -46,7 +46,7 @@ format:
 
 .PHONY: lint
 lint:
-	prettier --check .
+	npx prettier --check .
 
 .PHONY: dev-electron
 dev-electron:
@@ -56,8 +56,8 @@ dev-electron:
 .PHONY: dev-ui
 dev-ui:
 	mkdir -p ./dist
-  cp *.html ./dist/ 
-  npx parcel watch $(PARCEL_ASSETS)
+	cp *.html ./dist/
+	npx parcel watch $(PARCEL_ASSETS)
 
 .PHONY: compile
 compile: compile-ui compile-electron
