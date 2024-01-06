@@ -21,7 +21,7 @@ app.on('ready', async () => {
 
   initializeKeyboard({ repositories, instanciateTeam });
 
-  const { openSettings, openDashboard } = initializeWindows({
+  const { openSettings, openDashboard, setAlwaysOnTop } = initializeWindows({
     debug,
     onOpenedCallbacks: [subscribeWindow],
   });
@@ -29,7 +29,9 @@ app.on('ready', async () => {
   initializeTray({
     debug,
     hardReset,
-    onOpenSettings: openSettings,
+    openDashboard,
+    openSettings,
+    onAlwaysOnTopChange: setAlwaysOnTop,
     onClose: () => app.quit(),
   });
 

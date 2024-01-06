@@ -75,8 +75,8 @@ compile-electron:
 
 .PHONY: start
 start: compile
-	npx electron ./dist/electron/main.js
+	npx electron ./dist/main.js
 
 .PHONY: debug-electron
 debug-electron:
-	npx electron ./dist/electron/main.js debug
+	npx electron ./dist/main.js debug

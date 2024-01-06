@@ -22,8 +22,8 @@ const BASE_HTML_PATH = '../';
 let debounceId = null;
 const debounceSettingsSet = (key, value) => {
   clearTimeout(debounceId);
-  debounceId = setTimeout(async () => {
-    await settings.set(key, value);
+  debounceId = setTimeout(() => {
+    settings.setSync(key, value);
   }, 1000);
 };
 
@@ -31,10 +31,9 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
   const openSettings = async () => {
     if (settingsBrowserWindow) {
       settingsBrowserWindow.show();
-      return settingsBrowserWindow;
     }
 
-    const position = (await settings.get('settings:position')) as PositionSetting;
+    const position = settings.getSync('position') as PositionSetting;
 
     const browserWindow = new BrowserWindow({
       ...(position ?? {}),
@@ -51,7 +50,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
 
     browserWindow.on('move', async () => {
       const { x, y } = browserWindow.getBounds();
-      debounceSettingsSet('settings:position', { x, y });
+      debounceSettingsSet('position', { x, y });
     });
 
     if (debug) {
@@ -69,7 +68,6 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
   const openDashboard = async () => {
     if (dashboardBrowserWindow) {
       dashboardBrowserWindow.show();
-      return dashboardBrowserWindow;
     }
 
     const position = (await settings.get('dashboard:position')) as PositionSetting;
@@ -86,7 +84,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
 
     browserWindow.loadFile(`${BASE_HTML_PATH}dashboard.html`);
     browserWindow.setMenu(null);
-    browserWindow.on('closed', () => app.quit());
+    browserWindow.on('closed', () => (dashboardBrowserWindow = null));
 
     browserWindow.on('move', async () => {
       const { x, y } = browserWindow.getBounds();
@@ -108,5 +106,8 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
   return {
     openSettings,
     openDashboard,
+    setAlwaysOnTop: (alwaysOnTop: boolean) => {
+      dashboardBrowserWindow?.setAlwaysOnTop(alwaysOnTop);
+    },
   };
 };
