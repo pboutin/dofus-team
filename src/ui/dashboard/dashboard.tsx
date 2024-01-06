@@ -22,9 +22,40 @@ const Dashboard = () => {
 
   const translate = useTranslate('dashboard');
 
+  const handleDisableAll = () => {
+    instanciatedCharacters.forEach((instanciatedCharacter) => {
+      upsert({ ...instanciatedCharacter, disabled: true });
+    });
+  };
+
+  const handleEnableAll = () => {
+    instanciatedCharacters.forEach((instanciatedCharacter) => {
+      upsert({ ...instanciatedCharacter, disabled: false });
+    });
+  };
+
   return (
     <>
-      <TeamSelector label={translate('change-team')} onSelect={(team) => instanciateTeam(team.id)} className="m-2" />
+      <div className="flex justify-between p-2">
+        <TeamSelector label={translate('change-team')} onSelect={(team) => instanciateTeam(team.id)} />
+
+        <div className="flex gap-2">
+          <button type="button" className="btn btn-sm btn-primary" onClick={handleDisableAll}>
+            <Icon icon="pause" />
+          </button>
+
+          <button type="button" className="btn btn-sm btn-primary" onClick={handleEnableAll}>
+            <Icon icon="play" />
+          </button>
+
+          <button type="button" className="btn btn-sm btn-primary ml-2" onClick={activatePrevious}>
+            <Icon icon="arrow-left" />
+          </button>
+          <button type="button" className="btn btn-sm btn-primary" onClick={activateNext}>
+            <Icon icon="arrow-right" />
+          </button>
+        </div>
+      </div>
 
       <table className="table table-compact w-full">
         <RichTable.Body onReorder={reorder} ids={instanciatedCharacters.map(({ id }) => id)}>
@@ -48,26 +79,26 @@ const Dashboard = () => {
                     className="btn btn-primary btn-sm btn-circle"
                     onClick={() => activate(instanciatedCharacter.id)}
                   >
-                    <Icon icon="right-to-bracket" />
+                    <Icon icon="up-right-from-square" />
                   </button>
 
                   {instanciatedCharacter.disabled && (
                     <button
                       type="button"
-                      className="btn btn-success btn-sm btn-circle"
+                      className="btn btn-primary btn-sm btn-circle"
                       onClick={() => upsert({ ...instanciatedCharacter, disabled: false })}
                     >
-                      <Icon icon="eye" />
+                      <Icon icon="play" />
                     </button>
                   )}
 
                   {!instanciatedCharacter.disabled && (
                     <button
                       type="button"
-                      className="btn btn-error btn-sm btn-circle"
+                      className="btn btn-primary btn-sm btn-circle"
                       onClick={() => upsert({ ...instanciatedCharacter, disabled: true })}
                     >
-                      <Icon icon="eye-slash" />
+                      <Icon icon="pause" />
                     </button>
                   )}
                 </div>
@@ -76,15 +107,6 @@ const Dashboard = () => {
           ))}
         </RichTable.Body>
       </table>
-
-      <div className="flex justify-center gap-2 mt-2">
-        <button type="button" className="btn btn-sm btn-primary" onClick={activatePrevious}>
-          <Icon icon="arrow-left" />
-        </button>
-        <button type="button" className="btn btn-sm btn-primary" onClick={activateNext}>
-          <Icon icon="arrow-right" />
-        </button>
-      </div>
     </>
   );
 };

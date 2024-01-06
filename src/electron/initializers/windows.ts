@@ -25,7 +25,7 @@ const debounceSettingsSet = (key, value) => {
   debounceId = setTimeout(async () => {
     await settings.set(key, value);
   }, 1000);
-}
+};
 
 export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
   const openSettings = async () => {
@@ -76,9 +76,10 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
 
     const browserWindow = new BrowserWindow({
       ...(position ?? {}),
-      height: 580,
-      width: 600,
+      height: 535,
+      width: 475,
       resizable: false,
+      alwaysOnTop: true,
       webPreferences: WEB_PREFERENCES,
       icon: path.join(__dirname, '../../build/icon.ico'),
     });

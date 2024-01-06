@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Team } from '../common/types';
 import { useCharacters, useTeams } from '../hooks/use-api';
 import CharacterAvatar from '../components/character-avatar';
+import Icon from '../components/icon';
 
 interface Props {
   label: string;
@@ -28,6 +29,7 @@ const TeamSelector = ({ label, onSelect, className }: Props) => {
   return (
     <div ref={ref} className={classNames('dropdown', { 'dropdown-open': isOpened }, className)}>
       <button type="button" className="btn btn-sm btn-secondary w-full" onClick={setIsOpened}>
+        <Icon icon="users" className="mr-2" />
         {label}
       </button>
       <ul className="dropdown-content menu mt-1 p-2 shadow bg-base-300 rounded-box w-80 max-h-80 flex-nowrap overflow-y-scroll overflow-x-hidden">

@@ -8,7 +8,7 @@ export default class KeyboardShortcutRepository extends BaseRepository<KeyboardS
 
   preUpsert(item: Upserted<KeyboardShortcut>) {
     this.fetchAll()
-      .filter(({keybind}) => keybind === item.keybind)
-      .map(({id}) => this.destroy(id))
+      .filter(({ keybind }) => keybind === item.keybind)
+      .map(({ id }) => this.destroy(id));
   }
 }

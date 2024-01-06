@@ -80,7 +80,7 @@ const KeyboardShortcuts = () => {
                       id: existingKeyboardShortcut?.id,
                       action: Action.GOTO_CHARACTER,
                       keybind: newKeybind,
-                      argument: character.id
+                      argument: character.id,
                     })
                   }
                   onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
@@ -121,7 +121,7 @@ const KeyboardShortcuts = () => {
                       id: existingKeyboardShortcut?.id,
                       action: Action.SWITCH_TEAM,
                       keybind: newKeybind,
-                      argument: team.id
+                      argument: team.id,
                     })
                   }
                   onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
