@@ -39,6 +39,7 @@ export const initializeApi = ({ repositories, instanciateTeam }: Context) => {
   const subscribeWindow = (window: Electron.BrowserWindow) => {
     Object.values(repositories).forEach((repository) => {
       repository.onChange((items) => {
+        if (window.isDestroyed()) return;
         window.webContents.send(`${repository.modelName}:changed`, items);
       });
     });
