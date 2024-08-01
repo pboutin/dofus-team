@@ -38,7 +38,7 @@ app.on('ready', async () => {
   initializeDofusWindows({ repositories, debug });
 
   const configuredTeams = repositories.teams.fetchAll();
-  if (configuredTeams.length === 0) {
+  if (configuredTeams.length === 0 || debug) {
     openSettings();
   } else {
     instanciateTeam(configuredTeams[0].id);
