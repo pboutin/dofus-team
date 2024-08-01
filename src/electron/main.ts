@@ -12,14 +12,14 @@ const debug = process.argv[2] === 'debug';
 app.on('ready', async () => {
   console.log(`Starting Dofus-Team in ${debug ? 'debug' : 'prod'} mode`);
 
-  const { repositories, instanciateTeam, hardReset } = initializeStore({ debug });
+  const { repositories, instantiateTeam, hardReset } = initializeStore({ debug });
 
   const { subscribeWindow } = initializeApi({
     repositories,
-    instanciateTeam,
+    instantiateTeam,
   });
 
-  initializeKeyboard({ repositories, instanciateTeam });
+  initializeKeyboard({ repositories, instantiateTeam });
 
   const { openSettings, openDashboard, setAlwaysOnTop } = initializeWindows({
     debug,
@@ -41,7 +41,7 @@ app.on('ready', async () => {
   if (configuredTeams.length === 0 || debug) {
     openSettings();
   } else {
-    instanciateTeam(configuredTeams[0].id);
+    instantiateTeam(configuredTeams[0].id);
   }
 
   openDashboard();

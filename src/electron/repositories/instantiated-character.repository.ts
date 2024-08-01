@@ -1,15 +1,15 @@
-import { Character, InstanciatedCharacter } from '../common/types';
+import { Character, InstantiatedCharacter } from '../common/types';
 import BaseRepository from './base.repository';
 
-export default class InstanciatedCharacterRepository extends BaseRepository<InstanciatedCharacter> {
+export default class InstantiatedCharacterRepository extends BaseRepository<InstantiatedCharacter> {
   get modelName() {
-    return 'InstanciatedCharacter';
+    return 'InstantiatedCharacter';
   }
 
-  onActiveCharacterChange(callback: (character: InstanciatedCharacter) => void) {
+  onActiveCharacterChange(callback: (character: InstantiatedCharacter) => void) {
     this.store.onDidChange(
       this.modelName,
-      (characters: InstanciatedCharacter[], previousCharacters?: InstanciatedCharacter[]) => {
+      (characters: InstantiatedCharacter[], previousCharacters?: InstantiatedCharacter[]) => {
         const activeCharacter = characters.find((character) => character.active);
         const previousActiveCharacter = previousCharacters?.find((character) => character.active);
 
@@ -20,14 +20,14 @@ export default class InstanciatedCharacterRepository extends BaseRepository<Inst
     );
   }
 
-  instanciateCharacters(characters: Character[]) {
-    const instanciatedCharacters: InstanciatedCharacter[] = characters.map((character, index) => ({
+  instantiateCharacters(characters: Character[]) {
+    const instantiatedCharacters: InstantiatedCharacter[] = characters.map((character, index) => ({
       ...character,
       active: index === 0,
       disabled: false,
     }));
 
-    this.store.set(this.modelName, instanciatedCharacters);
+    this.store.set(this.modelName, instantiatedCharacters);
   }
 
   activate(id: string) {

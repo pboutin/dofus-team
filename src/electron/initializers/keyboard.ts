@@ -5,23 +5,23 @@ import { Repositories } from './store';
 
 interface Context {
   repositories: Repositories;
-  instanciateTeam: (teamId: string) => void;
+  instantiateTeam: (teamId: string) => void;
 }
 
-export const initializeKeyboard = ({ repositories, instanciateTeam }: Context) => {
+export const initializeKeyboard = ({ repositories, instantiateTeam }: Context) => {
   const keyboardShortcuts = repositories.keyboardShortcuts.fetchAll();
 
-  registerKeyboardShortcuts(keyboardShortcuts, repositories, instanciateTeam);
+  registerKeyboardShortcuts(keyboardShortcuts, repositories, instantiateTeam);
 
   repositories.keyboardShortcuts.onChange((keyboardShortcuts) =>
-    registerKeyboardShortcuts(keyboardShortcuts, repositories, instanciateTeam),
+    registerKeyboardShortcuts(keyboardShortcuts, repositories, instantiateTeam),
   );
 };
 
 const registerKeyboardShortcuts = (
   keyboardShortcuts: KeyboardShortcut[],
   repositories: Repositories,
-  instanciateTeam: (teamId: string) => void,
+  instantiateTeam: (teamId: string) => void,
 ) => {
   globalShortcut.unregisterAll();
 
@@ -29,10 +29,10 @@ const registerKeyboardShortcuts = (
     globalShortcut.register(keyboardShortcut.keybind, () => {
       switch (keyboardShortcut.action) {
         case Action.GOTO_NEXT:
-          repositories.instanciatedCharacters.activateNext();
+          repositories.instantiatedCharacters.activateNext();
           break;
         case Action.GOTO_PREVIOUS:
-          repositories.instanciatedCharacters.activatePrevious();
+          repositories.instantiatedCharacters.activatePrevious();
           break;
         case Action.GOTO_1:
         case Action.GOTO_2:
@@ -42,15 +42,15 @@ const registerKeyboardShortcuts = (
         case Action.GOTO_6:
         case Action.GOTO_7:
         case Action.GOTO_8:
-          repositories.instanciatedCharacters.activateAt(
+          repositories.instantiatedCharacters.activateAt(
             parseInt(keyboardShortcut.action.replace('GOTO_', ''), 10) - 1,
           );
           break;
         case Action.GOTO_CHARACTER:
-          repositories.instanciatedCharacters.activate(keyboardShortcut.argument);
+          repositories.instantiatedCharacters.activate(keyboardShortcut.argument);
           break;
         case Action.SWITCH_TEAM:
-          instanciateTeam(keyboardShortcut.argument);
+          instantiateTeam(keyboardShortcut.argument);
           break;
         default:
           throw new Error(`Unknown action ${keyboardShortcut.action}`);

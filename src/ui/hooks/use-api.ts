@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Character, GenericModel, InstanciatedCharacter, KeyboardShortcut, Team } from '../common/types';
+import { Character, GenericModel, InstantiatedCharacter, KeyboardShortcut, Team } from '../common/types';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -64,12 +64,12 @@ export function useTeams() {
   return useApi<Team>('Team');
 }
 
-export function useInstanciatedCharacters() {
-  const modelName = 'InstanciatedCharacter';
+export function useInstantiatedCharacters() {
+  const modelName = 'InstantiatedCharacter';
   return {
-    ...useApi<InstanciatedCharacter>(modelName),
-    instanciateTeam: (teamId: string) => {
-      ipcRenderer.invoke(`${modelName}:instanciateTeam`, teamId);
+    ...useApi<InstantiatedCharacter>(modelName),
+    instantiateTeam: (teamId: string) => {
+      ipcRenderer.invoke(`${modelName}:instantiateTeam`, teamId);
     },
     activate: (characterId: string) => {
       ipcRenderer.invoke(`${modelName}:activate`, characterId);

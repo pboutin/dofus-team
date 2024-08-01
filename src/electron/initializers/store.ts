@@ -3,11 +3,11 @@ import Store from 'electron-store';
 import CharacterRepository from '../repositories/character.repository';
 import KeyboardShortcutRepository from '../repositories/keyboard-shortcut.repository';
 import TeamRepository from '../repositories/team.repository';
-import InstanciatedCharacterRepository from '../repositories/instanciated-character.repository';
+import InstantiatedCharacterRepository from '../repositories/instantiated-character.repository';
 
 export type Repositories = {
   characters: CharacterRepository;
-  instanciatedCharacters: InstanciatedCharacterRepository;
+  instantiatedCharacters: InstantiatedCharacterRepository;
   keyboardShortcuts: KeyboardShortcutRepository;
   teams: TeamRepository;
 };
@@ -16,7 +16,7 @@ export type Repository =
   | CharacterRepository
   | KeyboardShortcutRepository
   | TeamRepository
-  | InstanciatedCharacterRepository;
+  | InstantiatedCharacterRepository;
 
 interface Context {
   debug: boolean;
@@ -27,7 +27,7 @@ export const initializeStore = ({ debug }: Context) => {
     characters: new CharacterRepository(),
     keyboardShortcuts: new KeyboardShortcutRepository(),
     teams: new TeamRepository(),
-    instanciatedCharacters: new InstanciatedCharacterRepository(),
+    instantiatedCharacters: new InstantiatedCharacterRepository(),
   };
 
   const store = new Store({
@@ -52,17 +52,17 @@ export const initializeStore = ({ debug }: Context) => {
     repository.registerStore(store);
   });
 
-  const instanciateTeam = (teamId: string) => {
+  const instantiateTeam = (teamId: string) => {
     const team = repositories.teams.fetchById(teamId);
     if (!team) return;
 
     const characters = repositories.characters.fetchByIds(team.characterIds);
-    repositories.instanciatedCharacters.instanciateCharacters(characters);
+    repositories.instantiatedCharacters.instantiateCharacters(characters);
   };
 
   const hardReset = () => {
     store.clear();
   };
 
-  return { repositories, instanciateTeam, hardReset };
+  return { repositories, instantiateTeam: instantiateTeam, hardReset };
 };

@@ -49,7 +49,7 @@ export interface Character {
   avatar: Avatar;
 }
 
-export interface InstanciatedCharacter extends Character {
+export interface InstantiatedCharacter extends Character {
   disabled: boolean;
   active: boolean;
 }

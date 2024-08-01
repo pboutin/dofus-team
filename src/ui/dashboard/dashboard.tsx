@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import classNames from 'classnames';
 
-import { useInstanciatedCharacters } from '../hooks/use-api';
+import { useInstantiatedCharacters } from '../hooks/use-api';
 import Icon from '../components/icon';
 import RichTable from '../components/rich-table';
 import CharacterAvatar from '../components/character-avatar';
@@ -11,39 +11,39 @@ import useTranslate from '../hooks/use-translate';
 
 const Dashboard = () => {
   const {
-    items: instanciatedCharacters,
+    items: instantiatedCharacters,
     upsert,
     reorder,
-    instanciateTeam,
+    instantiateTeam: instantiateTeam,
     activate,
     activateNext,
     activatePrevious,
-  } = useInstanciatedCharacters();
+  } = useInstantiatedCharacters();
 
   const translate = useTranslate('dashboard');
 
   const handleDisableAll = () => {
-    instanciatedCharacters.forEach((instanciatedCharacter) => {
-      upsert({ ...instanciatedCharacter, disabled: true });
+    instantiatedCharacters.forEach((instantiatedCharacter) => {
+      upsert({ ...instantiatedCharacter, disabled: true });
     });
   };
 
   const handleEnableAll = () => {
-    instanciatedCharacters.forEach((instanciatedCharacter) => {
-      upsert({ ...instanciatedCharacter, disabled: false });
+    instantiatedCharacters.forEach((instantiatedCharacter) => {
+      upsert({ ...instantiatedCharacter, disabled: false });
     });
   };
 
   const handleToggleAll = () => {
-    instanciatedCharacters.forEach((instanciatedCharacter) => {
-      upsert({ ...instanciatedCharacter, disabled: !instanciatedCharacter.disabled });
+    instantiatedCharacters.forEach((instantiatedCharacter) => {
+      upsert({ ...instantiatedCharacter, disabled: !instantiatedCharacter.disabled });
     });
   };
 
   return (
     <>
       <div className="flex justify-between p-2">
-        <TeamSelector label={translate('change-team')} onSelect={(team) => instanciateTeam(team.id)} />
+        <TeamSelector label={translate('change-team')} onSelect={(team) => instantiateTeam(team.id)} />
 
         <div className="flex gap-2">
           <button type="button" className="btn btn-sm btn-primary" onClick={handleToggleAll}>
@@ -68,18 +68,18 @@ const Dashboard = () => {
       </div>
 
       <table className="table table-compact w-full">
-        <RichTable.Body onReorder={reorder} ids={instanciatedCharacters.map(({ id }) => id)}>
-          {instanciatedCharacters.map((instanciatedCharacter) => (
-            <RichTable.Row id={instanciatedCharacter.id} key={instanciatedCharacter.id}>
+        <RichTable.Body onReorder={reorder} ids={instantiatedCharacters.map(({ id }) => id)}>
+          {instantiatedCharacters.map((instantiatedCharacter) => (
+            <RichTable.Row id={instantiatedCharacter.id} key={instantiatedCharacter.id}>
               <td>
                 <div
                   className={classNames('flex items-center gap-3', {
-                    'opacity-30': instanciatedCharacter.disabled,
+                    'opacity-30': instantiatedCharacter.disabled,
                   })}
                 >
-                  {instanciatedCharacter.active && <Icon icon="chevron-right" />}
-                  <CharacterAvatar character={instanciatedCharacter} />
-                  {instanciatedCharacter.name}
+                  {instantiatedCharacter.active && <Icon icon="chevron-right" />}
+                  <CharacterAvatar character={instantiatedCharacter} />
+                  {instantiatedCharacter.name}
                 </div>
               </td>
               <td>
@@ -87,26 +87,26 @@ const Dashboard = () => {
                   <button
                     type="button"
                     className="btn btn-primary btn-sm btn-circle"
-                    onClick={() => activate(instanciatedCharacter.id)}
+                    onClick={() => activate(instantiatedCharacter.id)}
                   >
                     <Icon icon="up-right-from-square" />
                   </button>
 
-                  {instanciatedCharacter.disabled && (
+                  {instantiatedCharacter.disabled && (
                     <button
                       type="button"
                       className="btn btn-primary btn-sm btn-circle"
-                      onClick={() => upsert({ ...instanciatedCharacter, disabled: false })}
+                      onClick={() => upsert({ ...instantiatedCharacter, disabled: false })}
                     >
                       <Icon icon="play" />
                     </button>
                   )}
 
-                  {!instanciatedCharacter.disabled && (
+                  {!instantiatedCharacter.disabled && (
                     <button
                       type="button"
                       className="btn btn-primary btn-sm btn-circle"
-                      onClick={() => upsert({ ...instanciatedCharacter, disabled: true })}
+                      onClick={() => upsert({ ...instantiatedCharacter, disabled: true })}
                     >
                       <Icon icon="pause" />
                     </button>
