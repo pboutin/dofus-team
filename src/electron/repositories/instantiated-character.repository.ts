@@ -6,6 +6,16 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
     return 'InstantiatedCharacter';
   }
 
+  destroy(id: string): void {
+    const destroyingCharacter = this.fetchById(id);
+
+    super.destroy(id);
+
+    if (destroyingCharacter.active) {
+      this.activateNext();
+    }
+  }
+
   onActiveCharacterChange(callback: (character: InstantiatedCharacter) => void) {
     this.store.onDidChange(
       this.modelName,
@@ -18,6 +28,10 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
         callback(activeCharacter);
       },
     );
+  }
+
+  clear() {
+    this.store.set(this.modelName, []);
   }
 
   instantiateCharacters(characters: Character[]) {
@@ -54,10 +68,19 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
   activateNext() {
     const characters = this.fetchAll();
 
-    const activeCharacterIndex = characters.findIndex((character) => character.active);
+    if (characters.length === 0) {
+      return;
+    }
+
+    let activeCharacterIndex = characters.findIndex((character) => character.active);
 
     if (activeCharacterIndex === -1) {
-      return;
+      if (!characters[0].disabled) {
+        this.activateAt(0);
+        return;
+      } else {
+        activeCharacterIndex = 0;
+      }
     }
 
     let nextCharacterIndex = activeCharacterIndex;
@@ -76,10 +99,14 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
   activatePrevious() {
     const characters = this.fetchAll();
 
+    if (characters.length === 0) {
+      return;
+    }
+
     const activeCharacterIndex = characters.findIndex((character) => character.active);
 
     if (activeCharacterIndex === -1) {
-      return;
+      return this.activateNext();
     }
 
     let previousCharacterIndex = activeCharacterIndex;

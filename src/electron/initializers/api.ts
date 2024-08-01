@@ -24,6 +24,10 @@ export const initializeApi = ({ repositories, instantiateTeam }: Context) => {
     instantiateTeam(teamId);
   });
 
+  ipcMain.handle(`${repositories.instantiatedCharacters.modelName}:clear`, (_, characterId: string) => {
+    repositories.instantiatedCharacters.clear();
+  });
+
   ipcMain.handle(`${repositories.instantiatedCharacters.modelName}:activate`, (_, characterId: string) => {
     repositories.instantiatedCharacters.activate(characterId);
   });

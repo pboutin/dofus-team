@@ -18,6 +18,7 @@ const translations = {
   },
   dashboard: {
     'change-team': "Changer d'équipe",
+    'add-character': 'Ajouter un personnage',
   },
   settings: {
     characters: {

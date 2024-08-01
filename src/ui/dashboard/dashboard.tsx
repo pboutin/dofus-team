@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import classNames from 'classnames';
 
@@ -8,11 +8,14 @@ import RichTable from '../components/rich-table';
 import CharacterAvatar from '../components/character-avatar';
 import TeamSelector from '../components/team-selector';
 import useTranslate from '../hooks/use-translate';
+import CharacterSelector from 'components/character-selector';
 
 const Dashboard = () => {
   const {
     items: instantiatedCharacters,
     upsert,
+    clear,
+    destroy,
     reorder,
     instantiateTeam: instantiateTeam,
     activate,
@@ -21,6 +24,8 @@ const Dashboard = () => {
   } = useInstantiatedCharacters();
 
   const translate = useTranslate('dashboard');
+
+  const userIds = useMemo(() => instantiatedCharacters.map(({ id }) => id), [instantiatedCharacters]);
 
   const handleDisableAll = () => {
     instantiatedCharacters.forEach((instantiatedCharacter) => {
@@ -42,27 +47,42 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="flex justify-between p-2">
-        <TeamSelector label={translate('change-team')} onSelect={(team) => instantiateTeam(team.id)} />
+      <div className="flex flex-col gap-2 p-2">
+        <CharacterSelector
+          label={translate('add-character')}
+          excludeIds={userIds}
+          className=""
+          onSelect={(character) => upsert({ ...character, active: false, disabled: false })}
+        />
 
-        <div className="flex gap-2">
-          <button type="button" className="btn btn-sm btn-primary" onClick={handleToggleAll}>
-            <Icon icon="rotate" />
-          </button>
+        <TeamSelector label={translate('change-team')} className="" onSelect={(team) => instantiateTeam(team.id)} />
 
-          <button type="button" className="btn btn-sm btn-primary" onClick={handleDisableAll}>
-            <Icon icon="pause" />
-          </button>
+        <div className="flex justify-between mt-2 gap-2">
+          <div className="flex gap-2">
+            <button type="button" className="btn btn-sm btn-primary" onClick={handleEnableAll}>
+              <Icon icon="play" />
+            </button>
 
-          <button type="button" className="btn btn-sm btn-primary" onClick={handleEnableAll}>
-            <Icon icon="play" />
-          </button>
+            <button type="button" className="btn btn-sm btn-primary" onClick={handleDisableAll}>
+              <Icon icon="pause" />
+            </button>
 
-          <button type="button" className="btn btn-sm btn-primary ml-2" onClick={activatePrevious}>
-            <Icon icon="arrow-left" />
-          </button>
-          <button type="button" className="btn btn-sm btn-primary" onClick={activateNext}>
-            <Icon icon="arrow-right" />
+            <button type="button" className="btn btn-sm btn-primary" onClick={handleToggleAll}>
+              <Icon icon="rotate" />
+            </button>
+          </div>
+
+          <div className="flex gap-2">
+            <button type="button" className="btn btn-sm btn-primary ml-2" onClick={activatePrevious}>
+              <Icon icon="arrow-left" />
+            </button>
+            <button type="button" className="btn btn-sm btn-primary" onClick={activateNext}>
+              <Icon icon="arrow-right" />
+            </button>
+          </div>
+
+          <button type="button" className="btn btn-sm btn-error btn-circle" onClick={clear}>
+            <Icon icon="trash" />
           </button>
         </div>
       </div>
@@ -111,6 +131,14 @@ const Dashboard = () => {
                       <Icon icon="pause" />
                     </button>
                   )}
+
+                  <button
+                    type="button"
+                    className="btn btn-error btn-sm btn-circle ml-1"
+                    onClick={() => destroy(instantiatedCharacter.id)}
+                  >
+                    <Icon icon="trash" />
+                  </button>
                 </div>
               </td>
             </RichTable.Row>

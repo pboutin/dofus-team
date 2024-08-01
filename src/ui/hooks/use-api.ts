@@ -68,6 +68,9 @@ export function useInstantiatedCharacters() {
   const modelName = 'InstantiatedCharacter';
   return {
     ...useApi<InstantiatedCharacter>(modelName),
+    clear: () => {
+      ipcRenderer.invoke(`${modelName}:clear`);
+    },
     instantiateTeam: (teamId: string) => {
       ipcRenderer.invoke(`${modelName}:instantiateTeam`, teamId);
     },

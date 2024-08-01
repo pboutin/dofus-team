@@ -74,7 +74,7 @@ export const initializeWindows = ({ debug, onOpenedCallbacks }: Context) => {
 
     const browserWindow = new BrowserWindow({
       ...(position ?? {}),
-      height: 535,
+      height: 620,
       width: 475,
       resizable: false,
       alwaysOnTop: true,

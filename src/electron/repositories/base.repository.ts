@@ -4,13 +4,7 @@ import crypto from 'crypto';
 import { GenericModel, Upserted } from '../common/types';
 
 export default class BaseRepository<T extends GenericModel> {
-  private class;
-
   protected store: Store | undefined = undefined;
-
-  constructor() {
-    this.class = BaseRepository<T>;
-  }
 
   get modelName(): string {
     throw new Error('modelName not implemented');
