@@ -34,12 +34,22 @@ const Dashboard = () => {
     });
   };
 
+  const handleToggleAll = () => {
+    instanciatedCharacters.forEach((instanciatedCharacter) => {
+      upsert({ ...instanciatedCharacter, disabled: !instanciatedCharacter.disabled });
+    });
+  };
+
   return (
     <>
       <div className="flex justify-between p-2">
         <TeamSelector label={translate('change-team')} onSelect={(team) => instanciateTeam(team.id)} />
 
         <div className="flex gap-2">
+          <button type="button" className="btn btn-sm btn-primary" onClick={handleToggleAll}>
+            <Icon icon="rotate" />
+          </button>
+
           <button type="button" className="btn btn-sm btn-primary" onClick={handleDisableAll}>
             <Icon icon="pause" />
           </button>
