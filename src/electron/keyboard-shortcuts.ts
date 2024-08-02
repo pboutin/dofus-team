@@ -10,9 +10,11 @@ export default class KeyboardShortcuts {
     private instantiatedCharacterRepository: InstantiatedCharacterRepository,
     private keyboardShortcutRepository: KeyboardShortcutRepository,
   ) {
-    this.registerKeyboardShortcuts = this.registerKeyboardShortcuts.bind(this);
+    this.registerKeyboardShortcuts(this.keyboardShortcutRepository.fetchAll());
 
-    this.keyboardShortcutRepository.onChange(this.registerKeyboardShortcuts);
+    this.keyboardShortcutRepository.onChange((keyboardShortcuts) => {
+      this.registerKeyboardShortcuts(keyboardShortcuts);
+    });
   }
 
   private registerKeyboardShortcuts(keyboardShortcuts: KeyboardShortcut[]) {

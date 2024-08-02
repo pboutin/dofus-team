@@ -9,6 +9,7 @@ import SettingsWindow from './windows/settings.window';
 import DashboardWindow from './windows/dashboard.window';
 import TeamRepository from './repositories/team.repository';
 import SystemTray from './system-tray';
+import DofusWindows from './dofus-windows';
 
 const debug = process.argv[2] === 'debug';
 
@@ -34,6 +35,9 @@ app.on('ready', async () => {
 
   // Initialize system tray
   container.resolve(SystemTray);
+
+  // Initialize DofusWindows handler
+  container.resolve(DofusWindows);
 
   const configuredTeams = teamsRepository.fetchAll();
   if (configuredTeams.length === 0 || debug) {
