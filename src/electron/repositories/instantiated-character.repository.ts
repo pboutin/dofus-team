@@ -1,9 +1,58 @@
-import { Character, InstantiatedCharacter } from '../common/types';
-import BaseRepository from './base.repository';
+import { ipcMain } from 'electron';
+import Store from 'electron-store';
+import { inject, singleton } from 'tsyringe';
+import { InstantiatedCharacter } from '../common/types';
+import BaseRepository from './_base.repository';
+import CharacterRepository from './character.repository';
+import TeamRepository from './team.repository';
 
+@singleton()
 export default class InstantiatedCharacterRepository extends BaseRepository<InstantiatedCharacter> {
+  constructor(
+    @inject('store') protected store: Store,
+    private teamRepository: TeamRepository,
+    private characterRepository: CharacterRepository,
+  ) {
+    super();
+
+    ipcMain.handle(`${this.modelName}:instantiateTeam`, (_, teamId: string) => {
+      this.instantiateTeam(teamId);
+    });
+
+    ipcMain.handle(`${this.modelName}:clear`, () => {
+      this.clear();
+    });
+
+    ipcMain.handle(`${this.modelName}:activate`, (_, characterId: string) => {
+      this.activate(characterId);
+    });
+
+    ipcMain.handle(`${this.modelName}:activateNext`, () => {
+      this.activateNext();
+    });
+
+    ipcMain.handle(`${this.modelName}:activatePrevious`, () => {
+      this.activatePrevious();
+    });
+  }
+
   get modelName() {
     return 'InstantiatedCharacter';
+  }
+
+  instantiateTeam(teamId: string) {
+    const team = this.teamRepository.fetchById(teamId);
+    if (!team) return;
+
+    const characters = this.characterRepository.fetchByIds(team.characterIds);
+
+    const instantiatedCharacters: InstantiatedCharacter[] = characters.map((character, index) => ({
+      ...character,
+      active: index === 0,
+      disabled: false,
+    }));
+
+    this.store.set(this.modelName, instantiatedCharacters);
   }
 
   destroy(id: string): void {
@@ -32,16 +81,6 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
 
   clear() {
     this.store.set(this.modelName, []);
-  }
-
-  instantiateCharacters(characters: Character[]) {
-    const instantiatedCharacters: InstantiatedCharacter[] = characters.map((character, index) => ({
-      ...character,
-      active: index === 0,
-      disabled: false,
-    }));
-
-    this.store.set(this.modelName, instantiatedCharacters);
   }
 
   activate(id: string) {

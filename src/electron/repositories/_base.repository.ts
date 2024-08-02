@@ -1,21 +1,26 @@
+import { ipcMain } from 'electron';
 import Store from 'electron-store';
 import crypto from 'crypto';
 
 import { GenericModel, Upserted } from '../common/types';
 
 export default class BaseRepository<T extends GenericModel> {
-  protected store: Store | undefined = undefined;
+  protected store: Store;
+
+  constructor() {
+    ipcMain.handle(`${this.modelName}:fetchAll`, () => this.fetchAll());
+    ipcMain.handle(`${this.modelName}:upsert`, (_, data: any) => this.upsert(data));
+    ipcMain.handle(`${this.modelName}:destroy`, (_, id: string) => this.destroy(id));
+    ipcMain.handle(`${this.modelName}:duplicate`, (_, id: string) => this.duplicate(id));
+    ipcMain.handle(`${this.modelName}:reorder`, (_, ids: string[]) => this.reorder(ids));
+  }
 
   get modelName(): string {
     throw new Error('modelName not implemented');
   }
 
-  registerStore(store: Store): void {
-    this.store = store;
-  }
-
-  onChange(callback: (items: T[]) => void): void {
-    this.store.onDidChange(this.modelName, callback);
+  onChange(callback: (items: T[]) => void) {
+    return this.store.onDidChange(this.modelName, callback);
   }
 
   fetchAll(): T[] {

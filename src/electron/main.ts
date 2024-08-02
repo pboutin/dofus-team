@@ -1,48 +1,46 @@
+import 'reflect-metadata';
 import { app } from 'electron';
+import Store from 'electron-store';
+import { container } from 'tsyringe';
 
-import { initializeStore } from './initializers/store';
-import { initializeApi } from './initializers/api';
-import { initializeKeyboard } from './initializers/keyboard';
-import { initializeWindows } from './initializers/windows';
-import { initializeTray } from './initializers/tray';
-import { initializeDofusWindows } from './initializers/dofus-windows';
+import KeyboardShortcuts from './keyboard-shortcuts';
+import InstantiatedCharacterRepository from './repositories/instantiated-character.repository';
+import SettingsWindow from './windows/settings.window';
+import DashboardWindow from './windows/dashboard.window';
+import TeamRepository from './repositories/team.repository';
+import SystemTray from './system-tray';
 
 const debug = process.argv[2] === 'debug';
+
+export interface AppContext {
+  debug: boolean;
+}
 
 app.on('ready', async () => {
   console.log(`Starting Dofus-Team in ${debug ? 'debug' : 'prod'} mode`);
 
-  const { repositories, instantiateTeam, hardReset } = initializeStore({ debug });
+  const store = new Store();
 
-  const { subscribeWindow } = initializeApi({
-    repositories,
-    instantiateTeam,
-  });
+  container.registerInstance('store', store);
+  container.registerInstance('appContext', { debug });
 
-  initializeKeyboard({ repositories, instantiateTeam });
+  const settingsWindow = container.resolve(SettingsWindow);
+  const dashboardWindow = container.resolve(DashboardWindow);
+  const instantiatedCharacterRepository = container.resolve(InstantiatedCharacterRepository);
+  const teamsRepository = container.resolve(TeamRepository);
 
-  const { openSettings, openDashboard, setAlwaysOnTop } = initializeWindows({
-    debug,
-    onOpenedCallbacks: [subscribeWindow],
-  });
+  // Initialize keyboard shortcuts
+  container.resolve(KeyboardShortcuts);
 
-  initializeTray({
-    debug,
-    hardReset,
-    openDashboard,
-    openSettings,
-    onAlwaysOnTopChange: setAlwaysOnTop,
-    onClose: () => app.quit(),
-  });
+  // Initialize system tray
+  container.resolve(SystemTray);
 
-  initializeDofusWindows({ repositories, debug });
-
-  const configuredTeams = repositories.teams.fetchAll();
+  const configuredTeams = teamsRepository.fetchAll();
   if (configuredTeams.length === 0 || debug) {
-    openSettings();
+    settingsWindow.open();
   } else {
-    instantiateTeam(configuredTeams[0].id);
+    instantiatedCharacterRepository.instantiateTeam(configuredTeams[0].id);
   }
 
-  openDashboard();
+  dashboardWindow.open();
 });
