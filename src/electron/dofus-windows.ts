@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe';
 import InstantiatedCharacterRepository from './repositories/instantiated-character.repository';
-import { focusDofusWindow } from './system';
+import { focusDofusWindow } from './dofus-windows-adapters/active';
 
 @singleton()
 export default class DofusWindows {
