@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { Class, Gender } from '../common/types';
 import classImages from './images/classes';
+import { Class, Gender } from 'src/types';
 
 interface ClassAndGender {
   class: Class;

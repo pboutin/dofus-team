@@ -1,6 +1,6 @@
 import Store from 'electron-store';
 import { inject, singleton } from 'tsyringe';
-import { Character } from '../common/types';
+import { Character } from '../../types';
 import BaseRepository from './_base.repository';
 import TeamRepository from './team.repository';
 

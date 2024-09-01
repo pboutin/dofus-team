@@ -3,13 +3,11 @@ import BaseWindow from './_base.window';
 import CharacterRepository from '../repositories/character.repository';
 import KeyboardShortcutRepository from '../repositories/keyboard-shortcut.repository';
 import TeamRepository from '../repositories/team.repository';
-import { AppContext } from '../main';
 import InstantiatedCharacterRepository from '../repositories/instantiated-character.repository';
 
 @singleton()
 export default class SettingsWindow extends BaseWindow {
   constructor(
-    @inject('appContext') protected appContext: AppContext,
     private characterRepository: CharacterRepository,
     private teamRepository: TeamRepository,
     private keyboardShortcutRepository: KeyboardShortcutRepository,

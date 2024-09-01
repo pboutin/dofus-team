@@ -2,13 +2,13 @@ import React, { useRef, useState } from 'react';
 import { useClickAway, useToggle } from 'react-use';
 import classNames from 'classnames';
 
-import { Action, KeyboardShortcut as KeyboardShortcutRow } from '../../../common/types';
+import { Action, KeyboardShortcut as KeyboardShortcutRow } from 'src/types';
 import Icon from '../../../components/icon';
 import useTranslate from '../../../hooks/use-translate';
 
 const KEYBIND_MAX_LENGTH = 3;
 
-const ELECTRON_TO_DISPLAY = {
+const ELECTRON_TO_DISPLAY: Record<string, string> = {
   CommandOrControl: 'Ctrl',
   Up: '↑',
   Down: '↓',

@@ -2,10 +2,10 @@ import React, { useRef } from 'react';
 import { useClickAway, useToggle } from 'react-use';
 import classNames from 'classnames';
 
-import { Team } from '../common/types';
 import { useCharacters, useTeams } from '../hooks/use-api';
 import CharacterAvatar from '../components/character-avatar';
 import Icon from '../components/icon';
+import { Team } from 'src/types';
 
 interface Props {
   label: string;
@@ -38,7 +38,7 @@ const TeamSelector = ({ label, onSelect, className }: Props) => {
             <a className="flex-col items-start" onClick={() => handleSelect(team)}>
               <div>{team.name}</div>
               <div className="flex gap-2 w-full">
-                {team.characterIds.map((characterId) => {
+                {team.characterIds.map((characterId: string) => {
                   const character = charactersMap.get(characterId);
                   if (!character) return null;
 

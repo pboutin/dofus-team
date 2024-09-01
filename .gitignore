@@ -1,4 +1,5 @@
 node_modules/
-.parcel-cache/
 dist/
+.vite/
+.vscode/
 src/electron/dofus-windows-adapters/active.js

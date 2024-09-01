@@ -1,13 +1,12 @@
 import classNames from 'classnames';
 import React from 'react';
-import { createRoot } from 'react-dom/client';
 import { HashRouter, NavLink, Route, Routes } from 'react-router-dom';
 
-import Characters from '../settings/sections/characters/characters';
-import KeyboardShortcuts from '../settings/sections/keyboard-shortcuts/keyboard-shortcuts';
-import Teams from '../settings/sections/teams/teams';
 import Icon from '../components/icon';
 import useTranslate from '../hooks/use-translate';
+import Characters from 'src/ui/windows/settings/characters/characters';
+import Teams from 'src/ui/windows/settings/teams/teams';
+import KeyboardShortcuts from 'src/ui/windows/settings/keyboard-shortcuts/keyboard-shortcuts';
 
 const Settings = () => {
   const translate = useTranslate('settings');
@@ -45,5 +44,4 @@ const Settings = () => {
   );
 };
 
-const rootElement = document.getElementById('root')!;
-createRoot(rootElement).render(<Settings />);
+export default Settings;

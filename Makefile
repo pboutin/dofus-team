@@ -48,35 +48,6 @@ format:
 lint:
 	npx prettier --check .
 
-.PHONY: dev-electron
-dev-electron:
-	mkdir -p ./dist
-	npx tsc -w -p ./src/electron/tsconfig.json
-
-.PHONY: dev-ui
-dev-ui:
-	mkdir -p ./dist
-	cp *.html ./dist/
-	npx parcel watch $(PARCEL_ASSETS)
-
-.PHONY: compile
-compile: compile-ui compile-electron
-
-.PHONY: compile-ui
-compile-ui:
-	mkdir -p ./dist
-	cp *.html ./dist/
-	npx parcel build --no-optimize --no-source-maps --no-cache $(PARCEL_ASSETS)
-
-.PHONY: compile-electron
-compile-electron:
-	mkdir -p ./dist
-	npx tsc -p ./src/electron/tsconfig.json
-
 .PHONY: start
-start: compile
-	npx electron ./dist/main.js
-
-.PHONY: debug-electron
-debug-electron:
-	npx electron ./dist/main.js debug
+start:
+	npx electron-forge start

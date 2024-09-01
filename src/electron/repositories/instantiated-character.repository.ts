@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import Store from 'electron-store';
 import { inject, singleton } from 'tsyringe';
-import { InstantiatedCharacter } from '../common/types';
+import { InstantiatedCharacter } from '../../types';
 import BaseRepository from './_base.repository';
 import CharacterRepository from './character.repository';
 import TeamRepository from './team.repository';

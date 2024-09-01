@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-import { Character, GenericModel, InstantiatedCharacter, KeyboardShortcut, Team } from '../common/types';
+import { GenericModel, Character, KeyboardShortcut, Team, InstantiatedCharacter } from 'src/types';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -19,7 +18,7 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
   const [items, setItems] = useState<T[]>([]);
   const [itemsMap, setItemsMap] = useState<Map<id, T>>(new Map<id, T>());
 
-  const handleItemsChange = (_event, items: T[]) => {
+  const handleItemsChange = (_event: unknown, items: T[]) => {
     setItems(items);
     setItemsMap(new Map(items.map((item) => [item.id, item])));
   };

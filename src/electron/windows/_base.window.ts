@@ -2,12 +2,7 @@ import { BrowserWindow } from 'electron';
 import settings from 'electron-settings';
 import path from 'path';
 import BaseRepository from '../repositories/_base.repository';
-import { GenericModel } from '../common/types';
-import { inject } from 'tsyringe';
-import KeyboardShortcutRepository from '../repositories/keyboard-shortcut.repository';
-import CharacterRepository from '../repositories/character.repository';
-import TeamRepository from '../repositories/team.repository';
-import { AppContext } from '../main';
+import { GenericModel } from '../../types';
 
 export type PositionSetting = { x: number; y: number } | null;
 
@@ -19,9 +14,8 @@ const WEB_PREFERENCES: Electron.WebPreferences = {
 const BASE_HTML_PATH = '../';
 
 export default class BaseWindow {
-  private debouncedUpdatePositionSettingsId;
+  private debouncedUpdatePositionSettingsId: NodeJS.Timeout;
 
-  protected appContext: AppContext;
   protected window: BrowserWindow | null = null;
   protected registeredRepositories: BaseRepository<GenericModel>[];
 
@@ -61,12 +55,6 @@ export default class BaseWindow {
     this.window.loadFile(`${BASE_HTML_PATH}${htmlFile}`);
     this.window.setMenu(null);
 
-    if (this.appContext.debug) {
-      this.window.on('ready-to-show', () => {
-        this.window.webContents.openDevTools({ mode: 'detach' });
-      });
-    }
-
     this.window.on('move', async () => {
       const { x, y } = this.window.getBounds();
       this.debouncedUpdatePositionSettings({ x, y });
@@ -81,10 +69,10 @@ export default class BaseWindow {
       this.window.on('closed', unsubscribe);
     });
 
-    this.window.on('closed', () => (this.window = null));
+    this.window.on('closed', (): void => (this.window = null));
   }
 
-  private debouncedUpdatePositionSettings(position) {
+  private debouncedUpdatePositionSettings(position: PositionSetting) {
     clearTimeout(this.debouncedUpdatePositionSettingsId);
     this.debouncedUpdatePositionSettingsId = setTimeout(() => {
       settings.setSync(this.positionSettingKey, position);

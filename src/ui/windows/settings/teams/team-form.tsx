@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Team } from '../../../common/types';
+import { Team } from 'src/types';
 import useTranslate from '../../../hooks/use-translate';
 import RichTable from '../../../components/rich-table';
 import Input from '../../../components/input';

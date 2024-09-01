@@ -4,14 +4,12 @@ import Store from 'electron-store';
 import path from 'path';
 import DashboardWindow from './windows/dashboard.window';
 import SettingsWindow from './windows/settings.window';
-import { AppContext } from './main';
 
 @singleton()
 export default class SystemTray {
   private tray: Tray;
 
   constructor(
-    @inject('appContext') private appContext: AppContext,
     @inject('store') private store: Store,
     private dashboardWindow: DashboardWindow,
     private settingsWindow: SettingsWindow,
@@ -39,13 +37,6 @@ export default class SystemTray {
         click: () => app.quit(),
       },
     ];
-
-    if (this.appContext.debug) {
-      menuItems.push({
-        label: 'Hard reset',
-        click: () => store.clear(),
-      });
-    }
 
     this.tray.setContextMenu(Menu.buildFromTemplate(menuItems));
   }

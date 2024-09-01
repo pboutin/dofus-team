@@ -1,6 +1,6 @@
 import Store from 'electron-store';
 import { inject, singleton } from 'tsyringe';
-import { Team } from '../common/types';
+import { Team } from '../../types';
 import BaseRepository from './_base.repository';
 
 @singleton()

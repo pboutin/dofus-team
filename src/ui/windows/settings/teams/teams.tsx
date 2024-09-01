@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import { useCharacters, useTeams } from '../../../hooks/use-api';
-import useTranslate from '../../../hooks/use-translate';
-import { Team, Upserted } from '../../../common/types';
-import Icon from '../../../components/icon';
-import RichTable from '../../../components/rich-table';
-import Drawer from '../../../components/drawer';
-import CharacterAvatar from '../../../components/character-avatar';
-import TeamForm from '../../../settings/sections/teams/team-form';
+import { Team, Upserted } from 'src/types';
+import CharacterAvatar from 'src/ui/components/character-avatar';
+import Drawer from 'src/ui/components/drawer';
+import Icon from 'src/ui/components/icon';
+import { useTeams, useCharacters } from 'src/ui/hooks/use-api';
+import useTranslate from 'src/ui/hooks/use-translate';
+import TeamForm from 'src/ui/windows/settings/teams/team-form';
+import RichTable from 'src/ui/components/rich-table';
 
 const Teams = () => {
   const { items: teams, upsert, duplicate, destroy, reorder } = useTeams();
@@ -48,7 +48,7 @@ const Teams = () => {
               <td>{team.name}</td>
               <td>
                 <ul className="flex gap-3">
-                  {team.characterIds.map((characterId) => {
+                  {team.characterIds.map((characterId: string) => {
                     const character = charactersMap.get(characterId);
                     if (!character) return null;
 

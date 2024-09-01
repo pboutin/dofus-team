@@ -2,7 +2,7 @@ import { ipcMain } from 'electron';
 import Store from 'electron-store';
 import crypto from 'crypto';
 
-import { GenericModel, Upserted } from '../common/types';
+import { GenericModel, Upserted } from '../../types';
 
 export default class BaseRepository<T extends GenericModel> {
   protected store: Store;

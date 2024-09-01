@@ -1,6 +1,6 @@
 import Store from 'electron-store';
 import { inject, singleton } from 'tsyringe';
-import { KeyboardShortcut, Upserted } from '../common/types';
+import { KeyboardShortcut, Upserted } from '../../types';
 import BaseRepository from './_base.repository';
 
 @singleton()

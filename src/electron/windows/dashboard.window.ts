@@ -2,15 +2,13 @@ import { inject, singleton } from 'tsyringe';
 import settings from 'electron-settings';
 import BaseWindow from './_base.window';
 import CharacterRepository from '../repositories/character.repository';
+import InstantiatedCharacterRepository from '../repositories/instantiated-character.repository';
 import KeyboardShortcutRepository from '../repositories/keyboard-shortcut.repository';
 import TeamRepository from '../repositories/team.repository';
-import InstantiatedCharacterRepository from '../repositories/instantiated-character.repository';
-import { AppContext } from '../main';
 
 @singleton()
 export default class DashboardWindow extends BaseWindow {
   constructor(
-    @inject('appContext') protected appContext: AppContext,
     private characterRepository: CharacterRepository,
     private teamRepository: TeamRepository,
     private keyboardShortcutRepository: KeyboardShortcutRepository,

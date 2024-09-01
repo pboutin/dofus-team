@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useClickAway, useToggle } from 'react-use';
 import classNames from 'classnames';
 
-import { Character } from '../common/types';
 import { useCharacters } from '../hooks/use-api';
 import CharacterAvatar from '../components/character-avatar';
-import Icon from 'components/icon';
+import { Character } from 'src/types';
+import Icon from 'src/ui/components/icon';
 
 interface Props {
   label: string;
