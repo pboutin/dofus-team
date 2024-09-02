@@ -50,8 +50,6 @@ export default class BaseWindow {
       alwaysOnTop,
     });
 
-    this.window.webContents.openDevTools();
-
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
       this.window.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/${htmlFile}`);
     } else {
