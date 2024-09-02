@@ -5,6 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
+#root,
+html,
+body {
+  height: 100%;
+}
+
 .prose {
   max-width: unset;
 }
