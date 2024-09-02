@@ -62,7 +62,7 @@ const KeyboardShortcutRow = ({ label, action, keybind, onKeybindChange, onKeybin
 
       <td>
         <div
-          className={classNames('flex justify-end gap-2 transition-all', {
+          className={classNames('flex justify-end gap-2', {
             'opacity-0 group-hover:opacity-100': !isRecording,
           })}
         >

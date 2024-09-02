@@ -51,7 +51,7 @@ const Characters = () => {
                   {character.name}
                 </div>
               </td>
-              <td>
+              <td className="opacity-0 group-hover:opacity-100">
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"

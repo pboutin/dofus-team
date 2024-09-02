@@ -26,7 +26,7 @@ const Row = ({ children, id }: RowProps) => {
   const dragControls = useDragControls();
 
   return (
-    <Reorder.Item value={id} as="tr" dragListener={false} dragControls={dragControls} className="hover">
+    <Reorder.Item value={id} as="tr" dragListener={false} dragControls={dragControls} className="hover group">
       <td
         width={60}
         onPointerDown={(event) => {
