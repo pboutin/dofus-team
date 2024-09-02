@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Character } from '../../../../types';
 import AvatarPicker from '../../../components/avatar-picker';
 import ClassGenderPicker from '../../../components/class-gender-picker';
 import Icon from '../../../components/icon';
 import Input from '../../../components/input';
 import useTranslate from '../../../hooks/use-translate';
+import { useCharacters, useDofusWindows } from '../../../hooks/use-api';
 
 interface Props {
   character: Character;
@@ -15,36 +16,68 @@ interface Props {
 
 const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
   const translate = useTranslate('settings.characters.form');
+  const dofusWindows = useDofusWindows();
+  const { items: existingCharacters } = useCharacters();
+
+  const pendingDofusWindows = useMemo(() => {
+    return dofusWindows.filter(
+      (characterName) => !existingCharacters.some((character) => character.name === characterName),
+    );
+  }, [dofusWindows, existingCharacters]);
 
   return (
-    <form
-      className="flex flex-col gap-6"
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSubmit();
-      }}
-    >
-      <Input
-        value={character.name}
-        label={translate('name')}
-        help={translate('name-help')}
-        onChange={(name) => onChange({ ...character, name })}
-      />
+    <div className="flex flex-col gap-6 min-h-full">
+      <form
+        className="flex flex-col gap-6 flex-1"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit();
+        }}
+      >
+        {pendingDofusWindows.length > 0 ? (
+          <div role="alert" className="alert alert-info flex flex-col items-start">
+            <div className="flex gap-2">
+              <Icon icon="circle-info" />
+              <div>{translate('detected-dofus-windows')}</div>
+            </div>
 
-      <ClassGenderPicker
-        class={character.class}
-        gender={character.gender}
-        onChange={(classAndGender) => onChange({ ...character, ...classAndGender })}
-      />
+            <div className="flex gap-2 flex-wrap">
+              {pendingDofusWindows.map((characterName) => (
+                <button
+                  key={characterName}
+                  type="button"
+                  className="btn btn-xs btn-primary"
+                  onClick={() => onChange({ ...character, name: characterName })}
+                >
+                  {characterName}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
-      <AvatarPicker
-        avatar={character.avatar}
-        class={character.class}
-        gender={character.gender}
-        onChange={(avatar) => onChange({ ...character, avatar })}
-      />
+        <Input
+          value={character.name}
+          label={translate('name')}
+          help={translate('name-help')}
+          onChange={(name) => onChange({ ...character, name })}
+        />
 
-      <div className="flex gap-3 absolute bottom-0 w-full">
+        <ClassGenderPicker
+          class={character.class}
+          gender={character.gender}
+          onChange={(classAndGender) => onChange({ ...character, ...classAndGender })}
+        />
+
+        <AvatarPicker
+          avatar={character.avatar}
+          class={character.class}
+          gender={character.gender}
+          onChange={(avatar) => onChange({ ...character, avatar })}
+        />
+      </form>
+
+      <div className="flex gap-3">
         <button type="button" className="btn btn-sm btn-secondary w-2/3 flex-auto" onClick={onSubmit}>
           <Icon icon="save" className="mr-2" />
           {translate('save')}
@@ -55,7 +88,7 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
           {translate('cancel')}
         </button>
       </div>
-    </form>
+    </div>
   );
 };
 

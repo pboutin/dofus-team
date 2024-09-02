@@ -35,6 +35,7 @@ const translations = {
       new: 'Nouveau personnage',
       form: {
         'name': 'Nom',
+        'detected-dofus-windows': 'Clients Dofus détectés qui ne sont pas encore configurées',
         'name-help': 'Doit corespondre au nom de la fenêtre Dofus',
         'save': 'Sauvegarder',
         'cancel': 'Annuler',

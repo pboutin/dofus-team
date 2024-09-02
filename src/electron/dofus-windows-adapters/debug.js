@@ -1,5 +1,5 @@
 const listDofusWindows = () => {
-  return ['Stub One', 'Stub Two', 'Stub Three', 'Stub Four', 'Stub Five'];
+  return ['Stub One', 'Stub Two', 'Stub Three'];
 };
 
 const focusDofusWindow = (characterToFocus) => {

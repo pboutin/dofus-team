@@ -31,66 +31,68 @@ const TeamForm = ({ team, onChange, onSubmit, onCancel }: Props) => {
   }, [team, characters]);
 
   return (
-    <form
-      className="flex flex-col gap-6"
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSubmit();
-      }}
-    >
-      <Input value={team.name} label={translate('name')} onChange={(name) => onChange({ ...team, name })} />
+    <div className="flex flex-col gap-6 min-h-full">
+      <form
+        className="flex flex-col gap-6 flex-1"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit();
+        }}
+      >
+        <Input value={team.name} label={translate('name')} onChange={(name) => onChange({ ...team, name })} />
 
-      {teamCharacters.length < TEAM_SLOTS && (
-        <CharacterSelector
-          label={translate('add-character')}
-          excludeIds={team.characterIds}
-          onSelect={(character) =>
-            onChange({
-              ...team,
-              characterIds: [...team.characterIds, character.id],
-            })
-          }
-        />
-      )}
+        {teamCharacters.length < TEAM_SLOTS && (
+          <CharacterSelector
+            label={translate('add-character')}
+            excludeIds={team.characterIds}
+            onSelect={(character) =>
+              onChange({
+                ...team,
+                characterIds: [...team.characterIds, character.id],
+              })
+            }
+          />
+        )}
 
-      <table className="table table-compact w-full">
-        <RichTable.Body
-          onReorder={(characterIds) => {
-            onChange({
-              ...team,
-              characterIds,
-            });
-          }}
-          ids={team.characterIds}
-        >
-          {teamCharacters.map((character) => (
-            <RichTable.Row id={character.id} key={character.id}>
-              <td>
-                <div className="flex items-center gap-2">
-                  <CharacterAvatar character={character} compact />
-                  {character.name}
-                </div>
-              </td>
-              <td className="text-right">
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-sm btn-circle"
-                  onClick={() =>
-                    onChange({
-                      ...team,
-                      characterIds: team.characterIds.filter((id) => id !== character.id),
-                    })
-                  }
-                >
-                  <Icon icon="times" />
-                </button>
-              </td>
-            </RichTable.Row>
-          ))}
-        </RichTable.Body>
-      </table>
+        <table className="table table-compact w-full">
+          <RichTable.Body
+            onReorder={(characterIds) => {
+              onChange({
+                ...team,
+                characterIds,
+              });
+            }}
+            ids={team.characterIds}
+          >
+            {teamCharacters.map((character) => (
+              <RichTable.Row id={character.id} key={character.id}>
+                <td>
+                  <div className="flex items-center gap-2">
+                    <CharacterAvatar character={character} compact />
+                    {character.name}
+                  </div>
+                </td>
+                <td className="text-right">
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm btn-circle"
+                    onClick={() =>
+                      onChange({
+                        ...team,
+                        characterIds: team.characterIds.filter((id) => id !== character.id),
+                      })
+                    }
+                  >
+                    <Icon icon="times" />
+                  </button>
+                </td>
+              </RichTable.Row>
+            ))}
+          </RichTable.Body>
+        </table>
+      </form>
 
-      <div className="flex gap-3 absolute bottom-0 w-full">
+      <div className="flex gap-3">
         <button type="button" className="btn btn-sm btn-secondary w-2/3 flex-auto" onClick={onSubmit}>
           <Icon icon="save" className="mr-2" />
           {translate('save')}
@@ -101,7 +103,7 @@ const TeamForm = ({ team, onChange, onSubmit, onCancel }: Props) => {
           {translate('cancel')}
         </button>
       </div>
-    </form>
+    </div>
   );
 };
 

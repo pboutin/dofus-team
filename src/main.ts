@@ -34,14 +34,14 @@ app.on('ready', async () => {
     configRepository,
   ];
 
-  const settingsWindow = new SettingsWindow(everyRepositories);
+  // Initialize DofusWindows handler
+  const dofusWindows = new DofusWindows(instantiatedCharacterRepository);
+
+  const settingsWindow = new SettingsWindow(everyRepositories, dofusWindows);
   const dashboardWindow = new DashboardWindow(everyRepositories);
 
   // Initialize keyboard shortcuts
   new KeyboardShortcuts(instantiatedCharacterRepository, keyboardShortcutRepository);
-
-  // Initialize DofusWindows handler
-  new DofusWindows(instantiatedCharacterRepository);
 
   const configuredTeams = teamRepository.fetchAll();
   if (configuredTeams.length === 0) {

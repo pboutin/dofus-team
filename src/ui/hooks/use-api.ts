@@ -132,3 +132,13 @@ export function useConfig() {
 
   return { ...config, updateTheme };
 }
+
+export function useDofusWindows() {
+  const [dofusWindows, setDofusWindows] = useState<string[]>([]);
+
+  useEffect(() => {
+    ipcRenderer.invoke('dofusWindows:fetchAll').then(setDofusWindows);
+  }, []);
+
+  return dofusWindows;
+}
