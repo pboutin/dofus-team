@@ -13,7 +13,7 @@ const HANDLE = koffi.pointer('HANDLE', koffi.opaque());
 const HWND = koffi.alias('HWND', HANDLE);
 const GetWindowText = user32.func('int __stdcall GetWindowTextA(HWND hWnd, _Out_ uint8_t *lpString, int nMaxCount)');
 
-export const listDofusWindows = () => {
+const listDofusWindows = () => {
   const dofusClients = [];
 
   EnumWindows((hwnd, lparam) => {
@@ -34,7 +34,7 @@ export const listDofusWindows = () => {
   return dofusClients;
 };
 
-export const focusDofusWindow = (characterToFocus) => {
+const focusDofusWindow = (characterToFocus) => {
   const dofusWindows = listDofusWindows();
 
   const characterWindow = dofusWindows.find(({ character }) => character === characterToFocus);
@@ -43,3 +43,5 @@ export const focusDofusWindow = (characterToFocus) => {
   const hwnd = FindWindowA(null, characterWindow.windowName);
   SwitchToThisWindow(hwnd, false);
 };
+
+export default { listDofusWindows, focusDofusWindow };

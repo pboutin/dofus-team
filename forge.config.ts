@@ -24,6 +24,14 @@ const config: ForgeConfig = {
           entry: 'src/main.ts',
           config: 'vite.main.config.ts',
         },
+        {
+          entry: 'src/electron/dofus-windows-adapters/debug.js',
+          config: 'vite.main.config.ts',
+        },
+        {
+          entry: 'src/electron/dofus-windows-adapters/windows.js',
+          config: 'vite.main.config.ts',
+        },
       ],
       renderer: [
         {

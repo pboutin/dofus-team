@@ -1,7 +1,9 @@
-export const listDofusWindows = () => {
+const listDofusWindows = () => {
   return ['Stub One', 'Stub Two', 'Stub Three', 'Stub Four', 'Stub Five'];
 };
 
-export const focusDofusWindow = (characterToFocus) => {
+const focusDofusWindow = (characterToFocus) => {
   console.log(`Focus "${characterToFocus}" called`);
 };
+
+export default { listDofusWindows, focusDofusWindow };
