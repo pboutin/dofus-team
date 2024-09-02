@@ -1,2 +1,2 @@
-import './ui/index.css';
+import './ui/styles.css';
 import './ui/windows/settings';

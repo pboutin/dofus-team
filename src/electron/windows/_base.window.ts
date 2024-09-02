@@ -29,7 +29,17 @@ export default class BaseWindow {
     return settings.getSync(this.positionSettingKey) as PositionSetting;
   }
 
-  protected createWindow({ htmlFile, width, height }: { htmlFile: string; width: number; height: number }) {
+  protected createWindow({
+    htmlFile,
+    width,
+    height,
+    alwaysOnTop,
+  }: {
+    htmlFile: string;
+    width: number;
+    height: number;
+    alwaysOnTop: boolean;
+  }) {
     this.window = new BrowserWindow({
       ...(this.positionSetting ?? {}),
       height,
@@ -37,6 +47,7 @@ export default class BaseWindow {
       resizable: false,
       webPreferences: WEB_PREFERENCES,
       icon: path.join(__dirname, '../../build/icon.ico'),
+      alwaysOnTop,
     });
 
     this.window.webContents.openDevTools();

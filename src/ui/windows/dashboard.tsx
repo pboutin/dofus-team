@@ -2,13 +2,15 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { createRoot } from 'react-dom/client';
 
-import { useInstantiatedCharacters } from '../hooks/use-api';
+import { useDashboardAlwaysOnTop, useInstantiatedCharacters, useOpenSettingsWindow } from '../hooks/use-api';
 import Icon from '../components/icon';
 import RichTable from '../components/rich-table';
 import CharacterAvatar from '../components/character-avatar';
 import TeamSelector from '../components/team-selector';
 import useTranslate from '../hooks/use-translate';
 import CharacterSelector from '../components/character-selector';
+
+const MAX_INSTANTIATED_CHARACTERS = 8;
 
 const Dashboard = () => {
   const {
@@ -22,6 +24,8 @@ const Dashboard = () => {
     activateNext,
     activatePrevious,
   } = useInstantiatedCharacters();
+  const openSettingsWindow = useOpenSettingsWindow();
+  const { alwaysOnTop, updateAlwaysOnTop } = useDashboardAlwaysOnTop();
 
   const translate = useTranslate('dashboard');
 
@@ -52,6 +56,7 @@ const Dashboard = () => {
           label={translate('add-character')}
           excludeIds={userIds}
           className=""
+          disabled={instantiatedCharacters.length >= MAX_INSTANTIATED_CHARACTERS}
           onSelect={(character) => upsert({ ...character, active: false, disabled: false })}
         />
 
@@ -145,6 +150,22 @@ const Dashboard = () => {
           ))}
         </RichTable.Body>
       </table>
+      <div className="fixed bottom-0 w-full p-2 flex items-center justify-between">
+        <button type="button" className="btn btn-sm btn-secondary" onClick={openSettingsWindow}>
+          <Icon icon="cog" className="mr-2" />
+          {translate('open-settings')}
+        </button>
+
+        <label className="label cursor-pointer p-0">
+          <span className="label-text mr-4">{translate('always-on-top')}</span>
+          <input
+            type="checkbox"
+            className="toggle toggle-secondary"
+            checked={alwaysOnTop}
+            onChange={(event) => updateAlwaysOnTop(event.target.checked)}
+          />
+        </label>
+      </div>
     </>
   );
 };

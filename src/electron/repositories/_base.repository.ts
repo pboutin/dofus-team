@@ -44,15 +44,15 @@ export default class BaseRepository<T extends GenericModel> {
     const items = this.fetchAll();
     const index = items.findIndex(({ id }: T) => id === item.id);
 
-    const persitedItem = {
+    const persistedItem = {
       ...item,
       id: item.id ? item.id : crypto.randomUUID(),
     };
 
     if (index === -1) {
-      items.push(persitedItem);
+      items.push(persistedItem);
     } else {
-      items[index] = persitedItem;
+      items[index] = persistedItem;
     }
 
     this.store.set(this.modelName, items);

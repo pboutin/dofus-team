@@ -12,9 +12,10 @@ interface Props {
   onSelect: (character: Character) => void;
   excludeIds?: string[];
   className?: string;
+  disabled?: boolean;
 }
 
-const CharacterSelector = ({ label, onSelect, className, excludeIds = [] }: Props) => {
+const CharacterSelector = ({ label, onSelect, className, excludeIds = [], disabled = false }: Props) => {
   const { items: characters } = useCharacters();
   const ref = useRef(null);
   const [isOpened, setIsOpened] = useToggle(false);
@@ -25,14 +26,14 @@ const CharacterSelector = ({ label, onSelect, className, excludeIds = [] }: Prop
   }, [characters, excludeIds]);
 
   useEffect(() => {
-    if (filteredCharacters.length > 0) return;
+    if (filteredCharacters.length > 0 && !disabled) return;
     setIsOpened(false);
   }, [filteredCharacters]);
 
   return (
     <div ref={ref} className={classNames('dropdown', { 'dropdown-open': isOpened }, className)}>
       <button
-        disabled={filteredCharacters.length === 0}
+        disabled={filteredCharacters.length === 0 || disabled}
         type="button"
         className="btn btn-sm btn-secondary w-full"
         onClick={setIsOpened}

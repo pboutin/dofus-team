@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { GenericModel, Character, KeyboardShortcut, Team, InstantiatedCharacter } from 'src/types';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -29,7 +29,7 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
     ipcRenderer.on(`${modelName}:changed`, handleItemsChange);
 
     return () => {
-      ipcRenderer.removeListener(`${modelName}:changed`, handleItemsChange);
+      ipcRenderer.removeAllListeners(`${modelName}:changed`);
     };
   }, [ipcRenderer, modelName]);
 
@@ -83,4 +83,27 @@ export function useInstantiatedCharacters() {
       ipcRenderer.invoke(`${modelName}:activatePrevious`);
     },
   };
+}
+
+export function useOpenSettingsWindow() {
+  const openSettingsWindow = useCallback(() => {
+    ipcRenderer.invoke('openSettingsWindow');
+  }, []);
+
+  return openSettingsWindow;
+}
+
+export function useDashboardAlwaysOnTop() {
+  const [alwaysOnTop, setAlwaysOnTop] = useState(false);
+
+  useEffect(() => {
+    ipcRenderer.invoke('dashboardAlwaysOnTop:fetch').then(setAlwaysOnTop);
+  }, []);
+
+  const updateAlwaysOnTop = useCallback((value: boolean) => {
+    ipcRenderer.invoke('dashboardAlwaysOnTop:set', value);
+    setAlwaysOnTop(value);
+  }, []);
+
+  return { alwaysOnTop, updateAlwaysOnTop };
 }

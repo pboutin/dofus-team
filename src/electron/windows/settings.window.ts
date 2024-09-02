@@ -1,3 +1,4 @@
+import { ipcMain } from 'electron';
 import BaseWindow from './_base.window';
 import BaseRepository from 'src/electron/repositories/_base.repository';
 import { GenericModel } from 'src/types';
@@ -5,6 +6,8 @@ import { GenericModel } from 'src/types';
 export default class SettingsWindow extends BaseWindow {
   constructor(protected registeredRepositories: BaseRepository<GenericModel>[]) {
     super();
+
+    ipcMain.handle('openSettingsWindow', () => this.open());
   }
 
   get slug() {
@@ -21,6 +24,7 @@ export default class SettingsWindow extends BaseWindow {
       htmlFile: 'settings.html',
       width: 800,
       height: 600,
+      alwaysOnTop: false,
     });
   }
 }

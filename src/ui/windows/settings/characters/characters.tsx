@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Character, Upserted, Class, Avatar } from 'src/types';
+import { Character, Upserted, Class, Avatar } from '../../../../types';
 import CharacterAvatar from '../../../components/character-avatar';
 import Drawer from '../../../components/drawer';
 import Icon from '../../../components/icon';
