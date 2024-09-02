@@ -17,7 +17,6 @@ export default class SettingsWindow extends BaseWindow {
     }
 
     this.createWindow({
-      htmlFile: 'settings.html',
       width: 800,
       height: 600,
       alwaysOnTop: false,

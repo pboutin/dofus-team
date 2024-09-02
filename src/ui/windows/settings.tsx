@@ -10,6 +10,7 @@ import Teams from '../windows/settings/teams/teams';
 import KeyboardShortcuts from '../windows/settings/keyboard-shortcuts/keyboard-shortcuts';
 import Theme from '../windows/settings/theme/theme';
 import { useConfig } from '../hooks/use-api';
+import getAdditionalArgument from '../utilities/get-additional-argument';
 
 const Settings = () => {
   useConfig();
@@ -54,4 +55,6 @@ const Settings = () => {
   );
 };
 
-createRoot(document.getElementById('root')).render(<Settings />);
+if (getAdditionalArgument('slug') === 'settings') {
+  createRoot(document.getElementById('root')).render(<Settings />);
+}

@@ -10,6 +10,7 @@ import TeamSelector from '../components/team-selector';
 import useTranslate from '../hooks/use-translate';
 import CharacterSelector from '../components/character-selector';
 import { useConfig } from '../hooks/use-api';
+import getAdditionalArgument from '../utilities/get-additional-argument';
 
 const MAX_INSTANTIATED_CHARACTERS = 8;
 
@@ -163,4 +164,6 @@ const Dashboard = () => {
   );
 };
 
-createRoot(document.getElementById('root')).render(<Dashboard />);
+if (getAdditionalArgument('slug') === 'dashboard') {
+  createRoot(document.getElementById('root')).render(<Dashboard />);
+}

@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/pboutin/dofus-team.git"
   },
-  "author": "",
+  "author": "Pascal Boutin <contact@pboutin.net>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pboutin/dofus-team/issues"

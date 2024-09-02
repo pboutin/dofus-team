@@ -30,32 +30,25 @@ export default class BaseWindow {
     return settings.getSync(this.positionSettingKey) as PositionSetting;
   }
 
-  protected createWindow({
-    htmlFile,
-    width,
-    height,
-    alwaysOnTop,
-  }: {
-    htmlFile: string;
-    width: number;
-    height: number;
-    alwaysOnTop: boolean;
-  }) {
+  protected createWindow({ width, height, alwaysOnTop }: { width: number; height: number; alwaysOnTop: boolean }) {
     this.window = new BrowserWindow({
       ...(this.positionSetting ?? {}),
       height,
       width,
       resizable: false,
-      webPreferences: WEB_PREFERENCES,
+      webPreferences: {
+        ...WEB_PREFERENCES,
+        additionalArguments: [`--slug=${this.slug}`],
+      },
       icon: path.join(__dirname, '../../build/icon.ico'),
       alwaysOnTop,
       title: this.getWindowTitle(),
     });
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-      this.window.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/${htmlFile}`);
+      this.window.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/index.html`);
     } else {
-      this.window.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/${htmlFile}`));
+      this.window.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
     }
 
     this.window.setMenu(null);

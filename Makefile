@@ -51,3 +51,7 @@ lint:
 .PHONY: start
 start:
 	npx electron-forge start
+
+.PHONY: package
+package:
+	npx electron-forge package

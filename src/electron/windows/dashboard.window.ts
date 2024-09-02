@@ -30,7 +30,6 @@ export default class DashboardWindow extends BaseWindow {
     }
 
     this.createWindow({
-      htmlFile: 'dashboard.html',
       height: 665,
       width: 475,
       alwaysOnTop: this.alwaysOnTopSetting,
