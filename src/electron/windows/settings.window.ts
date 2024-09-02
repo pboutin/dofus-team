@@ -1,26 +1,10 @@
-import { inject, singleton } from 'tsyringe';
 import BaseWindow from './_base.window';
-import CharacterRepository from '../repositories/character.repository';
-import KeyboardShortcutRepository from '../repositories/keyboard-shortcut.repository';
-import TeamRepository from '../repositories/team.repository';
-import InstantiatedCharacterRepository from '../repositories/instantiated-character.repository';
+import BaseRepository from 'src/electron/repositories/_base.repository';
+import { GenericModel } from 'src/types';
 
-@singleton()
 export default class SettingsWindow extends BaseWindow {
-  constructor(
-    private characterRepository: CharacterRepository,
-    private teamRepository: TeamRepository,
-    private keyboardShortcutRepository: KeyboardShortcutRepository,
-    private instantiatedCharacterRepository: InstantiatedCharacterRepository,
-  ) {
+  constructor(protected registeredRepositories: BaseRepository<GenericModel>[]) {
     super();
-
-    this.registeredRepositories = [
-      characterRepository,
-      teamRepository,
-      keyboardShortcutRepository,
-      instantiatedCharacterRepository,
-    ];
   }
 
   get slug() {
@@ -30,13 +14,13 @@ export default class SettingsWindow extends BaseWindow {
   open() {
     if (this.window) {
       this.window.show();
+      return;
     }
 
     this.createWindow({
       htmlFile: 'settings.html',
       width: 800,
       height: 600,
-      alwaysOnTop: false,
     });
   }
 }

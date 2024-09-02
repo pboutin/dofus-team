@@ -1,38 +1,46 @@
-import '@abraham/reflection';
 import { app } from 'electron';
 import Store from 'electron-store';
-import { container } from 'tsyringe';
 
 import SettingsWindow from './electron/windows/settings.window';
 import DofusWindows from './electron/dofus-windows';
 import KeyboardShortcuts from './electron/keyboard-shortcuts';
 import InstantiatedCharacterRepository from './electron/repositories/instantiated-character.repository';
 import TeamRepository from './electron/repositories/team.repository';
-import SystemTray from './electron/system-tray';
 import DashboardWindow from './electron/windows/dashboard.window';
+import CharacterRepository from './electron/repositories/character.repository';
+import KeyboardShortcutRepository from './electron/repositories/keyboard-shortcut.repository';
 
 app.on('ready', async () => {
   console.log('Starting Dofus-Team');
 
   const store = new Store();
 
-  container.registerInstance('store', store);
+  const characterRepository = new CharacterRepository(store);
+  const teamRepository = new TeamRepository(store);
+  const keyboardShortcutRepository = new KeyboardShortcutRepository(store);
+  const instantiatedCharacterRepository = new InstantiatedCharacterRepository(
+    store,
+    teamRepository,
+    characterRepository,
+  );
 
-  const settingsWindow = container.resolve(SettingsWindow);
-  const dashboardWindow = container.resolve(DashboardWindow);
-  const instantiatedCharacterRepository = container.resolve(InstantiatedCharacterRepository);
-  const teamsRepository = container.resolve(TeamRepository);
+  const everyRepositories = [
+    characterRepository,
+    teamRepository,
+    keyboardShortcutRepository,
+    instantiatedCharacterRepository,
+  ];
+
+  const settingsWindow = new SettingsWindow(everyRepositories);
+  const dashboardWindow = new DashboardWindow(everyRepositories);
 
   // Initialize keyboard shortcuts
-  container.resolve(KeyboardShortcuts);
-
-  // Initialize system tray
-  container.resolve(SystemTray);
+  new KeyboardShortcuts(instantiatedCharacterRepository, keyboardShortcutRepository);
 
   // Initialize DofusWindows handler
-  container.resolve(DofusWindows);
+  new DofusWindows(instantiatedCharacterRepository);
 
-  const configuredTeams = teamsRepository.fetchAll();
+  const configuredTeams = teamRepository.fetchAll();
   if (configuredTeams.length === 0) {
     settingsWindow.open();
   } else {

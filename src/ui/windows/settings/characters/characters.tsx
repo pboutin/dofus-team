@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Character, Upserted, Class, Avatar } from 'src/types';
-import CharacterAvatar from 'src/ui/components/character-avatar';
-import Drawer from 'src/ui/components/drawer';
-import Icon from 'src/ui/components/icon';
-import { useCharacters } from 'src/ui/hooks/use-api';
-import useTranslate from 'src/ui/hooks/use-translate';
-import CharacterForm from 'src/ui/windows/settings/characters/character-form';
-import RichTable from 'src/ui/components/rich-table';
+import CharacterAvatar from '../../../components/character-avatar';
+import Drawer from '../../../components/drawer';
+import Icon from '../../../components/icon';
+import { useCharacters } from '../../../hooks/use-api';
+import useTranslate from '../../../hooks/use-translate';
+import CharacterForm from '../../../windows/settings/characters/character-form';
+import RichTable from '../../../components/rich-table';
 
 const Characters = () => {
   const { items: characters, upsert, duplicate, destroy, reorder } = useCharacters();

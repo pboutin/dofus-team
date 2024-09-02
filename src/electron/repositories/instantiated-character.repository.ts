@@ -1,15 +1,13 @@
 import { ipcMain } from 'electron';
 import Store from 'electron-store';
-import { inject, singleton } from 'tsyringe';
 import { InstantiatedCharacter } from '../../types';
 import BaseRepository from './_base.repository';
 import CharacterRepository from './character.repository';
 import TeamRepository from './team.repository';
 
-@singleton()
 export default class InstantiatedCharacterRepository extends BaseRepository<InstantiatedCharacter> {
   constructor(
-    @inject('store') protected store: Store,
+    protected store: Store,
     private teamRepository: TeamRepository,
     private characterRepository: CharacterRepository,
   ) {

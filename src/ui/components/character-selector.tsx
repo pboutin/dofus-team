@@ -4,8 +4,8 @@ import classNames from 'classnames';
 
 import { useCharacters } from '../hooks/use-api';
 import CharacterAvatar from '../components/character-avatar';
-import { Character } from 'src/types';
-import Icon from 'src/ui/components/icon';
+import { Character } from '../../types';
+import Icon from '../components/icon';
 
 interface Props {
   label: string;

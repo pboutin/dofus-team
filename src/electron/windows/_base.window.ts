@@ -11,8 +11,6 @@ const WEB_PREFERENCES: Electron.WebPreferences = {
   contextIsolation: false,
 };
 
-const BASE_HTML_PATH = '../';
-
 export default class BaseWindow {
   private debouncedUpdatePositionSettingsId: NodeJS.Timeout;
 
@@ -31,28 +29,24 @@ export default class BaseWindow {
     return settings.getSync(this.positionSettingKey) as PositionSetting;
   }
 
-  protected createWindow({
-    htmlFile,
-    width,
-    height,
-    alwaysOnTop,
-  }: {
-    htmlFile: string;
-    width: number;
-    height: number;
-    alwaysOnTop: boolean;
-  }) {
+  protected createWindow({ htmlFile, width, height }: { htmlFile: string; width: number; height: number }) {
     this.window = new BrowserWindow({
       ...(this.positionSetting ?? {}),
       height,
       width,
       resizable: false,
-      alwaysOnTop,
       webPreferences: WEB_PREFERENCES,
       icon: path.join(__dirname, '../../build/icon.ico'),
     });
 
-    this.window.loadFile(`${BASE_HTML_PATH}${htmlFile}`);
+    this.window.webContents.openDevTools();
+
+    if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+      this.window.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/${htmlFile}`);
+    } else {
+      this.window.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/${htmlFile}`));
+    }
+
     this.window.setMenu(null);
 
     this.window.on('move', async () => {

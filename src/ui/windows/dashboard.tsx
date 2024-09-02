@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
+import { createRoot } from 'react-dom/client';
 
 import { useInstantiatedCharacters } from '../hooks/use-api';
 import Icon from '../components/icon';
@@ -7,7 +8,7 @@ import RichTable from '../components/rich-table';
 import CharacterAvatar from '../components/character-avatar';
 import TeamSelector from '../components/team-selector';
 import useTranslate from '../hooks/use-translate';
-import CharacterSelector from 'src/ui/components/character-selector';
+import CharacterSelector from '../components/character-selector';
 
 const Dashboard = () => {
   const {
@@ -148,4 +149,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+createRoot(document.getElementById('root')).render(<Dashboard />);

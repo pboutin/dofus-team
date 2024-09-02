@@ -1,10 +1,8 @@
 import { globalShortcut } from 'electron';
 import { Action, KeyboardShortcut } from '../types';
 import InstantiatedCharacterRepository from './repositories/instantiated-character.repository';
-import { singleton } from 'tsyringe';
 import KeyboardShortcutRepository from './repositories/keyboard-shortcut.repository';
 
-@singleton()
 export default class KeyboardShortcuts {
   constructor(
     private instantiatedCharacterRepository: InstantiatedCharacterRepository,

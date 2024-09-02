@@ -1,12 +1,10 @@
 import Store from 'electron-store';
-import { inject, singleton } from 'tsyringe';
 import { Character } from '../../types';
 import BaseRepository from './_base.repository';
 import TeamRepository from './team.repository';
 
-@singleton()
 export default class CharacterRepository extends BaseRepository<Character> {
-  constructor(@inject('store') protected store: Store) {
+  constructor(protected store: Store) {
     super();
   }
 
