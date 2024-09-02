@@ -1,13 +1,11 @@
 import { app, ipcMain } from 'electron';
 import settings from 'electron-settings';
-import BaseWindow from './_base.window';
-import BaseRepository from 'src/electron/repositories/_base.repository';
-import { GenericModel } from 'src/types';
+import BaseWindow, { RegisteredRepository } from './_base.window';
 
 export default class DashboardWindow extends BaseWindow {
   protected slug: 'dashboard' = 'dashboard';
 
-  constructor(protected registeredRepositories: BaseRepository<GenericModel>[]) {
+  constructor(protected registeredRepositories: RegisteredRepository[]) {
     super();
 
     ipcMain.handle('dashboardAlwaysOnTop:fetch', () => this.alwaysOnTopSetting);

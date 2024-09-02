@@ -1,3 +1,6 @@
+const daisyui = require('daisyui');
+const themes = require('./daisyui-themes.json');
+
 module.exports = {
   content: ['./src/ui/**/*.tsx'],
   theme: {
@@ -8,5 +11,8 @@ module.exports = {
     extend: {
       display: ['group-hover'],
     },
+  },
+  daisyui: {
+    themes,
   },
 };

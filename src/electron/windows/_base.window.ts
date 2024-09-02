@@ -5,8 +5,10 @@ import BaseRepository from '../repositories/_base.repository';
 import { GenericModel } from '../../types';
 import translations from '../../translations';
 import packageJson from '../../../package.json';
+import ConfigRepository from '../repositories/config.repository';
 
 export type PositionSetting = { x: number; y: number } | null;
+export type RegisteredRepository = BaseRepository<GenericModel> | ConfigRepository;
 
 const WEB_PREFERENCES: Electron.WebPreferences = {
   nodeIntegration: true,
@@ -18,7 +20,7 @@ export default class BaseWindow {
 
   protected slug: 'dashboard' | 'settings';
   protected window: BrowserWindow | null = null;
-  protected registeredRepositories: BaseRepository<GenericModel>[];
+  protected registeredRepositories: RegisteredRepository[];
 
   get positionSettingKey() {
     return `${this.slug}:position`;

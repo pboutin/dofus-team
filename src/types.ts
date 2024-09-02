@@ -1,5 +1,9 @@
 export type Upserted<T> = T & { id: undefined | string };
 
+export interface Config {
+  theme: string;
+}
+
 export interface GenericModel {
   id: string;
   name?: string;

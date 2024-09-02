@@ -9,6 +9,7 @@ import TeamRepository from './electron/repositories/team.repository';
 import DashboardWindow from './electron/windows/dashboard.window';
 import CharacterRepository from './electron/repositories/character.repository';
 import KeyboardShortcutRepository from './electron/repositories/keyboard-shortcut.repository';
+import ConfigRepository from './electron/repositories/config.repository';
 
 app.on('ready', async () => {
   console.log('Starting Dofus-Team');
@@ -23,12 +24,14 @@ app.on('ready', async () => {
     teamRepository,
     characterRepository,
   );
+  const configRepository = new ConfigRepository(store);
 
   const everyRepositories = [
     characterRepository,
     teamRepository,
     keyboardShortcutRepository,
     instantiatedCharacterRepository,
+    configRepository,
   ];
 
   const settingsWindow = new SettingsWindow(everyRepositories);

@@ -1,12 +1,10 @@
 import { ipcMain } from 'electron';
-import BaseWindow from './_base.window';
-import BaseRepository from '../../electron/repositories/_base.repository';
-import { GenericModel } from '../../types';
+import BaseWindow, { RegisteredRepository } from './_base.window';
 
 export default class SettingsWindow extends BaseWindow {
   protected slug: 'settings' = 'settings';
 
-  constructor(protected registeredRepositories: BaseRepository<GenericModel>[]) {
+  constructor(protected registeredRepositories: RegisteredRepository[]) {
     super();
 
     ipcMain.handle('openSettingsWindow', () => this.open());

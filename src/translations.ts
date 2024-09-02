@@ -57,6 +57,9 @@ const translations = {
       'teams': 'Équipes',
       'characters': 'Personnages',
     },
+    theme: {
+      title: 'Thème',
+    },
   },
 };
 

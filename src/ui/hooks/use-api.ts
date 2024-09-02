@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { GenericModel, Character, KeyboardShortcut, Team, InstantiatedCharacter } from 'src/types';
+import { GenericModel, Character, KeyboardShortcut, Team, InstantiatedCharacter, Config } from 'src/types';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -106,4 +106,29 @@ export function useDashboardAlwaysOnTop() {
   }, []);
 
   return { alwaysOnTop, updateAlwaysOnTop };
+}
+
+export function useConfig() {
+  const [config, setConfig] = useState<Config>();
+
+  const handleConfigChange = (_event: unknown, config: Config) => {
+    setConfig(config);
+    document.body.dataset.theme = config.theme;
+  };
+
+  useEffect(() => {
+    ipcRenderer.invoke('config:fetch').then((config) => handleConfigChange(null, config));
+
+    ipcRenderer.on('config:changed', handleConfigChange);
+
+    return () => {
+      ipcRenderer.removeListener('config:changed', handleConfigChange);
+    };
+  }, [ipcRenderer]);
+
+  const updateTheme = useCallback((theme: string) => {
+    ipcRenderer.invoke('config:update', { ...config, theme });
+  }, []);
+
+  return { ...config, updateTheme };
 }

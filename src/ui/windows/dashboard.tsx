@@ -9,10 +9,13 @@ import CharacterAvatar from '../components/character-avatar';
 import TeamSelector from '../components/team-selector';
 import useTranslate from '../hooks/use-translate';
 import CharacterSelector from '../components/character-selector';
+import { useConfig } from '../hooks/use-api';
 
 const MAX_INSTANTIATED_CHARACTERS = 8;
 
 const Dashboard = () => {
+  useConfig();
+
   const {
     items: instantiatedCharacters,
     upsert,
