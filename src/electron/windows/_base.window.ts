@@ -3,6 +3,8 @@ import settings from 'electron-settings';
 import path from 'path';
 import BaseRepository from '../repositories/_base.repository';
 import { GenericModel } from '../../types';
+import translations from '../../translations';
+import packageJson from '../../../package.json';
 
 export type PositionSetting = { x: number; y: number } | null;
 
@@ -14,12 +16,9 @@ const WEB_PREFERENCES: Electron.WebPreferences = {
 export default class BaseWindow {
   private debouncedUpdatePositionSettingsId: NodeJS.Timeout;
 
+  protected slug: 'dashboard' | 'settings';
   protected window: BrowserWindow | null = null;
   protected registeredRepositories: BaseRepository<GenericModel>[];
-
-  get slug(): string {
-    throw new Error('slug not implemented');
-  }
 
   get positionSettingKey() {
     return `${this.slug}:position`;
@@ -48,6 +47,7 @@ export default class BaseWindow {
       webPreferences: WEB_PREFERENCES,
       icon: path.join(__dirname, '../../build/icon.ico'),
       alwaysOnTop,
+      title: this.getWindowTitle(),
     });
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -80,5 +80,17 @@ export default class BaseWindow {
     this.debouncedUpdatePositionSettingsId = setTimeout(() => {
       settings.setSync(this.positionSettingKey, position);
     }, 1000);
+  }
+
+  private getWindowTitle() {
+    const segments = ['DofusTeam'];
+
+    if (translations.window[this.slug].title) {
+      segments.push(translations.window[this.slug].title);
+    }
+
+    segments.push(`v${packageJson.version}`);
+
+    return segments.join(' - ');
   }
 }

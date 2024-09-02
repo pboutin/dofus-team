@@ -43,4 +43,3 @@ export const focusDofusWindow = (characterToFocus) => {
   const hwnd = FindWindowA(null, characterWindow.windowName);
   SwitchToThisWindow(hwnd, false);
 };
-

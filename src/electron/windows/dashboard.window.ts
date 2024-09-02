@@ -5,6 +5,8 @@ import BaseRepository from 'src/electron/repositories/_base.repository';
 import { GenericModel } from 'src/types';
 
 export default class DashboardWindow extends BaseWindow {
+  protected slug: 'dashboard' = 'dashboard';
+
   constructor(protected registeredRepositories: BaseRepository<GenericModel>[]) {
     super();
 
@@ -13,10 +15,6 @@ export default class DashboardWindow extends BaseWindow {
       this.window?.setAlwaysOnTop(alwaysOnTop);
       settings.setSync(this.alwaysOnTopSettingKey, alwaysOnTop);
     });
-  }
-
-  get slug() {
-    return 'dashboard';
   }
 
   get alwaysOnTopSettingKey() {
