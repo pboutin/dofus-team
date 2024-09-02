@@ -111,35 +111,25 @@ const Dashboard = () => {
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
-                    className="btn btn-primary btn-sm btn-circle"
+                    className="btn btn-primary btn-sm btn-circle opacity-0 group-hover:opacity-100"
                     onClick={() => activate(instantiatedCharacter.id)}
                   >
                     <Icon icon="up-right-from-square" />
                   </button>
 
-                  {instantiatedCharacter.disabled && (
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm btn-circle"
-                      onClick={() => upsert({ ...instantiatedCharacter, disabled: false })}
-                    >
-                      <Icon icon="play" />
-                    </button>
-                  )}
-
-                  {!instantiatedCharacter.disabled && (
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm btn-circle"
-                      onClick={() => upsert({ ...instantiatedCharacter, disabled: true })}
-                    >
-                      <Icon icon="pause" />
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className={classNames('btn btn-primary btn-sm btn-circle', {
+                      'opacity-0 group-hover:opacity-100': !instantiatedCharacter.disabled,
+                    })}
+                    onClick={() => upsert({ ...instantiatedCharacter, disabled: !instantiatedCharacter.disabled })}
+                  >
+                    <Icon icon={instantiatedCharacter.disabled ? 'play' : 'pause'} />
+                  </button>
 
                   <button
                     type="button"
-                    className="btn btn-error btn-sm btn-circle ml-1"
+                    className="btn btn-error btn-sm btn-circle ml-1 opacity-0 group-hover:opacity-100"
                     onClick={() => destroy(instantiatedCharacter.id)}
                   >
                     <Icon icon="trash" />
