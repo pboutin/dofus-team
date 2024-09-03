@@ -1,8 +1,8 @@
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
 import avatarImages from './images/avatars';
-import { Character } from 'src/types';
+import { Character } from '../../types';
 
 interface Props {
   character: Character;

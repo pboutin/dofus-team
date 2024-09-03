@@ -90,5 +90,3 @@ export interface KeyboardShortcut {
   keybind: string;
   argument?: string;
 }
-
-export interface PersistedKeyboardShortcut extends KeyboardShortcut {}

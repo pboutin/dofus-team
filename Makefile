@@ -43,10 +43,12 @@ install:
 .PHONY: format
 format:
 	npx prettier --write .
+	npx eslint . --fix --max-warnings=0
 
 .PHONY: lint
 lint:
 	npx prettier --check .
+	npx eslint . --max-warnings=0
 
 .PHONY: start
 start:

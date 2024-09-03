@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Action } from '../../../../types';
-import useTranslate from '../../../hooks/use-translate';
 import { useKeyboardShortcuts, useTeams, useCharacters } from '../../../hooks/use-api';
+import useTranslate from '../../../hooks/use-translate';
 import KeyboardShortcutRow from '../../../windows/settings/keyboard-shortcuts/keyboard-shortcut-row';
 
 const KeyboardShortcuts = () => {

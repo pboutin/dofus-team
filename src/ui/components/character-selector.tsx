@@ -1,11 +1,11 @@
+import classNames from 'classnames';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useClickAway, useToggle } from 'react-use';
-import classNames from 'classnames';
 
-import { useCharacters } from '../hooks/use-api';
-import CharacterAvatar from '../components/character-avatar';
 import { Character } from '../../types';
+import CharacterAvatar from '../components/character-avatar';
 import Icon from '../components/icon';
+import { useCharacters } from '../hooks/use-api';
 
 interface Props {
   label: string;
@@ -28,7 +28,7 @@ const CharacterSelector = ({ label, onSelect, className, excludeIds = [], disabl
   useEffect(() => {
     if (filteredCharacters.length > 0 && !disabled) return;
     setIsOpened(false);
-  }, [filteredCharacters]);
+  }, [disabled, filteredCharacters, setIsOpened]);
 
   return (
     <div ref={ref} className={classNames('dropdown', { 'dropdown-open': isOpened }, className)}>

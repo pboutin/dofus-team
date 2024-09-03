@@ -1,11 +1,11 @@
+import classNames from 'classnames';
 import React, { useRef } from 'react';
 import { useClickAway, useToggle } from 'react-use';
-import classNames from 'classnames';
 
-import { useCharacters, useTeams } from '../hooks/use-api';
+import { Team } from '../../types';
 import CharacterAvatar from '../components/character-avatar';
 import Icon from '../components/icon';
-import { Team } from 'src/types';
+import { useCharacters, useTeams } from '../hooks/use-api';
 
 interface Props {
   label: string;

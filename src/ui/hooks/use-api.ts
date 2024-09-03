@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { GenericModel, Character, KeyboardShortcut, Team, InstantiatedCharacter, Config } from 'src/types';
+
+import { GenericModel, Character, KeyboardShortcut, Team, InstantiatedCharacter, Config } from '../../types';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -18,10 +19,10 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
   const [items, setItems] = useState<T[]>([]);
   const [itemsMap, setItemsMap] = useState<Map<id, T>>(new Map<id, T>());
 
-  const handleItemsChange = (_event: unknown, items: T[]) => {
+  const handleItemsChange = useCallback((_event: unknown, items: T[]) => {
     setItems(items);
     setItemsMap(new Map(items.map((item) => [item.id, item])));
-  };
+  }, []);
 
   useEffect(() => {
     ipcRenderer.invoke(`${modelName}:fetchAll`).then((items) => handleItemsChange(null, items));
@@ -31,7 +32,7 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
     return () => {
       ipcRenderer.removeAllListeners(`${modelName}:changed`);
     };
-  }, [ipcRenderer, modelName]);
+  }, [handleItemsChange, modelName]);
 
   return {
     items,
@@ -109,7 +110,7 @@ export function useConfig() {
     return () => {
       ipcRenderer.removeListener('config:changed', handleConfigChange);
     };
-  }, [ipcRenderer]);
+  }, []);
 
   const updateTheme = useCallback((theme: string) => {
     ipcRenderer.invoke('config:update', { theme });

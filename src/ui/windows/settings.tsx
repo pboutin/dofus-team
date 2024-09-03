@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
-import { HashRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
+import { HashRouter, NavLink, Route, Routes } from 'react-router-dom';
 
 import Icon from '../components/icon';
-import useTranslate from '../hooks/use-translate';
-import Characters from '../windows/settings/characters/characters';
-import Teams from '../windows/settings/teams/teams';
-import KeyboardShortcuts from '../windows/settings/keyboard-shortcuts/keyboard-shortcuts';
-import Theme from '../windows/settings/theme/theme';
 import { useConfig } from '../hooks/use-api';
+import useTranslate from '../hooks/use-translate';
 import getAdditionalArgument from '../utilities/get-additional-argument';
+import Characters from '../windows/settings/characters/characters';
+import KeyboardShortcuts from '../windows/settings/keyboard-shortcuts/keyboard-shortcuts';
+import Teams from '../windows/settings/teams/teams';
+import Theme from '../windows/settings/theme/theme';
 
 const Settings = () => {
   useConfig();

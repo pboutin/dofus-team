@@ -1,6 +1,7 @@
-import Store from 'electron-store';
-import { Config } from '../../types';
 import { ipcMain } from 'electron';
+import Store from 'electron-store';
+
+import { Config } from '../../types';
 
 const STORE_KEY = 'config';
 
@@ -28,7 +29,6 @@ export default class ConfigRepository {
   }
 
   update(data: Config): void {
-    console.log(data);
     this.store.set(STORE_KEY, data);
   }
 

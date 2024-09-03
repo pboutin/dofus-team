@@ -1,9 +1,11 @@
-import { BrowserWindow } from 'electron';
 import path from 'path';
-import BaseRepository from '../repositories/_base.repository';
-import { GenericModel, WindowPosition } from '../../types';
-import translations from '../../translations';
+
+import { BrowserWindow } from 'electron';
+
 import packageJson from '../../../package.json';
+import translations from '../../translations';
+import { GenericModel, WindowPosition } from '../../types';
+import BaseRepository from '../repositories/_base.repository';
 import ConfigRepository from '../repositories/config.repository';
 
 const WEB_PREFERENCES: Electron.WebPreferences = {

@@ -1,6 +1,7 @@
-import InstantiatedCharacterRepository from './repositories/instantiated-character.repository';
-import adapter from './dofus-windows-adapters/active';
 import { ipcMain } from 'electron';
+
+import adapter from './dofus-windows-adapters/active';
+import InstantiatedCharacterRepository from './repositories/instantiated-character.repository';
 
 interface DofusWindowsAdapter {
   focusDofusWindow: (characterName: string) => void;

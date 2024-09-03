@@ -1,8 +1,8 @@
+import classNames from 'classnames';
 import React, { useRef, useState } from 'react';
 import { useClickAway, useToggle } from 'react-use';
-import classNames from 'classnames';
 
-import { Action, KeyboardShortcut as KeyboardShortcutRow } from 'src/types';
+import { Action, KeyboardShortcut as KeyboardShortcutRow } from '../../../../types';
 import Icon from '../../../components/icon';
 import useTranslate from '../../../hooks/use-translate';
 

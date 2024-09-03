@@ -1,9 +1,10 @@
 import { ipcMain } from 'electron';
 import Store from 'electron-store';
-import { InstantiatedCharacter } from '../../types';
+
 import BaseRepository from './_base.repository';
 import CharacterRepository from './character.repository';
 import TeamRepository from './team.repository';
+import { InstantiatedCharacter } from '../../types';
 
 export default class InstantiatedCharacterRepository extends BaseRepository<InstantiatedCharacter> {
   constructor(

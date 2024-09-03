@@ -1,15 +1,14 @@
-import React, { useMemo } from 'react';
 import classNames from 'classnames';
+import React, { useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { useInstantiatedCharacters, useOpenSettingsWindow } from '../hooks/use-api';
+import CharacterAvatar from '../components/character-avatar';
+import CharacterSelector from '../components/character-selector';
 import Icon from '../components/icon';
 import RichTable from '../components/rich-table';
-import CharacterAvatar from '../components/character-avatar';
 import TeamSelector from '../components/team-selector';
+import { useInstantiatedCharacters, useOpenSettingsWindow, useConfig } from '../hooks/use-api';
 import useTranslate from '../hooks/use-translate';
-import CharacterSelector from '../components/character-selector';
-import { useConfig } from '../hooks/use-api';
 import getAdditionalArgument from '../utilities/get-additional-argument';
 
 const MAX_INSTANTIATED_CHARACTERS = 8;

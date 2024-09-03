@@ -1,7 +1,8 @@
 import { globalShortcut } from 'electron';
-import { Action, KeyboardShortcut } from '../types';
+
 import InstantiatedCharacterRepository from './repositories/instantiated-character.repository';
 import KeyboardShortcutRepository from './repositories/keyboard-shortcut.repository';
+import { Action, KeyboardShortcut } from '../types';
 
 export default class KeyboardShortcuts {
   constructor(

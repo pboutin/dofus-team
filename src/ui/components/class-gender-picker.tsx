@@ -1,5 +1,5 @@
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
 import classImages from './images/classes';
 import { Class, Gender } from '../../types';

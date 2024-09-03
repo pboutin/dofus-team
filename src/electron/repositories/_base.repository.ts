@@ -1,6 +1,7 @@
+import crypto from 'crypto';
+
 import { ipcMain } from 'electron';
 import Store from 'electron-store';
-import crypto from 'crypto';
 
 import { GenericModel, Upserted } from '../../types';
 
@@ -9,7 +10,7 @@ export default class BaseRepository<T extends GenericModel> {
 
   constructor() {
     ipcMain.handle(`${this.modelName}:fetchAll`, () => this.fetchAll());
-    ipcMain.handle(`${this.modelName}:upsert`, (_, data: any) => this.upsert(data));
+    ipcMain.handle(`${this.modelName}:upsert`, (_, data: Upserted<T>) => this.upsert(data));
     ipcMain.handle(`${this.modelName}:destroy`, (_, id: string) => this.destroy(id));
     ipcMain.handle(`${this.modelName}:duplicate`, (_, id: string) => this.duplicate(id));
     ipcMain.handle(`${this.modelName}:reorder`, (_, ids: string[]) => this.reorder(ids));
@@ -36,7 +37,7 @@ export default class BaseRepository<T extends GenericModel> {
     return ids.map((id) => items.find((item) => item.id === id)).filter(Boolean);
   }
 
-  preUpsert(item: Upserted<T>): void {}
+  preUpsert(_item: Upserted<T>): void {}
 
   upsert(item: Upserted<T>): void {
     this.preUpsert(item);

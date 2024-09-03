@@ -1,12 +1,12 @@
 import { app } from 'electron';
+
 import BaseWindow from './_base.window';
-import BaseRepository from '../repositories/_base.repository';
 import { GenericModel } from '../../types';
+import BaseRepository from '../repositories/_base.repository';
 import ConfigRepository from '../repositories/config.repository';
-import { config } from 'koffi';
 
 export default class DashboardWindow extends BaseWindow {
-  protected slug: 'dashboard' = 'dashboard';
+  protected slug = 'dashboard' as const;
 
   constructor(
     protected modelRepositories: Array<BaseRepository<GenericModel>>,

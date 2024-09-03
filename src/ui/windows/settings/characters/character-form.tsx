@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
+
 import { Character } from '../../../../types';
 import AvatarPicker from '../../../components/avatar-picker';
 import ClassGenderPicker from '../../../components/class-gender-picker';
 import Icon from '../../../components/icon';
 import Input from '../../../components/input';
-import useTranslate from '../../../hooks/use-translate';
 import { useCharacters, useDofusWindows } from '../../../hooks/use-api';
+import useTranslate from '../../../hooks/use-translate';
 
 interface Props {
   character: Character;

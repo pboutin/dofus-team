@@ -1,7 +1,8 @@
+import classNames from 'classnames';
 import React from 'react';
+
 import themes from '../../../../themes';
 import { useConfig } from '../../../../ui/hooks/use-api';
-import classNames from 'classnames';
 
 const Theme = () => {
   const { theme: activeTheme, updateTheme } = useConfig();
@@ -10,13 +11,14 @@ const Theme = () => {
     <div className="grid gap-4 grid-cols-4 ">
       {themes.map((theme) => (
         <div
+          key={theme}
           className={classNames('rounded-xl overflow-hidden hover:border-primary border-4 cursor-pointer', {
             'border-transparent': activeTheme !== theme,
             'border-success': activeTheme === theme,
           })}
           onClick={() => updateTheme(theme)}
         >
-          <div key={theme} className="bg-base-100 text-base-content w-full font-sans" data-theme={theme}>
+          <div className="bg-base-100 text-base-content w-full font-sans" data-theme={theme}>
             <div className="grid grid-cols-5 grid-rows-3">
               <div className="bg-base-200 col-start-1 row-span-2 row-start-1"></div>
               <div className="bg-base-300 col-start-1 row-start-3"></div>

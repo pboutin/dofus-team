@@ -1,6 +1,7 @@
 import Store from 'electron-store';
-import { Team } from '../../types';
+
 import BaseRepository from './_base.repository';
+import { Team } from '../../types';
 
 export default class TeamRepository extends BaseRepository<Team> {
   constructor(protected store: Store) {
