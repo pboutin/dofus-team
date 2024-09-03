@@ -5,7 +5,7 @@ import { useClickAway, useToggle } from 'react-use';
 import { Team } from '../../types';
 import CharacterAvatar from '../components/character-avatar';
 import Icon from '../components/icon';
-import { useCharacters, useTeams } from '../hooks/use-api';
+import { useCharacters, useTeams } from '../hooks/use-ipc-renderer';
 
 interface Props {
   label: string;

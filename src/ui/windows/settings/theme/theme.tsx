@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 import themes from '../../../../themes';
-import { useConfig } from '../../../../ui/hooks/use-api';
+import { useConfig } from '../../../hooks/use-ipc-renderer';
 
 const Theme = () => {
   const { theme: activeTheme, updateTheme } = useConfig();

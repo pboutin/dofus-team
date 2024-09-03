@@ -7,7 +7,7 @@ import CharacterSelector from '../components/character-selector';
 import Icon from '../components/icon';
 import RichTable from '../components/rich-table';
 import TeamSelector from '../components/team-selector';
-import { useInstantiatedCharacters, useOpenSettingsWindow, useConfig } from '../hooks/use-api';
+import { useInstantiatedCharacters, useOpenSettingsWindow, useConfig } from '../hooks/use-ipc-renderer';
 import useTranslate from '../hooks/use-translate';
 import getAdditionalArgument from '../utilities/get-additional-argument';
 

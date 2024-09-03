@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Action } from '../../../../types';
-import { useKeyboardShortcuts, useTeams, useCharacters } from '../../../hooks/use-api';
+import { useKeyboardShortcuts, useTeams, useCharacters } from '../../../hooks/use-ipc-renderer';
 import useTranslate from '../../../hooks/use-translate';
 import KeyboardShortcutRow from '../../../windows/settings/keyboard-shortcuts/keyboard-shortcut-row';
 

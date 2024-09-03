@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter, NavLink, Route, Routes } from 'react-router-dom';
 
 import Icon from '../components/icon';
-import { useConfig } from '../hooks/use-api';
+import { useConfig } from '../hooks/use-ipc-renderer';
 import useTranslate from '../hooks/use-translate';
 import getAdditionalArgument from '../utilities/get-additional-argument';
 import Characters from '../windows/settings/characters/characters';

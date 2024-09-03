@@ -5,7 +5,7 @@ import AvatarPicker from '../../../components/avatar-picker';
 import ClassGenderPicker from '../../../components/class-gender-picker';
 import Icon from '../../../components/icon';
 import Input from '../../../components/input';
-import { useCharacters, useDofusWindows } from '../../../hooks/use-api';
+import { useCharacters, useDofusWindows } from '../../../hooks/use-ipc-renderer';
 import useTranslate from '../../../hooks/use-translate';
 
 interface Props {

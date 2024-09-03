@@ -38,7 +38,7 @@ export default class BaseWindow {
       title: this.getWindowTitle(),
     });
 
-    this.window.webContents.openDevTools();
+    // this.window.webContents.openDevTools();
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
       this.window.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/index.html`);

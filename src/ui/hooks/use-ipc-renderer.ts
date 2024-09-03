@@ -15,7 +15,7 @@ interface Hook<T extends GenericModel> {
   reorder: (ids: string[]) => void;
 }
 
-function useApi<T extends GenericModel>(modelName: string): Hook<T> {
+function useGenericModel<T extends GenericModel>(modelName: string): Hook<T> {
   const [items, setItems] = useState<T[]>([]);
   const [itemsMap, setItemsMap] = useState<Map<id, T>>(new Map<id, T>());
 
@@ -34,55 +34,86 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
     };
   }, [handleItemsChange, modelName]);
 
+  const upsert = useCallback(
+    (data: T) => {
+      ipcRenderer.invoke(`${modelName}:upsert`, data);
+    },
+    [modelName],
+  );
+
+  const destroy = useCallback(
+    (id: string) => {
+      ipcRenderer.invoke(`${modelName}:destroy`, id);
+    },
+    [modelName],
+  );
+
+  const duplicate = useCallback(
+    (id: string) => {
+      ipcRenderer.invoke(`${modelName}:duplicate`, id);
+    },
+    [modelName],
+  );
+
+  const reorder = useCallback(
+    (ids: string[]) => {
+      ipcRenderer.invoke(`${modelName}:reorder`, ids);
+    },
+    [modelName],
+  );
+
   return {
     items,
     itemsMap,
-    upsert: (data: T) => {
-      ipcRenderer.invoke(`${modelName}:upsert`, data);
-    },
-    destroy: (id: string) => {
-      ipcRenderer.invoke(`${modelName}:destroy`, id);
-    },
-    duplicate: (id: string) => {
-      ipcRenderer.invoke(`${modelName}:duplicate`, id);
-    },
-    reorder: (ids: string[]) => {
-      ipcRenderer.invoke(`${modelName}:reorder`, ids);
-    },
+    upsert,
+    destroy,
+    duplicate,
+    reorder,
   };
 }
 
 export function useCharacters() {
-  return useApi<Character>('Character');
+  return useGenericModel<Character>('Character');
 }
 
 export function useKeyboardShortcuts() {
-  return useApi<KeyboardShortcut>('KeyboardShortcut');
+  return useGenericModel<KeyboardShortcut>('KeyboardShortcut');
 }
 
 export function useTeams() {
-  return useApi<Team>('Team');
+  return useGenericModel<Team>('Team');
 }
 
 export function useInstantiatedCharacters() {
   const modelName = 'InstantiatedCharacter';
+
+  const clear = useCallback(() => {
+    ipcRenderer.invoke(`${modelName}:clear`);
+  }, []);
+
+  const instantiateTeam = useCallback((teamId: string) => {
+    ipcRenderer.invoke(`${modelName}:instantiateTeam`, teamId);
+  }, []);
+
+  const activate = useCallback((characterId: string) => {
+    ipcRenderer.invoke(`${modelName}:activate`, characterId);
+  }, []);
+
+  const activateNext = useCallback(() => {
+    ipcRenderer.invoke(`${modelName}:activateNext`);
+  }, []);
+
+  const activatePrevious = useCallback(() => {
+    ipcRenderer.invoke(`${modelName}:activatePrevious`);
+  }, []);
+
   return {
-    ...useApi<InstantiatedCharacter>(modelName),
-    clear: () => {
-      ipcRenderer.invoke(`${modelName}:clear`);
-    },
-    instantiateTeam: (teamId: string) => {
-      ipcRenderer.invoke(`${modelName}:instantiateTeam`, teamId);
-    },
-    activate: (characterId: string) => {
-      ipcRenderer.invoke(`${modelName}:activate`, characterId);
-    },
-    activateNext: () => {
-      ipcRenderer.invoke(`${modelName}:activateNext`);
-    },
-    activatePrevious: () => {
-      ipcRenderer.invoke(`${modelName}:activatePrevious`);
-    },
+    ...useGenericModel<InstantiatedCharacter>(modelName),
+    clear,
+    instantiateTeam,
+    activate,
+    activateNext,
+    activatePrevious,
   };
 }
 
@@ -97,10 +128,10 @@ export function useOpenSettingsWindow() {
 export function useConfig() {
   const [config, setConfig] = useState<Config | null>(null);
 
-  const handleConfigChange = (_event: unknown, config: Config) => {
+  const handleConfigChange = useCallback((_event: unknown, config: Config) => {
     setConfig(config);
     document.body.dataset.theme = config.theme;
-  };
+  }, []);
 
   useEffect(() => {
     ipcRenderer.invoke('config:fetch').then((config) => handleConfigChange(null, config));
@@ -110,7 +141,7 @@ export function useConfig() {
     return () => {
       ipcRenderer.removeListener('config:changed', handleConfigChange);
     };
-  }, []);
+  }, [handleConfigChange]);
 
   const updateTheme = useCallback((theme: string) => {
     ipcRenderer.invoke('config:update', { theme });

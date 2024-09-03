@@ -6,7 +6,7 @@ import CharacterSelector from '../../../components/character-selector';
 import Icon from '../../../components/icon';
 import Input from '../../../components/input';
 import RichTable from '../../../components/rich-table';
-import { useCharacters } from '../../../hooks/use-api';
+import { useCharacters } from '../../../hooks/use-ipc-renderer';
 import useTranslate from '../../../hooks/use-translate';
 
 interface Props {

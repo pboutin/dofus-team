@@ -5,7 +5,7 @@ import CharacterAvatar from '../../../components/character-avatar';
 import Drawer from '../../../components/drawer';
 import Icon from '../../../components/icon';
 import RichTable from '../../../components/rich-table';
-import { useTeams, useCharacters } from '../../../hooks/use-api';
+import { useTeams, useCharacters } from '../../../hooks/use-ipc-renderer';
 import useTranslate from '../../../hooks/use-translate';
 import TeamForm from '../../../windows/settings/teams/team-form';
 
