@@ -2,11 +2,20 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'wednesday'
+      time: '06:00'
+      timezone: 'America/Montreal'
     groups:
-      npm:
-        patterns:
-          - '*'
+      production-dependencies:
+        dependency-type: 'production'
+      development-dependencies:
+        dependency-type: 'development'
     target-branch: 'main'
     labels:
       - 'dependabot'
+    reviewers:
+      - 'pboutin'
     versioning-strategy: 'increase'
+    open-pull-requests-limit: 50
