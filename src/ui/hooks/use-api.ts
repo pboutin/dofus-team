@@ -95,7 +95,7 @@ export function useOpenSettingsWindow() {
 }
 
 export function useConfig() {
-  const [config, setConfig] = useState<Config>();
+  const [config, setConfig] = useState<Config | null>(null);
 
   const handleConfigChange = (_event: unknown, config: Config) => {
     setConfig(config);
@@ -120,7 +120,7 @@ export function useConfig() {
     ipcRenderer.invoke('config:update', { alwaysOnTop });
   }, []);
 
-  return { ...config, updateTheme, updateAlwaysOnTop };
+  return { ...config, isReady: !!config, updateTheme, updateAlwaysOnTop };
 }
 
 export function useDofusWindows() {

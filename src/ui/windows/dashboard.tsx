@@ -28,7 +28,7 @@ const Dashboard = () => {
     activatePrevious,
   } = useInstantiatedCharacters();
   const openSettingsWindow = useOpenSettingsWindow();
-  const { alwaysOnTop, updateAlwaysOnTop } = useConfig();
+  const { isReady, alwaysOnTop, updateAlwaysOnTop } = useConfig();
 
   const translate = useTranslate('dashboard');
 
@@ -51,6 +51,8 @@ const Dashboard = () => {
       upsert({ ...instantiatedCharacter, disabled: !instantiatedCharacter.disabled });
     });
   };
+
+  if (!isReady) return null;
 
   return (
     <>
