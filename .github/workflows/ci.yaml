@@ -23,8 +23,5 @@ jobs:
       - name: Lint
         run: make lint
 
-      - name: Compile UI
-        run: make compile-ui
-
-      - name: Compile Electron
-        run: make compile-electron
+      - name: Forge packaging
+        run: make package
