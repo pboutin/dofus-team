@@ -21,20 +21,17 @@ export default class BaseWindow {
   protected modelRepositories: Array<BaseRepository<GenericModel>>;
   protected configRepository: ConfigRepository;
 
-  private get configWindowPosition() {
-    const config = this.configRepository.fetch();
-    return config[`${this.slug}WindowPosition`];
-  }
-
   protected createWindow({ width, height, alwaysOnTop }: { width: number; height: number; alwaysOnTop: boolean }) {
+    const config = this.configRepository.fetch();
+
     this.window = new BrowserWindow({
-      ...(this.configWindowPosition ?? {}),
+      ...(config[`${this.slug}WindowPosition`] ?? {}),
       height,
       width,
       resizable: false,
       webPreferences: {
         ...WEB_PREFERENCES,
-        additionalArguments: [`--slug=${this.slug}`],
+        additionalArguments: [`--slug=${this.slug}`, `--theme=${config.theme}`],
       },
       icon: path.join(__dirname, '../../build/icon.ico'),
       alwaysOnTop,
