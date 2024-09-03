@@ -93,21 +93,6 @@ export function useOpenSettingsWindow() {
   return openSettingsWindow;
 }
 
-export function useDashboardAlwaysOnTop() {
-  const [alwaysOnTop, setAlwaysOnTop] = useState(false);
-
-  useEffect(() => {
-    ipcRenderer.invoke('dashboardAlwaysOnTop:fetch').then(setAlwaysOnTop);
-  }, []);
-
-  const updateAlwaysOnTop = useCallback((value: boolean) => {
-    ipcRenderer.invoke('dashboardAlwaysOnTop:set', value);
-    setAlwaysOnTop(value);
-  }, []);
-
-  return { alwaysOnTop, updateAlwaysOnTop };
-}
-
 export function useConfig() {
   const [config, setConfig] = useState<Config>();
 
@@ -127,10 +112,14 @@ export function useConfig() {
   }, [ipcRenderer]);
 
   const updateTheme = useCallback((theme: string) => {
-    ipcRenderer.invoke('config:update', { ...config, theme });
+    ipcRenderer.invoke('config:update', { theme });
   }, []);
 
-  return { ...config, updateTheme };
+  const updateAlwaysOnTop = useCallback((alwaysOnTop: boolean) => {
+    ipcRenderer.invoke('config:update', { alwaysOnTop });
+  }, []);
+
+  return { ...config, updateTheme, updateAlwaysOnTop };
 }
 
 export function useDofusWindows() {

@@ -1,7 +1,12 @@
 export type Upserted<T> = T & { id: undefined | string };
 
+export type WindowPosition = { x: number; y: number };
+
 export interface Config {
   theme: string;
+  alwaysOnTop: boolean;
+  dashboardWindowPosition?: WindowPosition;
+  settingsWindowPosition?: WindowPosition;
 }
 
 export interface GenericModel {

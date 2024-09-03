@@ -1,18 +1,19 @@
 import { ipcMain } from 'electron';
-import BaseWindow, { RegisteredRepository } from './_base.window';
-import DofusWindows from '../dofus-windows';
+import BaseWindow from './_base.window';
+import ConfigRepository from '../repositories/config.repository';
+import { GenericModel } from '../../types';
+import BaseRepository from '../repositories/_base.repository';
 
 export default class SettingsWindow extends BaseWindow {
   protected slug: 'settings' = 'settings';
 
   constructor(
-    protected registeredRepositories: RegisteredRepository[],
-    protected dofusWindows: DofusWindows,
+    protected modelRepositories: Array<BaseRepository<GenericModel>>,
+    protected configRepository: ConfigRepository,
   ) {
     super();
 
     ipcMain.handle('openSettingsWindow', () => this.open());
-    ipcMain.handle('dofusWindows:fetchAll', () => this.dofusWindows.fetchAll());
   }
 
   open() {

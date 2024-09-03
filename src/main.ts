@@ -26,19 +26,18 @@ app.on('ready', async () => {
   );
   const configRepository = new ConfigRepository(store);
 
-  const everyRepositories = [
+  const modelRepositories = [
     characterRepository,
     teamRepository,
     keyboardShortcutRepository,
     instantiatedCharacterRepository,
-    configRepository,
   ];
 
   // Initialize DofusWindows handler
   const dofusWindows = new DofusWindows(instantiatedCharacterRepository);
 
-  const settingsWindow = new SettingsWindow(everyRepositories, dofusWindows);
-  const dashboardWindow = new DashboardWindow(everyRepositories);
+  const settingsWindow = new SettingsWindow(modelRepositories, configRepository);
+  const dashboardWindow = new DashboardWindow(modelRepositories, configRepository);
 
   // Initialize keyboard shortcuts
   new KeyboardShortcuts(instantiatedCharacterRepository, keyboardShortcutRepository);

@@ -1,14 +1,10 @@
 import { BrowserWindow } from 'electron';
-import settings from 'electron-settings';
 import path from 'path';
 import BaseRepository from '../repositories/_base.repository';
-import { GenericModel } from '../../types';
+import { GenericModel, WindowPosition } from '../../types';
 import translations from '../../translations';
 import packageJson from '../../../package.json';
 import ConfigRepository from '../repositories/config.repository';
-
-export type PositionSetting = { x: number; y: number } | null;
-export type RegisteredRepository = BaseRepository<GenericModel> | ConfigRepository;
 
 const WEB_PREFERENCES: Electron.WebPreferences = {
   nodeIntegration: true,
@@ -20,19 +16,17 @@ export default class BaseWindow {
 
   protected slug: 'dashboard' | 'settings';
   protected window: BrowserWindow | null = null;
-  protected registeredRepositories: RegisteredRepository[];
+  protected modelRepositories: Array<BaseRepository<GenericModel>>;
+  protected configRepository: ConfigRepository;
 
-  get positionSettingKey() {
-    return `${this.slug}:position`;
-  }
-
-  get positionSetting() {
-    return settings.getSync(this.positionSettingKey) as PositionSetting;
+  private get configWindowPosition() {
+    const config = this.configRepository.fetch();
+    return config[`${this.slug}WindowPosition`];
   }
 
   protected createWindow({ width, height, alwaysOnTop }: { width: number; height: number; alwaysOnTop: boolean }) {
     this.window = new BrowserWindow({
-      ...(this.positionSetting ?? {}),
+      ...(this.configWindowPosition ?? {}),
       height,
       width,
       resizable: false,
@@ -60,7 +54,7 @@ export default class BaseWindow {
       this.debouncedUpdatePositionSettings({ x, y });
     });
 
-    this.registeredRepositories.forEach((repository) => {
+    this.modelRepositories.forEach((repository) => {
       const unsubscribe = repository.onChange((items) => {
         if (this.window.isDestroyed()) return;
         this.window.webContents.send(`${repository.modelName}:changed`, items);
@@ -69,14 +63,22 @@ export default class BaseWindow {
       this.window.on('closed', unsubscribe);
     });
 
+    const unsubscribeConfig = this.configRepository.onChange((config) => {
+      if (this.window.isDestroyed()) return;
+      this.window.webContents.send('config:changed', config);
+    });
+    this.window.on('closed', unsubscribeConfig);
+
     this.window.on('closed', (): void => (this.window = null));
   }
 
-  private debouncedUpdatePositionSettings(position: PositionSetting) {
+  private debouncedUpdatePositionSettings(position: WindowPosition) {
     clearTimeout(this.debouncedUpdatePositionSettingsId);
     this.debouncedUpdatePositionSettingsId = setTimeout(() => {
-      settings.setSync(this.positionSettingKey, position);
-    }, 1000);
+      this.configRepository.updatePartial({
+        [`${this.slug}WindowPosition`]: position,
+      });
+    }, 2000);
   }
 
   private getWindowTitle() {

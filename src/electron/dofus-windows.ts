@@ -1,5 +1,6 @@
 import InstantiatedCharacterRepository from './repositories/instantiated-character.repository';
 import adapter from './dofus-windows-adapters/active';
+import { ipcMain } from 'electron';
 
 interface DofusWindowsAdapter {
   focusDofusWindow: (characterName: string) => void;
@@ -13,6 +14,8 @@ export default class DofusWindows {
     this.instantiatedCharacterRepository.onActiveCharacterChange((character) => {
       this.focus(character.name);
     });
+
+    ipcMain.handle('dofusWindows:fetchAll', () => this.fetchAll());
   }
 
   fetchAll() {

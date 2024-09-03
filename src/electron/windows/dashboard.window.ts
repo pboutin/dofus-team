@@ -1,29 +1,27 @@
-import { app, ipcMain } from 'electron';
-import settings from 'electron-settings';
-import BaseWindow, { RegisteredRepository } from './_base.window';
+import { app } from 'electron';
+import BaseWindow from './_base.window';
+import BaseRepository from '../repositories/_base.repository';
+import { GenericModel } from '../../types';
+import ConfigRepository from '../repositories/config.repository';
+import { config } from 'koffi';
 
 export default class DashboardWindow extends BaseWindow {
   protected slug: 'dashboard' = 'dashboard';
 
-  constructor(protected registeredRepositories: RegisteredRepository[]) {
+  constructor(
+    protected modelRepositories: Array<BaseRepository<GenericModel>>,
+    protected configRepository: ConfigRepository,
+  ) {
     super();
 
-    ipcMain.handle('dashboardAlwaysOnTop:fetch', () => this.alwaysOnTopSetting);
-    ipcMain.handle('dashboardAlwaysOnTop:set', (_, alwaysOnTop: boolean) => {
+    this.configRepository.onChange(({ alwaysOnTop }) => {
       this.window?.setAlwaysOnTop(alwaysOnTop);
-      settings.setSync(this.alwaysOnTopSettingKey, alwaysOnTop);
     });
   }
 
-  get alwaysOnTopSettingKey() {
-    return `${this.slug}:alwaysOnTop`;
-  }
-
-  get alwaysOnTopSetting() {
-    return settings.getSync(this.alwaysOnTopSettingKey) as boolean;
-  }
-
   open() {
+    const { alwaysOnTop } = this.configRepository.fetch();
+
     if (this.window) {
       this.window.show();
       return;
@@ -32,7 +30,7 @@ export default class DashboardWindow extends BaseWindow {
     this.createWindow({
       height: 665,
       width: 475,
-      alwaysOnTop: this.alwaysOnTopSetting,
+      alwaysOnTop,
     });
 
     this.window.on('close', () => app.quit());

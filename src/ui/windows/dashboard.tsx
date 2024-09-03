@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { createRoot } from 'react-dom/client';
 
-import { useDashboardAlwaysOnTop, useInstantiatedCharacters, useOpenSettingsWindow } from '../hooks/use-api';
+import { useInstantiatedCharacters, useOpenSettingsWindow } from '../hooks/use-api';
 import Icon from '../components/icon';
 import RichTable from '../components/rich-table';
 import CharacterAvatar from '../components/character-avatar';
@@ -29,7 +29,7 @@ const Dashboard = () => {
     activatePrevious,
   } = useInstantiatedCharacters();
   const openSettingsWindow = useOpenSettingsWindow();
-  const { alwaysOnTop, updateAlwaysOnTop } = useDashboardAlwaysOnTop();
+  const { alwaysOnTop, updateAlwaysOnTop } = useConfig();
 
   const translate = useTranslate('dashboard');
 
