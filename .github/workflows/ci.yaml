@@ -20,6 +20,9 @@ jobs:
       - name: Install
         run: make install
 
+      - name: Stub Windows adapter
+        run: (cd src/electron/dofus-windows-adapters; cp debug.js active.js)
+
       - name: Lint
         run: make lint
 
