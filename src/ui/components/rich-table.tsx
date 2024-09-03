@@ -11,7 +11,7 @@ interface BodyProps {
 
 const Body = ({ children, ids, onReorder }: BodyProps) => {
   return (
-    <Reorder.Group as="tbody" onReorder={onReorder} axis="y" values={ids}>
+    <Reorder.Group as="tbody" onReorder={onReorder} axis="y" values={ids} className="relative z-40">
       {children}
     </Reorder.Group>
   );
@@ -26,7 +26,13 @@ const Row = ({ children, id }: RowProps) => {
   const dragControls = useDragControls();
 
   return (
-    <Reorder.Item value={id} as="tr" dragListener={false} dragControls={dragControls} className="hover group">
+    <Reorder.Item
+      value={id}
+      as="tr"
+      dragListener={false}
+      dragControls={dragControls}
+      className="hover group bg-base-100"
+    >
       <td
         width={60}
         onPointerDown={(event) => {

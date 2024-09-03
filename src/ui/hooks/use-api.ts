@@ -30,7 +30,7 @@ function useApi<T extends GenericModel>(modelName: string): Hook<T> {
     ipcRenderer.on(`${modelName}:changed`, handleItemsChange);
 
     return () => {
-      ipcRenderer.removeAllListeners(`${modelName}:changed`);
+      ipcRenderer.removeListener(`${modelName}:changed`, handleItemsChange);
     };
   }, [handleItemsChange, modelName]);
 

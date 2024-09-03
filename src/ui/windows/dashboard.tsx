@@ -67,29 +67,59 @@ const Dashboard = () => {
 
         <div className="flex justify-between mt-2 gap-2">
           <div className="flex gap-2">
-            <button type="button" className="btn btn-sm btn-primary" onClick={handleEnableAll}>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              disabled={instantiatedCharacters.length === 0}
+              onClick={handleEnableAll}
+            >
               <Icon icon="play" />
             </button>
 
-            <button type="button" className="btn btn-sm btn-primary" onClick={handleDisableAll}>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              disabled={instantiatedCharacters.length === 0}
+              onClick={handleDisableAll}
+            >
               <Icon icon="pause" />
             </button>
 
-            <button type="button" className="btn btn-sm btn-primary" onClick={handleToggleAll}>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              disabled={instantiatedCharacters.length === 0}
+              onClick={handleToggleAll}
+            >
               <Icon icon="rotate" />
             </button>
           </div>
 
           <div className="flex gap-2">
-            <button type="button" className="btn btn-sm btn-primary ml-2" onClick={activatePrevious}>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary ml-2"
+              disabled={instantiatedCharacters.length === 0}
+              onClick={activatePrevious}
+            >
               <Icon icon="arrow-left" />
             </button>
-            <button type="button" className="btn btn-sm btn-primary" onClick={activateNext}>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              disabled={instantiatedCharacters.length === 0}
+              onClick={activateNext}
+            >
               <Icon icon="arrow-right" />
             </button>
           </div>
 
-          <button type="button" className="btn btn-sm btn-error btn-circle" onClick={clear}>
+          <button
+            type="button"
+            className="btn btn-sm btn-error btn-circle"
+            disabled={instantiatedCharacters.length === 0}
+            onClick={clear}
+          >
             <Icon icon="trash" />
           </button>
         </div>

@@ -19,7 +19,7 @@ const Drawer = ({ children, onClose }: Props) => {
 
   return (
     <>
-      <div className="fixed left-0 top-0 w-screen h-screen bg-black opacity-50 z-40"></div>
+      <div className="fixed left-0 top-0 w-screen h-screen bg-black opacity-50 z-50"></div>
       <div className="flex fixed top-0 right-0 h-screen w-2/3 z-50 bg-base-100">
         <div className="p-3 flex-1 overflow-y-scroll">{children}</div>
       </div>

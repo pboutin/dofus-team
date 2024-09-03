@@ -28,7 +28,12 @@ const TeamSelector = ({ label, onSelect, className }: Props) => {
 
   return (
     <div ref={ref} className={classNames('dropdown', { 'dropdown-open': isOpened }, className)}>
-      <button type="button" className="btn btn-sm btn-secondary w-full" onClick={setIsOpened}>
+      <button
+        type="button"
+        className="btn btn-sm btn-secondary w-full"
+        disabled={teams.length === 0}
+        onClick={setIsOpened}
+      >
         <Icon icon="users" className="mr-2" />
         {label}
       </button>

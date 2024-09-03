@@ -43,11 +43,15 @@ app.on('ready', async () => {
   // Initialize keyboard shortcuts
   new KeyboardShortcuts(instantiatedCharacterRepository, keyboardShortcutRepository);
 
-  const configuredTeams = teamRepository.fetchAll();
-  if (configuredTeams.length === 0) {
-    settingsWindow.open();
-  } else {
-    instantiatedCharacterRepository.instantiateTeam(configuredTeams[0].id);
+  const instantiatedCharacters = instantiatedCharacterRepository.fetchAll();
+
+  if (!instantiatedCharacters.length) {
+    const configuredTeams = teamRepository.fetchAll();
+    if (configuredTeams.length === 0) {
+      settingsWindow.open();
+    } else {
+      instantiatedCharacterRepository.instantiateTeam(configuredTeams[0].id);
+    }
   }
 
   dashboardWindow.open();
