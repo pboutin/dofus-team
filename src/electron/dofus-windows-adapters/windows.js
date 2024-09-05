@@ -12,22 +12,40 @@ const EnumWindows = user32.func('bool EnumWindows(WNDENUMPROC *func, intptr_t lp
 const HANDLE = koffi.pointer('HANDLE', koffi.opaque());
 const HWND = koffi.alias('HWND', HANDLE);
 const GetWindowText = user32.func('int __stdcall GetWindowTextA(HWND hWnd, _Out_ uint8_t *lpString, int nMaxCount)');
+const GetClassName = user32.func('int __stdcall GetClassNameA(HWND hWnd, _Out_ uint8_t *lpString, int nMaxCount)');
 
 const listDofusWindows = () => {
   const dofusClients = [];
 
   EnumWindows((hwnd, lparam) => {
-    let buf = Buffer.allocUnsafe(1024);
-    GetWindowText(hwnd, buf, buf.length);
-    const windowName = koffi.decode(buf, 'char', 100);
+    let windowNameBuffer = Buffer.allocUnsafe(1024);
+    GetWindowText(hwnd, windowNameBuffer, windowNameBuffer.length);
+    const windowName = koffi.decode(windowNameBuffer, 'char', 100);
 
-    const match = windowName.match(/(.+) - Dofus 2\./);
-    if (match) {
-      dofusClients.push({
-        windowName,
-        character: match[1],
-      });
+    let windowClassBuffer = Buffer.allocUnsafe(1024);
+    GetClassName(hwnd, windowClassBuffer, windowClassBuffer.length);
+    const windowClass = koffi.decode(windowClassBuffer, 'char', 100);
+
+    if (windowName.includes('Infah')) {
+      console.log(windowName, windowClass);
     }
+
+    const match = windowName.match(/(.+) - (Dofus )?2\./);
+    if (!match) return true;
+
+    if (
+      ![
+        'ApolloRuntimeContentWindow', // Dofus 2 (flash)
+        'UnityWndClass', // Dofus 2 (unity)
+      ].includes(windowClass)
+    ) {
+      return true;
+    }
+
+    dofusClients.push({
+      windowName,
+      character: match[1],
+    });
     return true;
   }, 100);
 
