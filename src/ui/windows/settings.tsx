@@ -20,23 +20,20 @@ const Settings = () => {
   return (
     <HashRouter>
       <div className="bg-base-300 min-h-screen flex flex-col">
-        <div className="tabs pt-3">
-          <NavLink className={({ isActive }) => classNames('tab tab-lifted', { 'tab-active': isActive })} to="/">
+        <div className="tabs tabs-lifted pt-3">
+          <NavLink className={({ isActive }) => classNames('tab', { 'tab-active': isActive })} to="/">
             <Icon icon="user" className="mr-2" />
             {translate('characters.title')}
           </NavLink>
-          <NavLink className={({ isActive }) => classNames('tab tab-lifted', { 'tab-active': isActive })} to="/teams">
+          <NavLink className={({ isActive }) => classNames('tab', { 'tab-active': isActive })} to="/teams">
             <Icon icon="users" className="mr-2" />
             {translate('teams.title')}
           </NavLink>
-          <NavLink
-            className={({ isActive }) => classNames('tab tab-lifted', { 'tab-active': isActive })}
-            to="/keyboard-shortcuts"
-          >
+          <NavLink className={({ isActive }) => classNames('tab', { 'tab-active': isActive })} to="/keyboard-shortcuts">
             <Icon icon="keyboard" className="mr-2" />
             {translate('shortcuts.title')}
           </NavLink>
-          <NavLink className={({ isActive }) => classNames('tab tab-lifted', { 'tab-active': isActive })} to="/theme">
+          <NavLink className={({ isActive }) => classNames('tab', { 'tab-active': isActive })} to="/theme">
             <Icon icon="palette" className="mr-2" />
             {translate('theme.title')}
           </NavLink>

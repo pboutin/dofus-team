@@ -1,5 +1,4 @@
 import { ipcMain } from 'electron';
-import Store from 'electron-store';
 
 import BaseRepository from './_base.repository';
 import CharacterRepository from './character.repository';
@@ -8,7 +7,6 @@ import { InstantiatedCharacter } from '../../types';
 
 export default class InstantiatedCharacterRepository extends BaseRepository<InstantiatedCharacter> {
   constructor(
-    protected store: Store,
     private teamRepository: TeamRepository,
     private characterRepository: CharacterRepository,
   ) {
@@ -51,7 +49,7 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
       disabled: false,
     }));
 
-    this.store.set(this.modelName, instantiatedCharacters);
+    this.store.set(instantiatedCharacters);
   }
 
   destroy(id: string): void {
@@ -65,21 +63,18 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
   }
 
   onActiveCharacterChange(callback: (character: InstantiatedCharacter) => void) {
-    this.store.onDidChange(
-      this.modelName,
-      (characters: InstantiatedCharacter[], previousCharacters?: InstantiatedCharacter[]) => {
-        const activeCharacter = characters.find((character) => character.active);
-        const previousActiveCharacter = previousCharacters?.find((character) => character.active);
+    this.store.onDidChange((characters: InstantiatedCharacter[], previousCharacters: InstantiatedCharacter[]) => {
+      const activeCharacter = characters.find((character) => character.active);
+      const previousActiveCharacter = previousCharacters?.find((character) => character.active);
 
-        if (!activeCharacter || activeCharacter.id === previousActiveCharacter?.id) return;
+      if (!activeCharacter || activeCharacter.id === previousActiveCharacter?.id) return;
 
-        callback(activeCharacter);
-      },
-    );
+      callback(activeCharacter);
+    });
   }
 
   clear() {
-    this.store.set(this.modelName, []);
+    this.store.set([]);
   }
 
   activate(id: string) {
@@ -90,7 +85,7 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
       active: character.id === id,
     }));
 
-    this.store.set(this.modelName, updatedCharacters);
+    this.store.set(updatedCharacters);
   }
 
   activateAt(index: number) {

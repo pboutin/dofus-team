@@ -11,7 +11,7 @@ interface BodyProps {
 
 const Body = ({ children, ids, onReorder }: BodyProps) => {
   return (
-    <Reorder.Group as="tbody" onReorder={onReorder} axis="y" values={ids} className="relative z-40">
+    <Reorder.Group as="tbody" onReorder={onReorder} axis="y" values={ids} className="relative z-30">
       {children}
     </Reorder.Group>
   );

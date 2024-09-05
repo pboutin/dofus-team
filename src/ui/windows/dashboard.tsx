@@ -122,7 +122,7 @@ const Dashboard = () => {
             disabled={instantiatedCharacters.length === 0}
             onClick={clear}
           >
-            <Icon icon="trash" />
+            <Icon icon="times" />
           </button>
         </div>
       </div>
@@ -167,7 +167,7 @@ const Dashboard = () => {
                     className="btn btn-error btn-sm btn-circle ml-1 opacity-0 group-hover:opacity-100"
                     onClick={() => destroy(instantiatedCharacter.id)}
                   >
-                    <Icon icon="trash" />
+                    <Icon icon="times" />
                   </button>
                 </div>
               </td>

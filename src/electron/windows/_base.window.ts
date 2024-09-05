@@ -64,7 +64,7 @@ export default class BaseWindow {
 
     const unsubscribeConfig = this.configRepository.onChange((config) => {
       if (this.window.isDestroyed()) return;
-      this.window.webContents.send('config:changed', config);
+      this.window.webContents.send('Config:changed', config);
     });
     this.window.on('closed', unsubscribeConfig);
 

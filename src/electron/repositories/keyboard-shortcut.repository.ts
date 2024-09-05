@@ -1,10 +1,8 @@
-import Store from 'electron-store';
-
 import BaseRepository from './_base.repository';
 import { KeyboardShortcut, Upserted } from '../../types';
 
 export default class KeyboardShortcutRepository extends BaseRepository<KeyboardShortcut> {
-  constructor(protected store: Store) {
+  constructor() {
     super();
   }
 

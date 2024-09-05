@@ -1,5 +1,4 @@
 import { app } from 'electron';
-import Store from 'electron-store';
 
 import DofusWindows from './electron/dofus-windows';
 import KeyboardShortcuts from './electron/keyboard-shortcuts';
@@ -15,17 +14,11 @@ app.on('ready', async () => {
   // eslint-disable-next-line no-console
   console.log('Starting Dofus-Team');
 
-  const store = new Store();
-
-  const characterRepository = new CharacterRepository(store);
-  const teamRepository = new TeamRepository(store);
-  const keyboardShortcutRepository = new KeyboardShortcutRepository(store);
-  const instantiatedCharacterRepository = new InstantiatedCharacterRepository(
-    store,
-    teamRepository,
-    characterRepository,
-  );
-  const configRepository = new ConfigRepository(store);
+  const characterRepository = new CharacterRepository();
+  const teamRepository = new TeamRepository();
+  const keyboardShortcutRepository = new KeyboardShortcutRepository();
+  const instantiatedCharacterRepository = new InstantiatedCharacterRepository(teamRepository, characterRepository);
+  const configRepository = new ConfigRepository();
 
   const modelRepositories = [
     characterRepository,

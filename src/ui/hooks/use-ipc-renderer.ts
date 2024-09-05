@@ -134,21 +134,21 @@ export function useConfig() {
   }, []);
 
   useEffect(() => {
-    ipcRenderer.invoke('config:fetch').then((config) => handleConfigChange(null, config));
+    ipcRenderer.invoke('Config:fetch').then((config) => handleConfigChange(null, config));
 
-    ipcRenderer.on('config:changed', handleConfigChange);
+    ipcRenderer.on('Config:changed', handleConfigChange);
 
     return () => {
-      ipcRenderer.removeListener('config:changed', handleConfigChange);
+      ipcRenderer.removeListener('Config:changed', handleConfigChange);
     };
   }, [handleConfigChange]);
 
   const updateTheme = useCallback((theme: string) => {
-    ipcRenderer.invoke('config:update', { theme });
+    ipcRenderer.invoke('Config:update', { theme });
   }, []);
 
   const updateAlwaysOnTop = useCallback((alwaysOnTop: boolean) => {
-    ipcRenderer.invoke('config:update', { alwaysOnTop });
+    ipcRenderer.invoke('Config:update', { alwaysOnTop });
   }, []);
 
   return { ...config, isReady: !!config, updateTheme, updateAlwaysOnTop };

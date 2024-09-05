@@ -41,7 +41,7 @@ const CharacterSelector = ({ label, onSelect, className, excludeIds = [], disabl
         <Icon icon="user" className="mr-2" />
         {label}
       </button>
-      <ul className="dropdown-content menu mt-1 p-2 shadow bg-base-300 rounded-box w-80 max-h-80 flex-nowrap overflow-y-scroll">
+      <ul className="dropdown-content menu mt-1 p-2 shadow bg-base-300 rounded-box w-80 max-h-80 flex-nowrap overflow-y-scroll z-40">
         {filteredCharacters.map((character) => (
           <li key={character.id}>
             <a onClick={() => onSelect(character)}>

@@ -1,9 +1,7 @@
 import { ipcMain } from 'electron';
-import Store from 'electron-store';
 
 import { Config } from '../../types';
-
-const STORE_KEY = 'config';
+import Store from '../store';
 
 const DEFAULT_CONFIG: Config = {
   theme: 'dracula',
@@ -11,25 +9,23 @@ const DEFAULT_CONFIG: Config = {
 };
 
 export default class ConfigRepository {
-  constructor(protected store: Store) {
-    ipcMain.handle(`${this.modelName}:fetch`, () => this.fetch());
-    ipcMain.handle(`${this.modelName}:update`, (_, data: Config) => this.updatePartial(data));
-  }
+  protected store = new Store<Partial<Config>>('Config', DEFAULT_CONFIG);
 
-  get modelName(): typeof STORE_KEY {
-    return STORE_KEY;
+  constructor() {
+    ipcMain.handle(`Config:fetch`, () => this.fetch());
+    ipcMain.handle(`Config:update`, (_, data: Config) => this.updatePartial(data));
   }
 
   onChange(callback: (config: Config) => void) {
-    return this.store.onDidChange(STORE_KEY, callback);
+    return this.store.onDidChange(callback);
   }
 
   fetch(): Config {
-    return { ...DEFAULT_CONFIG, ...(this.store.get(STORE_KEY, {}) as Partial<Config>) };
+    return { ...DEFAULT_CONFIG, ...this.store.get() };
   }
 
   update(data: Config): void {
-    this.store.set(STORE_KEY, data);
+    this.store.set(data);
   }
 
   updatePartial(data: Partial<Config>): void {
