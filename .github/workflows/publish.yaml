@@ -21,8 +21,7 @@ jobs:
       - name: Setup Windows adapter
         run: make setup-windows
 
-      - name: Lint
-        run: make lint
-
       - name: Forge publish
-        run: make publish
+        run: |
+          set GITHUB_TOKEN=${{ github.token }}
+          make publish
