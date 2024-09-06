@@ -1,0 +1,28 @@
+name: PUBLISH
+
+on:
+  workflow_dispatch:
+
+jobs:
+  misc:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.10.0
+          cache: 'npm'
+
+      - name: Install
+        run: make install
+
+      - name: Setup Windows adapter
+        run: make setup-windows
+
+      - name: Lint
+        run: make lint
+
+      - name: Forge publish
+        run: make publish

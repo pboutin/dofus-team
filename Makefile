@@ -40,6 +40,14 @@ targets:
 install:
 	npm ci
 
+.PHONY: setup-windows
+setup-windows:
+	(cd src/electron/dofus-windows-adapters; cp windows.js active.js)
+
+.PHONY: setup-debug
+setup-debug:
+	(cd src/electron/dofus-windows-adapters; cp debug.js active.js)
+
 .PHONY: format
 format:
 	npx prettier --write .
@@ -57,3 +65,7 @@ start:
 .PHONY: package
 package:
 	npx electron-forge package
+
+.PHONY: publish
+publish:
+	npx electron-forge publish

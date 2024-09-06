@@ -7,11 +7,11 @@ Multi-window switcher for Dofus built with Electron
 ### Windows
 
 ```bash
-$ (cd src/electron/dofus-windows-adapters; cp windows.js active.js)
+$ make setup-windows
 ```
 
 ### Autre (mode debug)
 
 ```bash
-$ (cd src/electron/dofus-windows-adapters; cp debug.js active.js)
+$ make setup-debug
 ```

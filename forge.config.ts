@@ -52,6 +52,17 @@ const config: ForgeConfig = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'pboutin',
+          name: 'dofus-team',
+        },
+      },
+    },
+  ],
 };
 
 export default config;
