@@ -27,25 +27,16 @@ jobs:
           node-version: 18.10.0
           cache: 'npm'
 
-      - name: Setup Windows adapter
-        run: make setup-windows
-
-      - name: Bump patch version
-        if: github.event.inputs.version_type == 'patch'
-        run: npm version patch
-
-      - name: Bump minor version
-        if: github.event.inputs.version_type == 'minor'
-        run: npm version minor
-
-      - name: Git push
-        run: |
-          git config --global user.email "pboutin.dofusteam@gmail.com"
-          git config --global user.name "Hel Munster"
-          git push --follow-tags
-
       - name: Install
         run: make install
 
-      - name: Forge publish
-        run: npx electron-forge publish
+      - name: Setup Windows adapter
+        run: make setup-windows
+
+      - name: Tag and publish
+        run: |
+          git config --global user.email "pboutin.dofusteam@gmail.com"
+          git config --global user.name "Hel Munster"
+          npm version ${{ github.event.inputs.version_type }}
+          npx electron-forge publish
+          git push --follow-tags
