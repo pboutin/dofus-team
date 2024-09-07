@@ -60,4 +60,4 @@ lint:
 
 .PHONY: start
 start:
-	npx electron-forge start
+	export DEBUG=true && npx electron-forge start

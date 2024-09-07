@@ -19,8 +19,8 @@ const Settings = () => {
 
   return (
     <HashRouter>
-      <div className="bg-base-300 min-h-screen flex flex-col">
-        <div className="tabs tabs-lifted pt-3">
+      <div className="bg-base-300 h-full flex flex-col">
+        <div className="tabs tabs-lifted pt-3 pr-40">
           <NavLink className={({ isActive }) => classNames('tab', { 'tab-active': isActive })} to="/">
             <Icon icon="user" className="mr-2" />
             {translate('characters.title')}
@@ -39,7 +39,7 @@ const Settings = () => {
           </NavLink>
         </div>
 
-        <div className="bg-base-100 flex-1 p-3">
+        <div className="bg-base-100 flex-1 p-3 overflow-y-scroll">
           <Routes>
             <Route index path="/" element={<Characters />} />
             <Route path="/teams" element={<Teams />} />

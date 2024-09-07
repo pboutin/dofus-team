@@ -8,7 +8,7 @@ const Theme = () => {
   const { theme: activeTheme, updateTheme } = useConfig();
 
   return (
-    <div className="grid gap-4 grid-cols-4 ">
+    <div className="grid gap-4 grid-cols-4">
       {themes.map((theme) => (
         <div
           key={theme}
