@@ -37,12 +37,12 @@ const TeamSelector = ({ label, onSelect, className }: Props) => {
         <Icon icon="users" className="mr-2" />
         {label}
       </button>
-      <ul className="dropdown-content menu mt-1 p-2 shadow bg-base-300 rounded-box w-80 max-h-80 flex-nowrap overflow-y-scroll overflow-x-hidden">
+      <ul className="w-full dropdown-content menu mt-1 p-2 shadow bg-base-300 rounded-box w-80 max-h-80 flex-nowrap overflow-y-scroll overflow-x-hidden z-40">
         {teams.map((team) => (
           <li key={team.id}>
-            <a className="flex-col items-start" onClick={() => handleSelect(team)}>
-              <div>{team.name}</div>
-              <div className="flex gap-2 w-full">
+            <a className="items-center justify-between" onClick={() => handleSelect(team)}>
+              <div className="flex-1">{team.name}</div>
+              <div className="flex gap-2 justify-end min-w-[200px]">
                 {team.characterIds.map((characterId: string) => {
                   const character = charactersMap.get(characterId);
                   if (!character) return null;
