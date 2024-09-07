@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { GenericModel, Character, KeyboardShortcut, Team, InstantiatedCharacter, Config } from '../../types';
+import {
+  GenericModel,
+  Character,
+  KeyboardShortcut,
+  Team,
+  InstantiatedCharacter,
+  Config,
+  DofusWindow,
+} from '../../types';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -155,7 +163,7 @@ export function useConfig() {
 }
 
 export function useDofusWindows() {
-  const [dofusWindows, setDofusWindows] = useState<string[]>([]);
+  const [dofusWindows, setDofusWindows] = useState<DofusWindow[]>([]);
 
   useEffect(() => {
     ipcRenderer.invoke('dofusWindows:fetchAll').then(setDofusWindows);

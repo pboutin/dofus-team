@@ -26,10 +26,6 @@ const listDofusWindows = () => {
     GetClassName(hwnd, windowClassBuffer, windowClassBuffer.length);
     const windowClass = koffi.decode(windowClassBuffer, 'char', 100);
 
-    if (windowName.includes('Infah')) {
-      console.log(windowName, windowClass);
-    }
-
     const match = windowName.match(/(.+) - (Dofus )?2\./);
     if (!match) return true;
 

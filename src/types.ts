@@ -90,3 +90,8 @@ export interface KeyboardShortcut {
   keybind: string;
   argument?: string;
 }
+
+export interface DofusWindow {
+  windowName: string;
+  character: string;
+}

@@ -22,7 +22,7 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
 
   const pendingDofusWindows = useMemo(() => {
     return dofusWindows.filter(
-      (characterName) => !existingCharacters.some((character) => character.name === characterName),
+      (dofusWindow) => !existingCharacters.some((character) => character.name === dofusWindow.character),
     );
   }, [dofusWindows, existingCharacters]);
 
@@ -43,14 +43,14 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
             </div>
 
             <div className="flex gap-2 flex-wrap">
-              {pendingDofusWindows.map((characterName) => (
+              {pendingDofusWindows.map((dofusWindow) => (
                 <button
-                  key={characterName}
+                  key={dofusWindow.character}
                   type="button"
                   className="btn btn-xs btn-primary"
-                  onClick={() => onChange({ ...character, name: characterName })}
+                  onClick={() => onChange({ ...character, name: dofusWindow.character })}
                 >
-                  {characterName}
+                  {dofusWindow.character}
                 </button>
               ))}
             </div>
