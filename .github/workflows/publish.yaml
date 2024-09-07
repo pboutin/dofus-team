@@ -5,6 +5,7 @@ on:
     inputs:
       version_type:
         description: 'Version type'
+        type: 'choice'
         required: true
         default: 'patch'
         options:
@@ -17,15 +18,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ github.token }}
 
       - uses: actions/setup-node@v3
         with:
           node-version: 18.10.0
           cache: 'npm'
-
-      - uses: actions/setup-git@v1
-        with:
-          token: ${{ github.token }}
 
       - name: Install
         run: make install
