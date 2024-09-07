@@ -27,4 +27,4 @@ jobs:
         run: make lint
 
       - name: Forge packaging
-        run: make package
+        run: npx electron-forge package
