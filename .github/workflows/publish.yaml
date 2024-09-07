@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  misc:
+  publish:
     runs-on: windows-latest
 
     steps:
@@ -23,5 +23,5 @@ jobs:
 
       - name: Forge publish
         env:
-          GITHUB_TOKEN: ${{ github.github }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: make publish
