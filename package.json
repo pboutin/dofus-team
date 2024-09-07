@@ -1,7 +1,7 @@
 {
   "name": "dofus-team",
   "productName": "dofus-team",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Multi-window switcher for Dofus built with Electron",
   "main": ".vite/build/main.js",
   "repository": {
