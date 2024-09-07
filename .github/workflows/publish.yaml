@@ -27,9 +27,6 @@ jobs:
           node-version: 18.10.0
           cache: 'npm'
 
-      - name: Install
-        run: make install
-
       - name: Setup Windows adapter
         run: make setup-windows
 
@@ -42,7 +39,13 @@ jobs:
         run: npm version minor
 
       - name: Git push
-        run: git push --follow-tags
+        run: |
+          git config --global user.email "pboutin.dofusteam@gmail.com"
+          git config --global user.name "Hel Munster"
+          git push --follow-tags
+
+      - name: Install
+        run: make install
 
       - name: Forge publish
         run: npx electron-forge publish
