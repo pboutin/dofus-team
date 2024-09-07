@@ -61,11 +61,3 @@ lint:
 .PHONY: start
 start:
 	npx electron-forge start
-
-.PHONY: package
-package:
-	npx electron-forge package
-
-.PHONY: publish
-publish:
-	npx electron-forge publish

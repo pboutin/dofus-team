@@ -60,7 +60,7 @@ const config: ForgeConfig = {
           owner: 'pboutin',
           name: 'dofus-team',
         },
-        authToken: process.env.GITHUB
+        authToken: process.env.GITHUB_TOKEN,
       },
     },
   ],
