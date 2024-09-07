@@ -17,14 +17,14 @@ const ELECTRON_TO_DISPLAY: Record<string, string> = {
 };
 
 interface Props {
-  label?: string;
+  children?: React.ReactNode;
   action: Action;
   keybind?: string;
   onKeybindChange: (keybind: string) => void;
   onKeybindDelete: () => void;
 }
 
-const KeyboardShortcutRow = ({ label, action, keybind, onKeybindChange, onKeybindDelete }: Props) => {
+const KeyboardShortcutRow = ({ children, action, keybind, onKeybindChange, onKeybindDelete }: Props) => {
   const translate = useTranslate('components.keyboard-shortcut');
   const [isRecording, setIsRecording] = useToggle(false);
   const [recordedKeys, setRecordedKeys] = useState<string[]>([]);
@@ -41,7 +41,7 @@ const KeyboardShortcutRow = ({ label, action, keybind, onKeybindChange, onKeybin
 
   return (
     <tr className="hover group" ref={ref}>
-      <td className="w-1/3">{label || translate(action)}</td>
+      <td className="w-1/3">{children ?? translate(action)}</td>
 
       <td>
         {isRecording && <Icon icon="keyboard" className="mr-2" beat />}

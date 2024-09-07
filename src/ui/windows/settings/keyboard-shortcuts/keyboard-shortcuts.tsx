@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Action } from '../../../../types';
+import CharacterAvatar from '../../../components/character-avatar';
 import { useKeyboardShortcuts, useTeams, useCharacters } from '../../../hooks/use-ipc-renderer';
 import useTranslate from '../../../hooks/use-translate';
 import KeyboardShortcutRow from '../../../windows/settings/keyboard-shortcuts/keyboard-shortcut-row';
@@ -73,7 +74,6 @@ const KeyboardShortcuts = () => {
                 <KeyboardShortcutRow
                   key={character.id}
                   action={Action.GOTO_CHARACTER}
-                  label={character.name}
                   keybind={existingKeyboardShortcut?.keybind}
                   onKeybindChange={(newKeybind) =>
                     upsert({
@@ -84,7 +84,12 @@ const KeyboardShortcuts = () => {
                     })
                   }
                   onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
-                />
+                >
+                  <div className="flex items-center gap-2">
+                    <CharacterAvatar character={character} compact />
+                    {character.name}
+                  </div>
+                </KeyboardShortcutRow>
               );
             })}
           </tbody>
@@ -109,7 +114,6 @@ const KeyboardShortcuts = () => {
                 <KeyboardShortcutRow
                   key={team.id}
                   action={Action.SWITCH_TEAM}
-                  label={team.name}
                   keybind={
                     keyboardShortcuts.find(
                       (keyboardShortcut) =>
@@ -125,7 +129,9 @@ const KeyboardShortcuts = () => {
                     })
                   }
                   onKeybindDelete={() => destroy(existingKeyboardShortcut.id)}
-                />
+                >
+                  {team.name}
+                </KeyboardShortcutRow>
               );
             })}
           </tbody>

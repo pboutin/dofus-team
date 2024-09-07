@@ -9,7 +9,7 @@ const translations = {
   },
   components: {
     'keyboard-shortcut': {
-      'GOTO_NEXT': 'Aller au prochain personnage',
+      'GOTO_NEXT': 'Aller au personnage suivant',
       'GOTO_PREVIOUS': 'Aller au personnage précédent',
       'GOTO_1': 'Aller au personnage 1',
       'GOTO_2': 'Aller au personnage 2',
