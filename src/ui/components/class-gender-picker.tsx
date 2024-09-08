@@ -16,7 +16,7 @@ interface Props {
 }
 
 const ClassGenderPicker = ({ class: currentClass, gender: currentGender, onChange }: Props) => (
-  <div className="flex gap-2 flex-wrap">
+  <div className="flex flex-wrap gap-2">
     {Object.keys(Class).map((rawClass) => {
       const characterClass = Class[rawClass as keyof typeof Class];
       return (

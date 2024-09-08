@@ -27,9 +27,9 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
   }, [dofusWindows, existingCharacters]);
 
   return (
-    <div className="flex flex-col gap-6 min-h-full">
+    <div className="flex min-h-full flex-col gap-6">
       <form
-        className="flex flex-col gap-6 flex-1"
+        className="flex flex-1 flex-col gap-6"
         onSubmit={(event) => {
           event.preventDefault();
           onSubmit();
@@ -42,12 +42,12 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
               <div>{translate('detected-dofus-windows')}</div>
             </div>
 
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex flex-wrap gap-2">
               {pendingDofusWindows.map((dofusWindow) => (
                 <button
                   key={dofusWindow.character}
                   type="button"
-                  className="btn btn-xs btn-primary"
+                  className="btn btn-primary btn-xs"
                   onClick={() => onChange({ ...character, name: dofusWindow.character })}
                 >
                   {dofusWindow.character}
@@ -79,12 +79,12 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
       </form>
 
       <div className="flex gap-3">
-        <button type="button" className="btn btn-sm btn-secondary w-2/3 flex-auto" onClick={onSubmit}>
+        <button type="button" className="btn btn-secondary btn-sm w-2/3 flex-auto" onClick={onSubmit}>
           <Icon icon="save" className="mr-2" />
           {translate('save')}
         </button>
 
-        <button type="button" className="btn btn-sm btn-ghost w-1/3 flex-auto" onClick={onCancel}>
+        <button type="button" className="btn btn-ghost btn-sm w-1/3 flex-auto" onClick={onCancel}>
           <Icon icon="times" className="mr-2" />
           {translate('cancel')}
         </button>

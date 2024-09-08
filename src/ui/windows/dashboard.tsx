@@ -67,11 +67,11 @@ const Dashboard = () => {
 
         <TeamSelector label={translate('change-team')} className="" onSelect={(team) => instantiateTeam(team.id)} />
 
-        <div className="flex justify-between mt-2 gap-2">
+        <div className="mt-2 flex justify-between gap-2">
           <div className="flex gap-2">
             <button
               type="button"
-              className="btn btn-sm btn-primary"
+              className="btn btn-primary btn-sm"
               disabled={instantiatedCharacters.length === 0}
               onClick={handleEnableAll}
             >
@@ -80,7 +80,7 @@ const Dashboard = () => {
 
             <button
               type="button"
-              className="btn btn-sm btn-primary"
+              className="btn btn-primary btn-sm"
               disabled={instantiatedCharacters.length === 0}
               onClick={handleDisableAll}
             >
@@ -89,7 +89,7 @@ const Dashboard = () => {
 
             <button
               type="button"
-              className="btn btn-sm btn-primary"
+              className="btn btn-primary btn-sm"
               disabled={instantiatedCharacters.length === 0}
               onClick={handleToggleAll}
             >
@@ -100,7 +100,7 @@ const Dashboard = () => {
           <div className="flex gap-2">
             <button
               type="button"
-              className="btn btn-sm btn-primary ml-2"
+              className="btn btn-primary btn-sm ml-2"
               disabled={instantiatedCharacters.length === 0}
               onClick={activatePrevious}
             >
@@ -108,7 +108,7 @@ const Dashboard = () => {
             </button>
             <button
               type="button"
-              className="btn btn-sm btn-primary"
+              className="btn btn-primary btn-sm"
               disabled={instantiatedCharacters.length === 0}
               onClick={activateNext}
             >
@@ -118,7 +118,7 @@ const Dashboard = () => {
 
           <button
             type="button"
-            className="btn btn-sm btn-error btn-circle"
+            className="btn btn-circle btn-error btn-sm"
             disabled={instantiatedCharacters.length === 0}
             onClick={clear}
           >
@@ -127,7 +127,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <table className="table table-compact w-full">
+      <table className=" table w-full">
         <RichTable.Body onReorder={reorder} ids={instantiatedCharacters.map(({ id }) => id)}>
           {instantiatedCharacters.map((instantiatedCharacter) => (
             <RichTable.Row id={instantiatedCharacter.id} key={instantiatedCharacter.id}>
@@ -146,7 +146,7 @@ const Dashboard = () => {
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
-                    className="btn btn-primary btn-sm btn-circle opacity-0 group-hover:opacity-100"
+                    className="btn btn-circle btn-primary btn-sm opacity-0 group-hover:opacity-100"
                     onClick={() => activate(instantiatedCharacter.id)}
                   >
                     <Icon icon="up-right-from-square" />
@@ -164,7 +164,7 @@ const Dashboard = () => {
 
                   <button
                     type="button"
-                    className="btn btn-error btn-sm btn-circle ml-1 opacity-0 group-hover:opacity-100"
+                    className="btn btn-circle btn-error btn-sm ml-1 opacity-0 group-hover:opacity-100"
                     onClick={() => destroy(instantiatedCharacter.id)}
                   >
                     <Icon icon="times" />
@@ -175,8 +175,8 @@ const Dashboard = () => {
           ))}
         </RichTable.Body>
       </table>
-      <div className="fixed bottom-0 w-full p-2 flex items-center justify-between">
-        <button type="button" className="btn btn-sm btn-secondary" onClick={openSettingsWindow}>
+      <div className="fixed bottom-0 flex w-full items-center justify-between p-2">
+        <button type="button" className="btn btn-secondary btn-sm" onClick={openSettingsWindow}>
           <Icon icon="cog" className="mr-2" />
           {translate('open-settings')}
         </button>

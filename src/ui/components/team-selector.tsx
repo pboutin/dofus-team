@@ -30,19 +30,19 @@ const TeamSelector = ({ label, onSelect, className }: Props) => {
     <div ref={ref} className={classNames('dropdown', { 'dropdown-open': isOpened }, className)}>
       <button
         type="button"
-        className="btn btn-sm btn-secondary w-full"
+        className="btn btn-secondary btn-sm w-full"
         disabled={teams.length === 0}
         onClick={setIsOpened}
       >
         <Icon icon="users" className="mr-2" />
         {label}
       </button>
-      <ul className="w-full dropdown-content menu mt-1 p-2 shadow bg-base-300 rounded-box w-80 max-h-80 flex-nowrap overflow-y-scroll overflow-x-hidden z-40">
+      <ul className="menu dropdown-content z-40 mt-1 max-h-80 w-full flex-nowrap overflow-x-hidden overflow-y-scroll rounded-box bg-base-300 p-2 shadow">
         {teams.map((team) => (
           <li key={team.id}>
             <a className="items-center justify-between" onClick={() => handleSelect(team)}>
               <div className="flex-1">{team.name}</div>
-              <div className="flex gap-2 justify-end min-w-[200px]">
+              <div className="flex min-w-[200px] justify-end gap-2">
                 {team.characterIds.map((characterId: string) => {
                   const character = charactersMap.get(characterId);
                   if (!character) return null;

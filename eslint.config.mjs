@@ -4,6 +4,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginImport from 'eslint-plugin-import-x';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
 import eslintPluginReact from 'eslint-plugin-react';
+import eslintPluginTailwind from 'eslint-plugin-tailwindcss';
 import globals from 'globals';
 
 export default [
@@ -24,6 +25,7 @@ export default [
       'import-x': eslintPluginImport,
       'react-hooks': eslintPluginReactHooks,
       'react': eslintPluginReact,
+      'tailwindcss': eslintPluginTailwind,
     },
     settings: {
       'import-x/resolver': {
@@ -37,6 +39,7 @@ export default [
       ...eslintPluginImport.configs.recommended.rules,
       ...eslintPluginReact.configs.recommended.rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
+      ...eslintPluginTailwind.configs.recommended.rules,
       'import-x/order': [
         'warn',
         {

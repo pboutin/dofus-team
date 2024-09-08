@@ -31,7 +31,7 @@ const Row = ({ children, id }: RowProps) => {
       as="tr"
       dragListener={false}
       dragControls={dragControls}
-      className="hover group bg-base-100"
+      className="group hover bg-base-100"
     >
       <td
         width={60}
@@ -39,7 +39,7 @@ const Row = ({ children, id }: RowProps) => {
           dragControls.start(event);
           event.preventDefault();
         }}
-        className="text-center text-lg cursor-move"
+        className="cursor-move text-center text-lg"
       >
         <Icon icon="grip" />
       </td>

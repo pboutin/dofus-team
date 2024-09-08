@@ -19,7 +19,7 @@ const Teams = () => {
 
   return (
     <>
-      <table className="table table-compact w-full">
+      <table className=" table w-full">
         <thead>
           <tr>
             <th></th>
@@ -27,7 +27,7 @@ const Teams = () => {
             <td className="text-right" colSpan={2}>
               <button
                 type="button"
-                className="btn btn-sm btn-primary"
+                className="btn btn-primary btn-sm"
                 onClick={() => {
                   setStagedTeam({
                     id: undefined,
@@ -64,7 +64,7 @@ const Teams = () => {
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
-                    className="btn btn-secondary btn-sm btn-circle"
+                    className="btn btn-circle btn-secondary btn-sm"
                     onClick={() => {
                       setStagedTeam(team);
                     }}
@@ -73,7 +73,7 @@ const Teams = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-secondary btn-sm btn-circle"
+                    className="btn btn-circle btn-secondary btn-sm"
                     onClick={() => {
                       duplicate(team.id);
                     }}
@@ -82,7 +82,7 @@ const Teams = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-error btn-sm btn-circle"
+                    className="btn btn-circle btn-error btn-sm"
                     onClick={() => {
                       destroy(team.id);
                     }}

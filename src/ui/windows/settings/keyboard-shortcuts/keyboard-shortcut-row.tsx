@@ -40,16 +40,16 @@ const KeyboardShortcutRow = ({ children, action, keybind, onKeybindChange, onKey
   const displayedKeys = isRecording ? recordedKeys : (keybind ?? '').split('+').filter(Boolean);
 
   return (
-    <tr className="hover group" ref={ref}>
+    <tr className="group hover" ref={ref}>
       <td className="w-1/3">{children ?? translate(action)}</td>
 
       <td>
         {isRecording && <Icon icon="keyboard" className="mr-2" beat />}
 
         {!!displayedKeys.length && (
-          <div className="inline-flex gap-2 items-center">
+          <div className="inline-flex items-center gap-2">
             {displayedKeys.map((key, index) => (
-              <div key={`${key}-${index}`} className="inline-flex gap-2 items-center">
+              <div key={`${key}-${index}`} className="inline-flex items-center gap-2">
                 {index > 0 && <span className="text-gray-400">+</span>}
                 <kbd className="kbd kbd-sm">{ELECTRON_TO_DISPLAY[key] || key}</kbd>
               </div>
@@ -81,7 +81,7 @@ const KeyboardShortcutRow = ({ children, action, keybind, onKeybindChange, onKey
           </button>
 
           {!isRecording && keybind && (
-            <button type="button" className="btn btn-sm btn-circle btn-error" onClick={onKeybindDelete}>
+            <button type="button" className="btn btn-circle btn-error btn-sm" onClick={onKeybindDelete}>
               <Icon icon="trash" />
             </button>
           )}
@@ -89,7 +89,7 @@ const KeyboardShortcutRow = ({ children, action, keybind, onKeybindChange, onKey
           {isRecording && recordedKeys.length > 0 && (
             <button
               type="button"
-              className="btn btn-sm btn-circle btn-primary ml-4"
+              className="btn btn-circle btn-primary btn-sm ml-4"
               onClick={() => {
                 onKeybindChange(recordedKeys.join('+'));
                 teardown();
@@ -100,7 +100,7 @@ const KeyboardShortcutRow = ({ children, action, keybind, onKeybindChange, onKey
           )}
 
           {isRecording && (
-            <button type="button" className="btn btn-sm btn-circle btn-ghost" onClick={teardown}>
+            <button type="button" className="btn btn-circle btn-ghost btn-sm" onClick={teardown}>
               <Icon icon="times" />
             </button>
           )}

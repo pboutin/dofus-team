@@ -12,7 +12,7 @@ interface Props {
 }
 
 const AvatarPicker = ({ avatar: currentAvatar, class: characterClass, gender, onChange }: Props) => (
-  <div className="flex gap-2 flex-wrap">
+  <div className="flex flex-wrap gap-2">
     {Object.keys(Avatar).map((rawAvatar) => {
       const avatar = Avatar[rawAvatar as keyof typeof Avatar];
       const avatarKey = [characterClass, gender, avatar].join('-') as keyof typeof avatarImages;

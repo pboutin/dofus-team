@@ -35,13 +35,13 @@ const CharacterSelector = ({ label, onSelect, className, excludeIds = [], disabl
       <button
         disabled={filteredCharacters.length === 0 || disabled}
         type="button"
-        className="btn btn-sm btn-secondary w-full"
+        className="btn btn-secondary btn-sm w-full"
         onClick={setIsOpened}
       >
         <Icon icon="user" className="mr-2" />
         {label}
       </button>
-      <ul className="w-full dropdown-content menu mt-1 p-2 shadow bg-base-300 rounded-box w-80 max-h-80 flex-nowrap overflow-y-scroll overflow-x-hidden z-40">
+      <ul className="menu dropdown-content z-40 mt-1 max-h-80 w-full flex-nowrap overflow-x-hidden overflow-y-scroll rounded-box bg-base-300 p-2 shadow">
         {filteredCharacters.map((character) => (
           <li key={character.id}>
             <a onClick={() => onSelect(character)}>

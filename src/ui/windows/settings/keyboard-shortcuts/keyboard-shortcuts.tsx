@@ -14,7 +14,7 @@ const KeyboardShortcuts = () => {
 
   return (
     <>
-      <table className="table table-compact w-full">
+      <table className=" table w-full">
         <thead>
           <tr>
             <th colSpan={3}>{translate('current-team')}</th>
@@ -57,7 +57,7 @@ const KeyboardShortcuts = () => {
       </table>
 
       {characters.length > 0 && (
-        <table className="table table-compact w-full mt-2">
+        <table className=" table mt-2 w-full">
           <thead>
             <tr>
               <th colSpan={3}>{translate('characters')}</th>
@@ -97,7 +97,7 @@ const KeyboardShortcuts = () => {
       )}
 
       {teams.length > 0 && (
-        <table className="table table-compact w-full mt-2">
+        <table className=" table mt-2 w-full">
           <thead>
             <tr>
               <th colSpan={3}>{translate('teams')}</th>
