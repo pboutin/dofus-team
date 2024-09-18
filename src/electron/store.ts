@@ -4,7 +4,7 @@ import { app } from 'electron';
 
 export default class Store<T> {
   private state: T;
-  private subscribers: Array<(updatedState: T, previousState: T) => void> = [];
+  private stateSubscribers: Array<(updatedState: T, previousState: T) => void> = [];
 
   private storagePath;
 
@@ -30,15 +30,15 @@ export default class Store<T> {
   set(state: T) {
     const previousState = this.state;
     this.state = state;
-    this.subscribers.forEach((callback) => callback(state, previousState));
+    this.stateSubscribers.forEach((callback) => callback(state, previousState));
     fs.writeFileSync(this.storagePath, JSON.stringify(state));
   }
 
   onDidChange(callback: (updatedState: T, previousState: T) => void): () => void {
-    this.subscribers.push(callback);
+    this.stateSubscribers.push(callback);
 
     return () => {
-      this.subscribers = this.subscribers.filter((subscribedCallback) => subscribedCallback !== callback);
+      this.stateSubscribers = this.stateSubscribers.filter((subscriptionCallback) => subscriptionCallback !== callback);
     };
   }
 }

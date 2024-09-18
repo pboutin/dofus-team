@@ -6,6 +6,8 @@ import TeamRepository from './team.repository';
 import { InstantiatedCharacter } from '../../types';
 
 export default class InstantiatedCharacterRepository extends BaseRepository<InstantiatedCharacter> {
+  private activeSubscribers: Array<(character: InstantiatedCharacter) => void> = [];
+
   constructor(
     private teamRepository: TeamRepository,
     private characterRepository: CharacterRepository,
@@ -63,14 +65,13 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
   }
 
   onActiveCharacterChange(callback: (character: InstantiatedCharacter) => void) {
-    this.store.onDidChange((characters: InstantiatedCharacter[], previousCharacters: InstantiatedCharacter[]) => {
-      const activeCharacter = characters.find((character) => character.active);
-      const previousActiveCharacter = previousCharacters?.find((character) => character.active);
+    this.activeSubscribers.push(callback);
 
-      if (!activeCharacter || activeCharacter.id === previousActiveCharacter?.id) return;
-
-      callback(activeCharacter);
-    });
+    return () => {
+      this.activeSubscribers = this.activeSubscribers.filter(
+        (subscriptionCallback) => subscriptionCallback !== callback,
+      );
+    };
   }
 
   clear() {
@@ -79,13 +80,25 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
 
   activate(id: string) {
     const characters = this.fetchAll();
+    let activeCharacter: InstantiatedCharacter | null = null;
 
-    const updatedCharacters = characters.map((character) => ({
-      ...character,
-      active: character.id === id,
-    }));
+    const updatedCharacters = characters.map((character) => {
+      const updatedCharacter = {
+        ...character,
+        active: character.id === id,
+      };
+
+      if (updatedCharacter.active) {
+        activeCharacter = updatedCharacter;
+      }
+
+      return updatedCharacter;
+    });
 
     this.store.set(updatedCharacters);
+
+    if (!activeCharacter) return;
+    this.activeSubscribers.forEach((callback) => callback(activeCharacter));
   }
 
   activateAt(index: number) {
