@@ -39,6 +39,12 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
     return 'InstantiatedCharacter';
   }
 
+  get defaultValues() {
+    return {
+      server: 'Imagiro'
+    };
+  }
+
   instantiateTeam(teamId: string) {
     const team = this.teamRepository.fetchById(teamId);
     if (!team) return;
@@ -101,7 +107,16 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
     this.activeSubscribers.forEach((callback) => callback(activeCharacter));
   }
 
+  activateByName(characterName: string) {
+    const instanciatedCharacter = this.fetchAll().find(({name}) => name === characterName);
+    if (!instanciatedCharacter) return;
+
+    this.activate(instanciatedCharacter.id);
+  }
+
   activateAt(index: number) {
+    if (index < 0) return;
+
     const characters = this.fetchAll();
 
     if (index >= characters.length) {

@@ -9,4 +9,10 @@ export default class CharacterRepository extends BaseRepository<Character> {
   get modelName() {
     return 'Character';
   }
+
+  get defaultValues() {
+    return {
+      server: 'Imagiro'
+    };
+  }
 }
