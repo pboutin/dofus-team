@@ -38,7 +38,7 @@ const CharacterSelector = ({ label, onSelect, className, excludeIds = [], disabl
         className="btn btn-secondary btn-sm w-full justify-start"
         onClick={setIsOpened}
       >
-        <Icon icon="user" className="mr-2" />
+        <Icon icon="user" className="mr-1" fixedWith />
         {label}
       </button>
 

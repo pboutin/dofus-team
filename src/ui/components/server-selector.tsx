@@ -33,7 +33,7 @@ const ServerSelector = ({ value, help, onSelect, className, disabled = false }: 
           className="btn btn-secondary btn-sm w-full justify-start"
           onClick={setIsOpened}
         >
-          <Icon icon="server" className="mr-2" />
+          <Icon icon="server" className="mr-1" fixedWith />
           {value}
         </button>
 

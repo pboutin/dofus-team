@@ -34,7 +34,7 @@ const TeamSelector = ({ label, onSelect, className }: Props) => {
         disabled={teams.length === 0}
         onClick={setIsOpened}
       >
-        <Icon icon="users" className="mr-2" />
+        <Icon icon="users" className="mr-1" fixedWith />
         {label}
       </button>
 
