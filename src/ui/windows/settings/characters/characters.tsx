@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { Character, Upserted, Class, Avatar } from '../../../../types';
+import { Character, Upserted } from '../../../../types';
 import CharacterAvatar from '../../../components/character-avatar';
 import Drawer from '../../../components/drawer';
 import Icon from '../../../components/icon';
 import RichTable from '../../../components/rich-table';
-import { useCharacters } from '../../../hooks/use-ipc-renderer';
+import { useCharacters, useRefreshCharacterAvatar } from '../../../hooks/use-ipc-renderer';
 import useTranslate from '../../../hooks/use-translate';
 import CharacterForm from '../../../windows/settings/characters/character-form';
 
@@ -14,6 +14,7 @@ const Characters = () => {
 
   const [stagedCharacter, setStagedCharacter] = useState<Character | Upserted<Character> | null>(null);
   const translate = useTranslate('settings.characters');
+  const refreshCharacterAvatar = useRefreshCharacterAvatar();
 
   return (
     <>
@@ -30,10 +31,8 @@ const Characters = () => {
                   setStagedCharacter({
                     id: undefined,
                     name: '',
-                    class: Class.Osamodas,
                     label: '',
-                    gender: 'male',
-                    avatar: Avatar.Good1,
+                    server: characters[0]?.server ?? 'Imagiro',
                   });
                 }}
               >
@@ -54,6 +53,14 @@ const Characters = () => {
               </td>
               <td className="opacity-0 group-hover:opacity-100">
                 <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    className="group/avatar-refresh btn btn-circle btn-secondary btn-sm"
+                    onClick={() => refreshCharacterAvatar(character)}
+                  >
+                    <Icon icon="refresh" className="hidden group-hover/avatar-refresh:block" />
+                    <Icon icon="face-grin" className="block group-hover/avatar-refresh:hidden" />
+                  </button>
                   <button
                     type="button"
                     className="btn btn-circle btn-secondary btn-sm"

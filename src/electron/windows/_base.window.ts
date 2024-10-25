@@ -5,6 +5,7 @@ import { BrowserWindow } from 'electron';
 import packageJson from '../../../package.json';
 import translations from '../../translations';
 import { GenericModel, WindowPosition } from '../../types';
+import CharacterAvatars from '../character-avatars';
 import BaseRepository from '../repositories/_base.repository';
 import ConfigRepository from '../repositories/config.repository';
 
@@ -20,6 +21,7 @@ export default class BaseWindow {
   protected window: BrowserWindow | null = null;
   protected modelRepositories: Array<BaseRepository<GenericModel>>;
   protected configRepository: ConfigRepository;
+  protected characterAvatars: CharacterAvatars;
 
   protected createWindow({ width, height, alwaysOnTop }: { width: number; height: number; alwaysOnTop: boolean }) {
     const config = this.configRepository.fetch();
@@ -69,6 +71,12 @@ export default class BaseWindow {
       this.window.webContents.send('Config:changed', config);
     });
     this.window.on('closed', unsubscribeConfig);
+
+    const unsubscribeCharacterAvatars = this.characterAvatars.onChange((characterName, server, base64) => {
+      if (this.window.isDestroyed()) return;
+      this.window.webContents.send('characterAvatar:changed', characterName, server, base64);
+    });
+    this.window.on('closed', unsubscribeCharacterAvatars);
 
     this.window.on('closed', (): void => (this.window = null));
   }

@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import avatarImages from './images/avatars';
+import Icon from './icon';
 import { Character } from '../../types';
+import { useCharacterAvatar } from '../hooks/use-ipc-renderer';
 
 interface Props {
   character: Character;
@@ -10,20 +11,32 @@ interface Props {
   compact?: boolean;
 }
 
-const CharacterAvatar = ({ character, compact, className }: Props) => {
-  const avatarKey = [character.class, character.gender, character.avatar].join('-') as keyof typeof avatarImages;
+const CharacterAvatar = ({ character, compact = false, className }: Props) => {
+  const base64 = useCharacterAvatar(character);
+
+  if (!base64)
+    return (
+      <Icon
+        icon="spinner"
+        spin
+        className={classNames({
+          'fa-lg': !compact,
+          'fa-sm': compact,
+        })}
+      />
+    );
 
   return (
     <img
       className={classNames(
         {
           'h-10': !compact,
-          'h-6': !!compact,
+          'h-6': compact,
         },
         className,
       )}
-      src={avatarImages[avatarKey]}
-      alt={avatarKey}
+      src={`data:image/png;base64,${base64}`}
+      alt={character.name}
     />
   );
 };

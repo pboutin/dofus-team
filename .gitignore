@@ -4,3 +4,4 @@ dist/
 .vscode/
 out/
 src/electron/dofus-windows-adapters/active.js
+character-avatars-debug.png

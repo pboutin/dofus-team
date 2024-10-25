@@ -2,6 +2,7 @@ import { app } from 'electron';
 
 import BaseWindow from './_base.window';
 import { GenericModel } from '../../types';
+import CharacterAvatars from '../character-avatars';
 import BaseRepository from '../repositories/_base.repository';
 import ConfigRepository from '../repositories/config.repository';
 
@@ -11,6 +12,7 @@ export default class DashboardWindow extends BaseWindow {
   constructor(
     protected modelRepositories: Array<BaseRepository<GenericModel>>,
     protected configRepository: ConfigRepository,
+    protected characterAvatars: CharacterAvatars,
   ) {
     super();
 

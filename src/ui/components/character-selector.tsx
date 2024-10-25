@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useClickAway, useToggle } from 'react-use';
 
+import CharacterAvatar from './character-avatar';
 import { Character } from '../../types';
-import CharacterAvatar from '../components/character-avatar';
 import Icon from '../components/icon';
 import { useCharacters } from '../hooks/use-ipc-renderer';
 
@@ -35,12 +35,13 @@ const CharacterSelector = ({ label, onSelect, className, excludeIds = [], disabl
       <button
         disabled={filteredCharacters.length === 0 || disabled}
         type="button"
-        className="btn btn-secondary btn-sm w-full"
+        className="btn btn-secondary btn-sm w-full justify-start"
         onClick={setIsOpened}
       >
         <Icon icon="user" className="mr-2" />
         {label}
       </button>
+
       <ul className="menu dropdown-content z-40 mt-1 max-h-80 w-full flex-nowrap overflow-x-hidden overflow-y-scroll rounded-box bg-base-300 p-2 shadow">
         {filteredCharacters.map((character) => (
           <li key={character.id}>

@@ -37,6 +37,7 @@ const translations = {
         'name': 'Nom',
         'detected-dofus-windows': 'Clients Dofus détectés qui ne sont pas encore configurées',
         'name-help': 'Doit corespondre au nom de la fenêtre Dofus',
+        'server-help': "Est utilisé pour récupérer l'avatar du personnage",
         'save': 'Sauvegarder',
         'cancel': 'Annuler',
       },

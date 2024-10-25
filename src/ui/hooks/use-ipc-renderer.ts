@@ -171,3 +171,37 @@ export function useDofusWindows() {
 
   return dofusWindows;
 }
+
+export function useCharacterAvatar(character: Character) {
+  const [base64, setBase64] = useState<string | null>(null);
+
+  const handleAvatarChange = useCallback(
+    (_event: unknown, characterName: string, serverName: string, base64: string) => {
+      if (character.name !== characterName || character.server !== serverName) return;
+      setBase64(base64);
+    },
+    [character.name, character.server],
+  );
+
+  useEffect(() => {
+    if (!character.server || !character.name) return;
+    ipcRenderer.invoke('characterAvatar:fetchBase64', character.name, character.server, false).then(setBase64);
+  }, [character.name, character.server]);
+
+  useEffect(() => {
+    ipcRenderer.on('characterAvatar:changed', handleAvatarChange);
+
+    return () => {
+      ipcRenderer.removeListener('characterAvatar:base64', handleAvatarChange);
+    };
+  }, [handleAvatarChange]);
+
+  return base64;
+}
+
+export function useRefreshCharacterAvatar() {
+  return useCallback((character: Character) => {
+    if (!character.server || !character.name) return;
+    ipcRenderer.invoke('characterAvatar:fetchBase64', character.name, character.server, true);
+  }, []);
+}

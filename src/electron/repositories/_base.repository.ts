@@ -22,12 +22,16 @@ export default class BaseRepository<T extends GenericModel> {
     throw new Error('modelName not implemented');
   }
 
+  get defaultValues(): Partial<T> {
+    return {};
+  }
+
   onChange(callback: (items: T[]) => void) {
     return this.store.onDidChange(callback);
   }
 
   fetchAll(): T[] {
-    return this.store.get();
+    return this.store.get().map((item) => ({ ...this.defaultValues, ...item }));
   }
 
   fetchById(id: string): T | undefined {

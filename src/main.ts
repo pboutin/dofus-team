@@ -1,6 +1,7 @@
 import { app } from 'electron';
 import { updateElectronApp } from 'update-electron-app';
 
+import CharacterAvatars from './electron/character-avatars';
 import DofusWindows from './electron/dofus-windows';
 import KeyboardShortcuts from './electron/keyboard-shortcuts';
 import CharacterRepository from './electron/repositories/character.repository';
@@ -33,8 +34,11 @@ app.on('ready', async () => {
   // Initialize DofusWindows handler
   new DofusWindows(instantiatedCharacterRepository);
 
-  const settingsWindow = new SettingsWindow(modelRepositories, configRepository);
-  const dashboardWindow = new DashboardWindow(modelRepositories, configRepository);
+  // Initialize avatar handler
+  const characterAvatars = new CharacterAvatars();
+
+  const settingsWindow = new SettingsWindow(modelRepositories, configRepository, characterAvatars);
+  const dashboardWindow = new DashboardWindow(modelRepositories, configRepository, characterAvatars);
 
   // Initialize keyboard shortcuts
   new KeyboardShortcuts(instantiatedCharacterRepository, keyboardShortcutRepository);

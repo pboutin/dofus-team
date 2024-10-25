@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 
 import { Character } from '../../../../types';
-import AvatarPicker from '../../../components/avatar-picker';
-import ClassGenderPicker from '../../../components/class-gender-picker';
 import Icon from '../../../components/icon';
 import Input from '../../../components/input';
+import ServerSelector from '../../../components/server-selector';
 import { useCharacters, useDofusWindows } from '../../../hooks/use-ipc-renderer';
 import useTranslate from '../../../hooks/use-translate';
 
@@ -64,17 +63,10 @@ const CharacterForm = ({ character, onChange, onSubmit, onCancel }: Props) => {
           onChange={(name) => onChange({ ...character, name })}
         />
 
-        <ClassGenderPicker
-          class={character.class}
-          gender={character.gender}
-          onChange={(classAndGender) => onChange({ ...character, ...classAndGender })}
-        />
-
-        <AvatarPicker
-          avatar={character.avatar}
-          class={character.class}
-          gender={character.gender}
-          onChange={(avatar) => onChange({ ...character, avatar })}
+        <ServerSelector
+          value={character.server}
+          help={translate('server-help')}
+          onSelect={(server) => onChange({ ...character, server })}
         />
       </form>
 
