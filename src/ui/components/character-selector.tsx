@@ -38,7 +38,7 @@ const CharacterSelector = ({ label, onSelect, className, excludeIds = [], disabl
         className="btn btn-secondary btn-sm w-full"
         onClick={setIsOpened}
       >
-        <Icon icon="user" className="mr-2" />
+        <Icon icon="user" className="mr-1" fixedWith />
         {label}
       </button>
       <ul className="menu dropdown-content z-40 mt-1 max-h-80 w-full flex-nowrap overflow-x-hidden overflow-y-scroll rounded-box bg-base-300 p-2 shadow">
