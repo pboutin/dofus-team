@@ -6,6 +6,7 @@ import InstantiatedCharacterRepository from './repositories/instantiated-charact
 interface DofusWindowsAdapter {
   focusDofusWindow: (characterName: string) => void;
   listDofusWindows: () => string[];
+  getActiveDofusWindow: () => string | null;
 }
 
 export default class DofusWindows {
@@ -17,6 +18,13 @@ export default class DofusWindows {
     });
 
     ipcMain.handle('dofusWindows:fetchAll', () => this.fetchAll());
+
+    setInterval(() => {
+      const activeCharacterName = this.adapter.getActiveDofusWindow();
+      if (!activeCharacterName) return;
+
+      this.instantiatedCharacterRepository.activateByName(activeCharacterName);
+    }, 1000)
   }
 
   fetchAll() {
@@ -24,6 +32,9 @@ export default class DofusWindows {
   }
 
   focus(characterName: string) {
+    const activeCharacterName = this.adapter.getActiveDofusWindow();
+    if (characterName === activeCharacterName) return;
+
     return this.adapter.focusDofusWindow(characterName);
   }
 }
