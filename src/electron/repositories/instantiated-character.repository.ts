@@ -41,7 +41,7 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
 
   get defaultValues() {
     return {
-      server: 'Imagiro'
+      server: 'Imagiro',
     };
   }
 
@@ -108,7 +108,7 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
   }
 
   activateByName(characterName: string) {
-    const instanciatedCharacter = this.fetchAll().find(({name}) => name === characterName);
+    const instanciatedCharacter = this.fetchAll().find(({ name }) => name === characterName);
     if (!instanciatedCharacter) return;
 
     this.activate(instanciatedCharacter.id);

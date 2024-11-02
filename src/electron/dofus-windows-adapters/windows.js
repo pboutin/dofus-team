@@ -72,6 +72,6 @@ const getActiveDofusWindow = () => {
   if (!match) return null;
 
   return match[1];
-}
+};
 
 export default { listDofusWindows, focusDofusWindow, getActiveDofusWindow };

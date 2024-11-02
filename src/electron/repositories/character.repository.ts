@@ -12,7 +12,7 @@ export default class CharacterRepository extends BaseRepository<Character> {
 
   get defaultValues() {
     return {
-      server: 'Imagiro'
+      server: 'Imagiro',
     };
   }
 }
