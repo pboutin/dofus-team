@@ -24,7 +24,7 @@ export default class DofusWindows {
       if (!activeCharacterName) return;
 
       this.instantiatedCharacterRepository.activateByName(activeCharacterName);
-    }, 1000)
+    }, 1000);
   }
 
   fetchAll() {

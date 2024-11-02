@@ -101,6 +101,13 @@ export default class InstantiatedCharacterRepository extends BaseRepository<Inst
     this.activeSubscribers.forEach((callback) => callback(activeCharacter));
   }
 
+  activateByName(characterName: string) {
+    const instantiatedCharacter = this.fetchAll().find(({ name }) => name === characterName);
+    if (!instantiatedCharacter) return;
+
+    this.activate(instantiatedCharacter.id);
+  }
+
   activateAt(index: number) {
     const characters = this.fetchAll();
 

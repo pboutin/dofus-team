@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { useClickAway, useToggle } from 'react-use';
 
 import { Team } from '../../types';
@@ -10,12 +10,27 @@ import { useCharacters, useTeams } from '../hooks/use-ipc-renderer';
 interface Props {
   label: string;
   onSelect: (team: Team) => void;
+  instanciatedUserIds?: string[];
   className?: string;
 }
 
-const TeamSelector = ({ label, onSelect, className }: Props) => {
+const TeamSelector = ({ label, onSelect, instanciatedUserIds, className }: Props) => {
   const { items: teams } = useTeams();
   const { itemsMap: charactersMap } = useCharacters();
+
+  const selectedTeamName = useMemo(() => {
+    if (!instanciatedUserIds || !instanciatedUserIds.length) return null;
+
+    const instanciatedTeam = teams.find(({ characterIds }) => {
+      if (characterIds.length !== instanciatedUserIds.length) return false;
+
+      return characterIds.every((characterId, index) => instanciatedUserIds[index] === characterId);
+    });
+
+    if (!instanciatedTeam) return null;
+
+    return instanciatedTeam.name;
+  }, [instanciatedUserIds, teams]);
 
   const ref = useRef(null);
   const [isOpened, setIsOpened] = useToggle(false);
@@ -36,6 +51,8 @@ const TeamSelector = ({ label, onSelect, className }: Props) => {
       >
         <Icon icon="users" className="mr-1" fixedWith />
         {label}
+
+        {selectedTeamName ? <div className="flex-1 text-right opacity-90">({selectedTeamName})</div> : null}
       </button>
       <ul className="menu dropdown-content z-40 mt-1 max-h-80 w-full flex-nowrap overflow-x-hidden overflow-y-scroll rounded-box bg-base-300 p-2 shadow">
         {teams.map((team) => (

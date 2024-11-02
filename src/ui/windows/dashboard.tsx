@@ -65,7 +65,12 @@ const Dashboard = () => {
           onSelect={(character) => upsert({ ...character, active: false, disabled: false })}
         />
 
-        <TeamSelector label={translate('change-team')} className="" onSelect={(team) => instantiateTeam(team.id)} />
+        <TeamSelector
+          label={translate('change-team')}
+          className=""
+          instanciatedUserIds={userIds}
+          onSelect={(team) => instantiateTeam(team.id)}
+        />
 
         <div className="mt-2 flex justify-between gap-2">
           <div className="flex gap-2">
