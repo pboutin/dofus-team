@@ -65,9 +65,3 @@ start:
 .PHONY: debug
 debug:
 	export DEBUG=true && npx electron-forge start
-
-.PHONY: publish-patch
-publish-patch:
-	npm version patch
-	npx electron-forge publish
-    git push --follow-tags
