@@ -1,5 +1,4 @@
 import { app } from 'electron';
-import { updateElectronApp } from 'update-electron-app';
 
 import DofusWindows from './electron/dofus-windows';
 import KeyboardShortcuts from './electron/keyboard-shortcuts';
@@ -10,8 +9,6 @@ import KeyboardShortcutRepository from './electron/repositories/keyboard-shortcu
 import TeamRepository from './electron/repositories/team.repository';
 import DashboardWindow from './electron/windows/dashboard.window';
 import SettingsWindow from './electron/windows/settings.window';
-
-updateElectronApp();
 
 app.on('ready', async () => {
   // eslint-disable-next-line no-console
