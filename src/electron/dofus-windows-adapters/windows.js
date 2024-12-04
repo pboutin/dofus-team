@@ -15,7 +15,7 @@ const HWND = koffi.alias('HWND', HANDLE);
 const GetWindowText = user32.func('int __stdcall GetWindowTextA(HWND hWnd, _Out_ uint8_t *lpString, int nMaxCount)');
 const GetClassName = user32.func('int __stdcall GetClassNameA(HWND hWnd, _Out_ uint8_t *lpString, int nMaxCount)');
 
-const DOFUS_WINDOW_NAME_REGEX = /(.+) - (Dofus )?2\./;
+const DOFUS_WINDOW_NAME_REGEX = /([^ ]+) - (\w+ - )3\./;
 
 const listDofusWindows = () => {
   const dofusClients = [];
@@ -32,12 +32,7 @@ const listDofusWindows = () => {
     const match = windowName.match(DOFUS_WINDOW_NAME_REGEX);
     if (!match) return true;
 
-    if (
-      ![
-        'ApolloRuntimeContentWindow', // Dofus 2 (flash)
-        'UnityWndClass', // Dofus 2 (unity)
-      ].includes(windowClass)
-    ) {
+    if (windowClass !== 'UnityWndClass') {
       return true;
     }
 
