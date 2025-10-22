@@ -1,13 +1,21 @@
 const listDofusWindows = () => {
-  return ["Stub One", "Stub Two", "Stub Three"];
+  return [
+    { windowName: "Stub One", character: "Stub One" },
+    { windowName: "Stub Two", character: "Stub Two" },
+    { windowName: "Stub Three", character: "Stub Three" },
+  ];
 };
 
-const focusDofusWindow = (characterToFocus) => {
-  console.log(`Focus "${characterToFocus}" called`);
+const focusDofusWindowName = (windowName) => {
+  console.log(`Focus "${windowName}" called`);
 };
 
-const getActiveDofusWindow = () => {
+const getActiveDofusCharacter = () => {
   return "Stub One";
 };
 
-module.exports = { listDofusWindows, focusDofusWindow, getActiveDofusWindow };
+module.exports = {
+  listDofusWindows,
+  focusDofusWindowName,
+  getActiveDofusCharacter,
+};

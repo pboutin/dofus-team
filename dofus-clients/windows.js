@@ -67,19 +67,12 @@ const listDofusWindows = () => {
   return dofusClients;
 };
 
-const focusDofusWindow = (characterToFocus) => {
-  const dofusWindows = listDofusWindows();
-
-  const characterWindow = dofusWindows.find(
-    ({ character }) => character === characterToFocus
-  );
-  if (!characterWindow) return;
-
-  const hwnd = FindWindowA(null, characterWindow.windowName);
+const focusDofusWindowName = (windowName) => {
+  const hwnd = FindWindowA(null, windowName);
   SwitchToThisWindow(hwnd, false);
 };
 
-const getActiveDofusWindow = () => {
+const getActiveDofusCharacter = () => {
   const hwnd = GetForegroundWindow();
 
   let windowNameBuffer = Buffer.allocUnsafe(1024);
@@ -92,4 +85,8 @@ const getActiveDofusWindow = () => {
   return match[1];
 };
 
-module.exports = { listDofusWindows, focusDofusWindow, getActiveDofusWindow };
+module.exports = {
+  listDofusWindows,
+  focusDofusWindowName,
+  getActiveDofusCharacter,
+};
