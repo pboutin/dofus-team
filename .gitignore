@@ -1,6 +1,0 @@
-node_modules/
-dist/
-.vite/
-.vscode/
-out/
-src/electron/dofus-windows-adapters/active.js
