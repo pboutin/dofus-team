@@ -1,0 +1,25 @@
+{
+  "name": "dofus-team",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pboutin/dofus-team.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pboutin/dofus-team/issues"
+  },
+  "homepage": "https://github.com/pboutin/dofus-team#readme",
+  "description": "",
+  "devDependencies": {
+    "electron": "^38.3.0"
+  },
+  "dependencies": {
+    "koffi": "^2.14.1"
+  }
+}
