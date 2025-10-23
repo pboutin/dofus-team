@@ -64,6 +64,20 @@ const listDofusWindows = () => {
     return true;
   }, 100);
 
+  dofusClients.sort((winA, winB) => {
+    const nameA = winA.character.toUpperCase(); // ignore upper and lowercase
+    const nameB = winB.character.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    // names must be equal
+    return 0;
+  });
+
   return dofusClients;
 };
 
